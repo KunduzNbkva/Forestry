@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="choose_lang">Тилди тандаңыз</string>
+
+    <string name="title_about">“Жайыттардын абалына мониторинг жүргүзүү” мобилдик тиркемесин иштеп чыгаруу  Германиянын Экономикалык кызматташтык жана өнүктүрүү Федералдык министрлигинин (BMZ) тапшырмасы боюнча  Deutsche Gesellschaft für Internationale Zusammenarbeit (GIZ) GmbH (Германия эл аралык кызматташтык коому) тарабынан ишке ашырылып жаткан «Жаңгак-мөмө токойлорду жана жайыттарды башкарууга жергиликтүү жамааттарды катыштыруу аркылуу биологиялык ар түрдүүлүктү сактоо жана жакырчылыкты кыскартуу» долбоорунун алкагында ишке ашырылды.
+\nТиркемедеги маалымат  авторлордун так жоопкерчилиги болуп саналат жана GIZ уюмунун расмий пикирин чагылдырбайт.\n
+\nАталган мобилдик тиркеме “Land PKS” тиркемесинин негизинде “Camp Aлатоо”коомдук фонду тарабынан түзүлүп, ЖЧК “Интерсофт ЛТД” техникалык көмөгү менен ишке ашырылды.
+</string>
+    <string name="contacts">Байланыш дареги:
+</string>
+    <string name="info_camp">“CAMP Алатоо” Коомдук фонду, \nКыргыз Республикасы,\nБишкек шаары,
+, Уфим көчөсү, 3\n+996 312 90 97 03\n\n<a href="https://www.camp.kg/">www.camp.kg</a></string>
+
+    <string name="analyse_pasture">Жайыттардын абалы тууралуу \nмаалымат жыйноо жана анализдөө</string>
+    <string name="next">Кийинки кадам </string>
+    <string name="welcome">Кош келиниз!</string>
+    <string name="plant_label">Өсүмдүк катмарын баалоо</string>
+    <string name="harvest">Түшүмдүүлүк</string>
+    <string name="map">Карта</string>
+    <string name="new_value">Жаны жазуу</string>
+
+    <string name="dry_biomass_info">Эскертүү!\nКургак биомассаны нымдуу биомасса жыйналгандан тартып 15-20 күн өткөндөн кийин гана, толук кургап бүткөн соң таразага тартып өлчөө керек.
+</string>
+
+
+    <string name="report">Отчеттуулук</string>
+    <string name="user_profile">Профиль</string>
+    <string name="instruction">Тиркеме тууралуу маалымат</string>
+    <string name="exit">Чыгуу</string>
+    <string name="add_photo">Сүрөттү кошуңуз</string>
+    <string name="plot_name">Тилкенин аталышы</string>
+    <string name="pasture_region">Областтын аталышы</string>
+    <string name="pasture_village">Аймактын аталышы</string>
+    <string name="pasture_district">Райондун аталышы</string>
+
+    <string name="pasture_name">Жайыттын аталышы</string>
+    <string name="location">Координаттары</string>
+    <string name="point_desc">Чекитти сүрөттөө</string>
+    <string name="pasture_desc">Тилкени сүрөттөө</string>
+    <string name="trees">Дарактар жана бадалдар</string>
+    <string name="soil_texture">Топурактын текстурасы</string>
+    <string name="soil_color">Топурактын өңү-түсү</string>
+    <string name="erossion_degree">Топурактын эрозия даражасы</string>
+    <string name="cattle_pasture">Мал жаюу</string>
+    <string name="cattle_type">Малдын түрү</string>
+    <string name="save">Сактоо</string>
+
+    <string name="developed">Иштелип чыккан</string>
+    <string name="owner">Аткаруучу</string>
+
+    <string name="capture">Сүрөткө тартуу</string>
+    <string name="from_gallery">Сүрөттү алмаштыруу</string>
+
+
+    <string name="glina">Чопо</string>
+    <string name="suglinok">Чопо,кум </string>
+    <string name="suspes">Кумай</string>
+    <string name="pesok">Кум</string>
+    <string name="il">Баткактуу</string>
+
+    <string name="wet_biomass">Нымдуу биомасса</string>
+    <string name="dry_biomass">Кургак биомасса</string>
+
+    <string name="eaten_biomass"> Желүүчү биомасса, грамм/м2</string>
+    <string name="not_eaten_biomass">Желбей турган биомасса, грамм/м2</string>
+
+
+    <string name="plants">Өсүмдүктөр</string>
+    <string name="wet_biomass_in_gramm">Нымдуу биомасса, грамм/м2 </string>
+    <string name="dry_biomass_in_gram">Кургак биомасса, грамм/м2</string>
+    <string name="level_soil">Топурактын таштак даражасы</string>
+    <string name="_10_n">10 %ке чейин\nАз таштактуу
+</string>
+    <string name="_10_20_n">10-20 %\nОрто таштактуу
+</string>
+    <string name="_20_40_n">20-40 %\nТаштактуу
+
+</string>
+    <string name="_40_n">40 % ден көп\nАбдан таштактуу
+</string>
+    <string name="title">Аталышы</string>
+    <string name="black">Кара</string>
+    <string name="gray">Боз</string>
+    <string name="white">Агыш</string>
+    <string name="yellow">Сары</string>
+    <string name="red">Кызыл</string>
+    <string name="brown">Күрөң</string>
+    <string name="no_pastures">Такыр жок</string>
+    <string name="temperately">Орточо</string>
+    <string name="little">Бир аз</string>
+    <string name="intensively">Интенсивдүү</string>
+    <string name="sign_in_safe">Катталган колдонуучулар үчүн \кирүү</string>
+
+    <string name="name">Аты-жөнү:</string>
+    <string name="lang">Тили:</string>
+    <string name="pasture_monitoring">Жайыттардын абалын баалоо</string>
+    <string name="login_witout_auth">Каттоосуз кирүү</string>
+    <string name="no">Жок</string>
+    <string name="bit">Аз</string>
+    <string name="few">Бир Нече</string>
+    <string name="much">Көп</string>
+
+    <string name="cows">Уйлар, </string>
+    <string name="sheeps">Эчкилер/Койлор, </string>
+    <string name="horses">Жылкылар, </string>
+    <string name="yaks">Топоздор, </string>
+
+    <string name="cows_valid">Уйлар</string>
+    <string name="sheeps_valid">Эчкилер/Койлор</string>
+    <string name="horses_valid">Жылкылар</string>
+    <string name="yaks_valid">Топоздор</string>
+
+    <string name="gullies">Суу жеген арыкчалар </string>
+    <string name="pedestals">Тамыры сыртка чыккан чөптөр</string>
+    <string name="animal_paths">Мал баскан жолчолор</string>
+    <string name="bare_areas">Такыр тилкелер</string>
+    <string name="point_indicator">Башка эрозияны көрсөтүңүз</string>
+    <string name="value">Cүрөттөлүшү</string>
+    <string name="direction">Багыт</string>
+    <string name="choose_direction">Багытты танданыз</string>
+    <string name="north">Түндүк</string>
+    <string name="west">Батыш</string>
+    <string name="east">Чыгыш</string>
+    <string name="south">Түштүк</string>
+    <string name="distance">Аралыктар</string>
+    <string name="choose_distance">Аралыкты тандаңыз</string>
+    <string name="indicators">Индикаторлор</string>
+    <string name="choose_indicators">Индикаторлорду ченегич таякчасы  менен тандаңыз.</string>
+    <string name="bare_place">Такыр жер</string>
+    <string name="bush">Бадал</string>
+    <string name="eaten_plant">Жегиликтүү чөп</string>
+    <string name="non_eaten_plant">Жегиликсиз чөп</string>
+    <string name="plant_base">Өсүмдүктүн түбү</string>
+    <string name="decline">Чиринди</string>
+    <string name="stone">Таш</string>
+    <string name="plant_high">Өсүмдүктүн бийиктиги</string>
+    <string name="till_10_sm">10смге чейин</string>
+    <string name="more_50_sm">50смден жогору</string>
+    <string name="login">Кирүү</string>
+    <string name="organization">Мекеме</string>
+    <string name="post">Кызматы</string>
+    <string name="email">Электрондук дареги</string>
+    <string name="date">Катталуу куну</string>
+    <string name="phone">Тел. номери</string>
+    <string name="five_metrs">5 метр</string>
+    <string name="ten_metrs">10 метр</string>
+    <string name="fifteen_metrs">15 метр</string>
+    <string name="twenty_metrs">20 метр</string>
+    <string name="twenty_five_metrs">25 метр</string>
+    <string name="harvest_dynamic">Жайыт тилкесинин түшүмдүүлүгүнүн динамикасы, гр/м2</string>
+    <string name="wet">Нымдуу</string>
+    <string name="dry">Кургак</string>
+    <string name="eaten">Желүүчү</string>
+    <string name="non_eaten">Желбей турган</string>
+    <string name="average_height">Орточо бийиктиги</string>
+
+    <string name="gps_disabled_message">Колдонмонун туура иштеши үчүн, GPS күйгүзүшүңүз керек</string>
+    <string name="enable">Иштетүү</string>
+    <string name="cancel">Жокко чыгаруу</string>
+
+    <string name="pdf_instruction">pastbishe_KG.pdf</string>
+    <string name="search">Издөө</string>
+
+    <string name="harverst_camera_description">1м кв таякчасын камерага тарткыла</string>
+    <string name="gallery">Галерея</string>
+    <string name="list">Список</string>
+    <string name="create_remember">Эскертүү орнотунуз</string>
+
+    <string name="small">Аз таштактуу</string>
+    <string name="medium">Орто таштактуу</string>
+    <string name="large">Таштактуу</string>
+    <string name="ex_large">Абдан таштактуу</string>
+    <string name="cancel_txt">Жок</string>
+    <string name="signin_existing_or_register">Войдите в существующий аккаунт \nили зарегистрируйтесь</string>
+    <string name="enter_or_register">Кирүү / Катталуу</string>
+    <string name="no_internet">Интернет жок!</string>
+    <string name="app_name">Жайыттарга мониторинг жүргүзүү</string>
+    <string name="developer">Техникалык иштеп чыгуучу:</string>
+    <string name="about_app">Колдонмо жөнүндө</string>
+    <string name="edit_mode">Түзөтүү</string>
+    <string name="change_picture">Сүрөттү өзгөртүү</string>
+    <string name="info_developer">Деннис Санне ОсОО «ИнтерсофтЛТД» +996 312 90 97 03  <a href="https://www.onoi.kg/">www.onoi.kg</a></string>
+    <string name="podskazka_about_app">Ишара: Картаны Интернетсиз колдонуу үчүн, аны Интернет менен бир жолу ачыңыз, ошондо маалыматтар сакталат</string>
+    <string name="open">Ачуу</string>
+    <string name="load_pdf_reader">PDF файлдарын ачуу үчүн тиркемени орнотуңуз</string>
+    <string name="synchronization">Маалыматтарды шайкештирүү</string>
+    <string name="first_enter_internet_is_required">Биринчи кирүү үчүн Интернетке туташуу талап кылынат</string>
+    <string name="need_permission">Бул функцияны колдонуу үчүн тийиштүү уруксат талап кылынат.</string>
+    <string name="updated">Жаңыртылды</string>
+</resources>

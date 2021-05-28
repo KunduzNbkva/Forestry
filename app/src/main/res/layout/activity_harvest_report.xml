@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:elevation="5dp"
+            app:navigationIcon="@drawable/ic_chevron_left_black_24dp" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <kg.core.custom.MultiLineTextView
+                android:id="@+id/name_pasture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable="Чон-Кен-Кол"
+                app:title="@string/pasture_name" />
+
+            <kg.core.custom.MultiLineTextView
+                android:id="@+id/plot_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable="СКК 4"
+                app:title="@string/plot_name" />
+
+            <kg.core.custom.MultiLineTextView
+                android:id="@+id/location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable="42.796418° 74.636688°"
+                app:title="@string/location" />
+
+            <kg.core.custom.MultiLineTextView
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable="16 января 2020"
+                app:title="Дата">
+
+            </kg.core.custom.MultiLineTextView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:visibility="gone"
+                android:layout_margin="8dp"
+                >
+                <kg.core.custom.MarkTextButton
+                    android:id="@+id/year2019"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="8dp"
+                    app:title="2019"
+                    android:layout_height="38dp">
+                </kg.core.custom.MarkTextButton>
+                <kg.core.custom.MarkTextButton
+                    android:id="@+id/year2020"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="8dp"
+                    app:title="2020"
+                    android:layout_height="38dp">
+                </kg.core.custom.MarkTextButton>
+                <kg.core.custom.MarkTextButton
+                    android:id="@+id/year2021"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="8dp"
+                    app:title="2021"
+                    android:layout_height="38dp">
+                </kg.core.custom.MarkTextButton>
+                <kg.core.custom.MarkTextButton
+                    android:id="@+id/year2022"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="8dp"
+                    app:title="2022"
+                    android:layout_height="38dp">
+                </kg.core.custom.MarkTextButton>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_report"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/harvest_dynamic"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#000"
+                    android:textAlignment="center"
+                    android:layout_margin="16dp"
+                    >
+
+                </TextView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:text="@string/wet"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#000"
+                    android:textAlignment="viewStart"
+                    android:layout_margin="16dp"
+                    />
+
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barchart"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_margin="16dp"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:background="@color/light_blue"
+                        android:layout_margin="4dp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/eaten"
+                        android:layout_margin="4dp"
+
+                        />
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:background="@color/light_magenta"
+                        android:layout_margin="4dp"
+
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/non_eaten"
+                        android:layout_margin="4dp"
+
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dry"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#000"
+                    android:textAlignment="viewStart"
+                    android:layout_margin="16dp"
+                    />
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barchart_dry"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_margin="16dp"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:background="@color/light_blue"
+                        android:layout_margin="4dp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/eaten"
+                        android:layout_margin="4dp"
+
+                        />
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:background="@color/light_magenta"
+                        android:layout_margin="4dp"
+
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/non_eaten"
+                        android:layout_margin="4dp"
+
+                        />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

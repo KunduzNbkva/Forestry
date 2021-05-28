@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:elevation="5dp"
+            app:navigationIcon="@drawable/ic_chevron_left_black_24dp" />
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <Button
+        android:id="@+id/btn_share"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="10dp"
+        android:background="@color/blue"
+        >
+    </Button>
+
+    <ScrollView
+        android:id="@+id/main_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <kg.core.custom.MultiLineTextView
+                android:id="@+id/name_pasture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable="Чон-Кен-Кол"
+                app:title="@string/pasture_name" />
+
+            <kg.core.custom.MultiLineTextView
+                android:id="@+id/plot_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable="СКК 4"
+                app:title="@string/plot_name" />
+
+            <kg.core.custom.MultiLineTextView
+                android:id="@+id/location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable="42.796418° 74.636688°"
+                app:title="@string/location" />
+
+            <kg.core.custom.MultiLineTextView
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable="16 января 2020"
+                app:title="Дата">
+
+            </kg.core.custom.MultiLineTextView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:visibility="gone"
+                android:layout_margin="8dp"
+                >
+                <kg.core.custom.MarkTextButton
+                    android:id="@+id/year2019"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="8dp"
+                    app:title="2019"
+                    android:layout_height="38dp">
+                </kg.core.custom.MarkTextButton>
+                <kg.core.custom.MarkTextButton
+                    android:id="@+id/year2020"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="8dp"
+                    app:title="2020"
+                    android:layout_height="38dp">
+                </kg.core.custom.MarkTextButton>
+                <kg.core.custom.MarkTextButton
+                    android:id="@+id/year2021"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="8dp"
+                    app:title="2021"
+                    android:layout_height="38dp">
+                </kg.core.custom.MarkTextButton>
+                <kg.core.custom.MarkTextButton
+                    android:id="@+id/year2022"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="8dp"
+                    app:title="2022"
+                    android:layout_height="38dp">
+                </kg.core.custom.MarkTextButton>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_report"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/piechart"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
+
+            <kg.core.custom.ColorValueView
+                android:id="@+id/cvv_golaya"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:value="@string/bare_place"
+                app:color="@color/dark_blue" />
+
+            <kg.core.custom.ColorValueView
+                android:id="@+id/cvv_kustarnik"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:value="@string/bush"
+                app:color="@color/orange" />
+
+            <kg.core.custom.ColorValueView
+                android:id="@+id/cvv_poedaemoe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:value="@string/eaten_plant"
+                app:color="@color/blue" />
+
+            <kg.core.custom.ColorValueView
+                android:id="@+id/cvv_ne_poedaemoe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="8dp"
+                app:value="@string/non_eaten_plant"
+                app:color="@color/light_green" />
+
+            <kg.core.custom.ColorValueView
+                android:id="@+id/cvv_osnova_rasteni"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:value="@string/plant_base"
+                app:color="@color/gray" />
+
+            <kg.core.custom.ColorValueView
+                android:id="@+id/cvv_kamen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:value="@string/stone"
+                app:color="@color/dark_gray" />
+
+            <kg.core.custom.ColorValueView
+                android:id="@+id/cvv_opad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:value="@string/decline"
+                app:color="@color/green" />
+
+            <kg.core.custom.StatisticView
+                android:id="@+id/height_bush"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:markerColor="#F4722B"
+                app:title="@string/bush" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

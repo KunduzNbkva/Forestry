@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="kg.forestry">
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:requestLegacyExternalStorage="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".ui.reports.harvest_report.HarvestReportActivity" />
+<!--        <activity-->
+<!--            android:name=".ui.reports.distance_list.DistanceListActivity"-->
+<!--            android:screenOrientation="portrait" />-->
+<!--        <activity-->
+<!--            android:name=".ui.reports.side_list.SideListActivity"-->
+<!--            android:screenOrientation="portrait" />-->
+        <activity
+            android:name=".ui.reports.report_types.ReportTypesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.splash.SplashScreenActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.InputValueActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.soil_erossion.SoilErossionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="kg.forestry.ui.choose_distance.ChooseDistanceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="kg.forestry.ui.choose_side.ChooseSideActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.tree_type.TreeTypeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.plant_type.PlantTypeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.reports.ReportActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.start.StartActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.soil_texture.SoilTextureActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.soil_color.SoilColorActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="kg.forestry.ui.cattle_type.CattleTypeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.cattle_pasture.CattlePastureActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.plant.plant_info.AddPlantActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.plant.PlantsListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MapAllPointsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.about.AboutAppActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.records.NewRecordActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.biomass.BiomassActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".ui.map.MapsActivity"
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.pastures.PastureListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.plots.PlotListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="kg.forestry.ui.harvest.harvest_info.AddHarvestActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="kg.forestry.ui.harvest.HarvestListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.user_profile.EditProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.auth.AuthActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.user_profile.UserProfileActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.soil_villages.VillageListActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.soil_regions.RegionListActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.soil_districts.DistrictListActivity"
+            android:screenOrientation="portrait" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="kg.forestry.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+</manifest>

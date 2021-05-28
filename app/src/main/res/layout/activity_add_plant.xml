@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:elevation="5dp"
+            app:navigationIcon="@drawable/ic_chevron_left_black_24dp" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/fl_take_photo"
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    android:layout_marginTop="24dp"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/photo_placeholder"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </ImageView>
+
+                <TextView
+                    android:id="@+id/tv_take_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="24dp"
+                    android:text="@string/add_photo"
+                    android:textColor="#007AFF"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/fl_take_photo"
+                    app:layout_constraintStart_toStartOf="@+id/fl_take_photo"
+                    app:layout_constraintTop_toBottomOf="@+id/fl_take_photo" />
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/ll_photo"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_weight="1"
+                        android:id="@+id/iv_photopic"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/tv_change_photo"
+                        android:textColor="#007AFF"
+                        android:layout_gravity="center"
+                        android:text="Изменить/Удалить"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <kg.core.custom.SelectView
+                android:id="@+id/name_site"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable=""
+                app:title="@string/plot_name" />
+
+            <kg.core.custom.SelectView
+                android:id="@+id/name_pasture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable=""
+                app:title="@string/pasture_name" />
+
+            <kg.core.custom.SelectView
+                android:id="@+id/name_region"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable=""
+                app:title="@string/pasture_region" />
+
+            <kg.core.custom.SelectView
+                android:id="@+id/name_district"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable=""
+                app:title="@string/pasture_district" />
+
+            <kg.core.custom.SelectView
+                android:id="@+id/name_village"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable=""
+                app:title="@string/pasture_village" />
+
+            <kg.core.custom.SelectView
+                android:id="@+id/location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable=""
+                app:title="@string/location" />
+
+            <kg.core.custom.InputValueView
+                android:id="@+id/desc_point"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/point_desc" />
+
+            <kg.core.custom.InputValueView
+                android:id="@+id/desc_site"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/pasture_desc" />
+
+            <kg.core.custom.SelectView
+                android:id="@+id/plant_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable=""
+                app:title="@string/plants" />
+
+            <kg.core.custom.SelectView
+                android:id="@+id/tree_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable=""
+                app:title="@string/trees" />
+
+            <kg.core.custom.SelectView
+                android:id="@+id/soil_texture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable=""
+                app:title="@string/soil_texture" />
+
+            <kg.core.custom.SelectView
+                android:id="@+id/soil_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable=""
+                app:title="@string/soil_color" />
+
+            <kg.core.custom.SelectView
+                android:id="@+id/degree_erosion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable=""
+                app:title="@string/erossion_degree" />
+
+            <kg.core.custom.SelectView
+                android:id="@+id/cattle_pasture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable=""
+                app:title="@string/cattle_pasture" />
+
+            <kg.core.custom.SelectView
+                android:id="@+id/type_pasture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lable=""
+                app:title="@string/cattle_type" />
+
+            <Button
+                android:id="@+id/btn_next"
+                style="@style/AppTheme.Button.Round.Blue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
+                android:enabled="false"
+                android:text="@string/save"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,121 @@
+{
+  "project_info": {
+    "project_number": "141435710594",
+    "firebase_url": "https://forestry-75f80.firebaseio.com",
+    "project_id": "forestry-75f80",
+    "storage_bucket": "forestry-75f80.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141435710594:android:33bb7006194074a8f9589b",
+        "android_client_info": {
+          "package_name": "com.simple.forestry"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "141435710594-72rh5242dgj2mhhqi22t26lvk7gmloqd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.simple.forestry",
+            "certificate_hash": "1a999ab5e43fcf2422e64b9ceb699a74aeceef86"
+          }
+        },
+        {
+          "client_id": "141435710594-ckkgbqfgq4vkqv0u1221tkevum9qdn22.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.simple.forestry",
+            "certificate_hash": "4e4a4d8cd20b3f3e8e9540082f0fa16be98a7877"
+          }
+        },
+        {
+          "client_id": "141435710594-iee1g0rsomvm0v50r1n9gf82qflcisod.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.simple.forestry",
+            "certificate_hash": "faf2234339ed9c2fa87bfdfe708cba482c9deef2"
+          }
+        },
+        {
+          "client_id": "141435710594-qg7jn0v1b40guoiscf4iqbr3v8opjemc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.simple.forestry",
+            "certificate_hash": "b42aeda402903ba28769913f0af57963195113dd"
+          }
+        },
+        {
+          "client_id": "141435710594-isbndmlbo9qng909b8dbvil5pvocsfh3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALg63YVjIBMkdUW1eD3qNUsU50Fp6FnkQ"
+        },
+        {
+          "current_key": "AIzaSyA20oUnlW4JeDxZv80Avb5XGSuH9ZCBJ1g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "141435710594-isbndmlbo9qng909b8dbvil5pvocsfh3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "141435710594-46ikj893iegbv0grm6fd4rgd2dtjqma9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kg.ios.Pastbishe"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141435710594:android:6e767fc0f3170f14f9589b",
+        "android_client_info": {
+          "package_name": "kg.forestry"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "141435710594-isbndmlbo9qng909b8dbvil5pvocsfh3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALg63YVjIBMkdUW1eD3qNUsU50Fp6FnkQ"
+        },
+        {
+          "current_key": "AIzaSyA20oUnlW4JeDxZv80Avb5XGSuH9ZCBJ1g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "141435710594-isbndmlbo9qng909b8dbvil5pvocsfh3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "141435710594-46ikj893iegbv0grm6fd4rgd2dtjqma9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kg.ios.Pastbishe"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

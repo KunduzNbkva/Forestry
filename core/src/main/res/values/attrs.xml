@@ -1,0 +1,61 @@
+<resources>
+    <declare-styleable name="MainMenuView">
+        <attr name="left_icon" format="reference" />
+        <attr name="lable" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="KeyValueView">
+        <attr name="key" format="string" />
+        <attr name="value" format="string" />
+        <attr name="with_arrow" format="boolean" />
+        <attr name="color" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="SelectView">
+        <attr name="title" format="string" />
+        <attr name="lable" />
+    </declare-styleable>
+
+    <declare-styleable name="InputValueView">
+        <attr name="title" />
+        <attr name="android:inputType" />
+        <attr name="removeMargin" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="SimpleTextView">
+        <attr name="title" />
+        <attr name="lable" />
+    </declare-styleable>
+
+    <declare-styleable name="MarkTextButton">
+        <attr name="title" />
+        <attr name="custom_width" format="integer" />
+    </declare-styleable>
+    
+    <declare-styleable name="MarkImageButton">
+        <attr name="android:src" format="reference"/>
+        <attr name="color"/>
+        <attr name="lable" />
+        <attr name="custom_width" />
+    </declare-styleable>
+
+    <declare-styleable name="RoundedSelectView">
+        <attr name="mask_image" format="reference" />
+        <attr name="lable" />
+        <attr name="backColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="StatisticView">
+        <attr name="markerColor" format="string" />
+        <attr name="title" />
+        <attr name="fact" format="integer" />
+        <attr name="norm" format="integer" />
+        <attr name="dev" format="integer" />
+        <attr name="status" format="enum">
+            <enum name="bad" value="0" />
+            <enum name="norm" value="1" />
+            <enum name="good" value="2" />
+        </attr>
+    </declare-styleable>
+
+
+</resources>
