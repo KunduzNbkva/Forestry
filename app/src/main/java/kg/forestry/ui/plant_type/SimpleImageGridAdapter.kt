@@ -3,11 +3,14 @@ package kg.forestry.ui.plant_type
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kg.forestry.R
 import kg.core.utils.Helper
+import kg.core.utils.LocaleManager
 import kg.core.utils.gone
 import kg.core.utils.setVisible
+import kg.forestry.App.Companion.context
 import kg.forestry.localstorage.model.PlantType
 import kg.forestry.ui.adapter.PlantCatalogAdapter
 import kotlinx.android.synthetic.main.item_image_list.view.*
@@ -50,6 +53,14 @@ class SimpleImageGridAdapter(
             this.index = index
             this.value = keyValue.first.imgBase64
             isSelected = keyValue.second
+
+            var plantTitle = keyValue.first.name_ru
+            when (LocaleManager.getLanguagePref(itemView.context)){
+                LocaleManager.LANGUAGE_KEY_KYRGYZ -> plantTitle = keyValue.first.name_ky
+                LocaleManager.LANGUAGE_KEy_ENGLISH -> plantTitle = keyValue.first.name_en
+            }
+            val imageTitle = itemView.findViewById<TextView>(R.id.plan_list_title)
+            imageTitle.text = plantTitle
 
             if (value.isNotEmpty()) {
                 Helper.setExistImage(itemView.imageView3,value)

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -29,9 +30,9 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="8dp"
         android:clickable="true"
-        android:visibility="gone"
         android:src="@drawable/ic_add_black_24dp"
         android:tint="#FFFFFF"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -74,15 +75,12 @@
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:visibility="gone"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        app:iconifiedByDefault="false"
         android:queryHint="@string/search"
-        app:layout_constraintTop_toBottomOf="@id/tabLayout"
-        >
-
-    </SearchView>
+        android:visibility="gone"
+        app:iconifiedByDefault="false"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_list"

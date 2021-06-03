@@ -5,4 +5,12 @@
     <color name="colorAccent">#156A00</color>
     <color name="red">#B30606</color>
     <color name="grey">#C4C4C4</color>
+    <color name="soil_black">#000000</color>
+    <color name="soil_gray">#979797</color>
+    <color name="soil_white">#FFFFFF</color>
+    <color name="soil_yellow">#FFE600</color>
+    <color name="soil_red">#FF0000</color>
+    <color name="soil_brown">#BB7000</color>
+    <color name="light_gray">#99FFFFFF</color>
+
 </resources>

@@ -174,12 +174,6 @@
                 app:lable=""
                 app:title="@string/soil_texture" />
 
-            <kg.core.custom.SelectView
-                android:id="@+id/soil_color"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:lable=""
-                app:title="@string/soil_color" />
 
             <kg.core.custom.SelectView
                 android:id="@+id/degree_erosion"
@@ -188,19 +182,23 @@
                 app:lable=""
                 app:title="@string/erossion_degree" />
 
-            <kg.core.custom.SelectView
+            <include
+                android:id="@+id/soilcolor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                layout="@layout/expansion_soil_color"/>
+
+            <include
                 android:id="@+id/cattle_pasture"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:lable=""
-                app:title="@string/cattle_pasture" />
+                layout="@layout/expansion_graze"/>
 
-            <kg.core.custom.SelectView
-                android:id="@+id/type_pasture"
+            <include
+                android:id="@+id/pasture_cattle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:lable=""
-                app:title="@string/cattle_type" />
+                layout="@layout/expansion_cattle"/>
 
             <Button
                 android:id="@+id/btn_next"

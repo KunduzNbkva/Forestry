@@ -86,5 +86,7 @@ dependencies {
 
     //rounded image view
     implementation 'com.makeramen:roundedimageview:2.3.0'
+    //expansion panel
+    implementation 'com.github.florent37:expansionpanel:1.2.4'
 
 }

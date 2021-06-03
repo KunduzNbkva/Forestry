@@ -187,4 +187,7 @@
     <string name="first_enter_internet_is_required">Биринчи кирүү үчүн Интернетке туташуу талап кылынат</string>
     <string name="need_permission">Бул функцияны колдонуу үчүн тийиштүү уруксат талап кылынат.</string>
     <string name="updated">Жаңыртылды</string>
+    <string name="choose_region">Алгач аймакты тандаңыз</string>
+    <string name="are_you_sure_to_delete_it">Чын эле чыккыңыз келеби, бардык сакталбаган дайындар жоголот?</string>
+    <string name="choose_region_or_state">Алгач аймакты / районду тандаңыз</string>
 </resources>

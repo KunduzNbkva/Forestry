@@ -23,7 +23,7 @@
     <string name="plants">Растения</string>
     <string name="trees">Деревья и кустарники</string>
 
-    <string name="edit_mode">Редактировние</string>
+    <string name="edit_mode">Редактирование</string>
     <string name="report">Отчетность</string>
     <string name="harvest">Урожайность</string>
     <string name="instruction">Инструкция</string>
@@ -42,7 +42,7 @@
     <string name="sheeps_valid">Овцы и козы</string>
     <string name="horses_valid">Лошади</string>
     <string name="yaks_valid">Яки</string>
-    <string name="soil_color">Цвет верхнего цвета почвы</string>
+    <string name="soil_color">Цвет верхнего слоя почвы</string>
     <string name="erossion_degree">Степень эрозии почвы</string>
 
     <string name="soil_texture">Текстура почвы</string>
@@ -80,10 +80,12 @@
     <string name="yellow">Желтая</string>
     <string name="red">Красная</string>
     <string name="brown">Коричневая</string>
-    <string name="intensively">Интенсивно</string>
+
     <string name="no_pastures">Совсем нет</string>
-    <string name="temperately">Умеренно</string>
     <string name="little">Немного</string>
+    <string name="intensively">Интенсивно</string>
+    <string name="temperately">Умеренно</string>
+
     <string name="name">Имя:</string>
     <string name="lang">Язык:</string>
     <string name="change_picture">Сменить фото</string>
@@ -161,6 +163,9 @@
     <string name="first_enter_internet_is_required">Для первого входа необходимо интернет соединение</string>
     <string name="need_permission">Для использования данного функционала необходимо соответствующее разрешение.</string>
     <string name="updated">Обновлено</string>
+    <string name="are_you_sure_to_delete_it">Вы действительно хотите выйти, все несохраненные данные будут потеряны?</string>
+    <string name="choose_region_or_state">Выберите сначала область/район</string>
+    <string name="choose_region">Выберите сначала область</string>
 
 
 </resources>

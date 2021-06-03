@@ -39,7 +39,7 @@
     <string name="sheeps"> Sheep, </string>
     <string name="horses"> Horses, </string>
     <string name="yaks"> Yaks, </string>
-    <string name="soil_color">Top soil color</string>
+    <string name="soil_color">Topsoil color</string>
     <string name="erossion_degree">Soil erosion</string>
     <string name="black">Black</string>
     <string name="gray">Gray</string>
@@ -164,5 +164,8 @@
     <string name="first_enter_internet_is_required">Internet connection is required for the first login</string>
     <string name="need_permission">Appropriate permission is required to use this functionality.</string>
     <string name="updated">Updated</string>
+    <string name="choose_region">Select the area first</string>
+    <string name="are_you_sure_to_delete_it">Are you sure you want to exit, all unsaved data will be lost?</string>
+    <string name="choose_region_or_state">Select the region / district first</string>
 
 </resources>

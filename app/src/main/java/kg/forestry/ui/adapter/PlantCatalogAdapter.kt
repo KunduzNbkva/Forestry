@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kg.core.utils.LocaleManager
 import kg.forestry.R
@@ -90,7 +91,7 @@ class PlantCatalogAdapter(val isMultiSelect: Boolean, val listener: SimpleListAd
     }
 
     fun filterList(filteredList: MutableList<Pair<PlantType, Boolean>>) {
-        this.items = filteredList;
-        notifyDataSetChanged();
+        this.items = filteredList
+        notifyDataSetChanged()
     }
 }
