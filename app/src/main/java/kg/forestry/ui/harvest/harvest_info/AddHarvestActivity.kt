@@ -89,12 +89,12 @@ class AddHarvestActivity :
 
     override fun onBackPressed() {
         val builder = AlertDialog.Builder(this)
-        builder.setMessage("Вы действительно хотите выйти, все несохраненные данные будут потеряны ?")
+        builder.setMessage(getString(R.string.are_you_sure_to_exit))
             .setCancelable(false)
-            .setPositiveButton("Да") { dialog, id ->
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 super.onBackPressed()
             }
-            .setNegativeButton("Отмена") { dialog, id ->
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
                 // Dismiss the dialog
                 dialog.dismiss()
             }
@@ -121,7 +121,7 @@ class AddHarvestActivity :
 
     private fun showImagePickerDialog(onFileCreated: ((String) -> Unit)? = null) {
         val items =
-            arrayListOf<String>(getString(R.string.capture), getString(R.string.from_gallery))
+            arrayListOf(getString(R.string.capture), getString(R.string.from_gallery))
         val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items)
         val builder = android.app.AlertDialog.Builder(this)
         builder.setTitle(getString(R.string.change_picture))
@@ -157,7 +157,7 @@ class AddHarvestActivity :
                     else -> {
                         Toast.makeText(
                             this,
-                            "Для использования данного функционала необходимо соответствующее разрешение.",
+                            getString(R.string.need_permission),
                             Toast.LENGTH_SHORT
                         )
                     }
@@ -203,17 +203,17 @@ class AddHarvestActivity :
     private fun showRemoveEntityQuery(harvestInfo: Harvest) {
         if(vm.isNetworkConnected){
             AlertDialog.Builder(this)
-                .setMessage("Вы действительно хотите удалить запись?")
-                .setPositiveButton("Да") { _, _ ->
+                .setMessage(getString(R.string.are_you_sure_to_delete))
+                .setPositiveButton(getString(R.string.yes)) { _, _ ->
                     run {
                         vm.removeHarvest(harvestInfo)
                         finish()
                     }
                 }
-                .setNegativeButton("Отмена", null)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .create().show()
         }else {
-            Toast.makeText(this, "Интернет жок!", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.no_internet), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -225,31 +225,18 @@ class AddHarvestActivity :
             if (region != null && district != null){
                 VillageListActivity.start(this, district!!.id)
             }else {
-                Toast.makeText(this,"Выберите сначала область/район", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,getString(R.string.choose_region_or_state), Toast.LENGTH_SHORT).show()
             }
         }
         name_district.setOnClickListener {
             if (region != null){
                 DistrictListActivity.start(this, false, region!!.id)
             }else {
-                Toast.makeText(this,"Выберите сначала область", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,getString(R.string.choose_region), Toast.LENGTH_SHORT).show()
             }
         }
 
-//        if (!vm.isNetworkConnected) {
-//            if (!vm.isEditMode()) {
-//                fusedLocationClient.lastLocation.addOnSuccessListener { location.setValue("${it.latitude} ${it.longitude}") }
-//            }
-//            location.setOnClickListener {
-//                Toast.makeText(
-//                    this,
-//                    "Проверьте интернет соединение",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
-//        } else {
-//            location.setOnClickListener { MapsActivity.start(this) }
-//        }
+
         location.setOnClickListener { MapsActivity.start(this) }
 
         wetBiomass.setOnClickListener {
@@ -270,17 +257,12 @@ class AddHarvestActivity :
         }
         btn_next.isEnabled = true
         fl_take_photo.setOnClickListener {
-//            if (Helper.isNetworkConnected(this)) {
             showMessage()
                 showImagePickerDialog { vm.photoPath = it }
-//            }
         }
         tv_take_photo.setOnClickListener {
-//            if (Helper.isNetworkConnected(this)) {
             showMessage()
-
             showImagePickerDialog { vm.photoPath = it }
-//            }
         }
 
         btn_next.setOnClickListener {
@@ -352,7 +334,6 @@ class AddHarvestActivity :
             name_district.setValue(this.district)
 
             if (!harvestInfo.harvestPhoto.isNullOrEmpty()) {
-//                fl_take_photo.setImageURI(Uri.parse("file:/" + harvestInfo.harvestPhoto))
                 setupImage(fl_take_photo, harvestInfo.harvestPhoto!!)
             }
         }
@@ -418,7 +399,7 @@ class AddHarvestActivity :
                         val bitmap = BitmapFactory.decodeFile(it)
                         saveImage(bitmap)
                         fl_take_photo.setImageBitmap(bitmap)
-                        vm.photoPath = saveTemporarilyCapturedImage(bitmap) //"/raw/"
+                        vm.photoPath = saveTemporarilyCapturedImage(bitmap)
                     }
                 }
 

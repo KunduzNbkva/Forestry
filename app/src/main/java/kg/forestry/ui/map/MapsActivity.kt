@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.activity_maps.*
 
 class MapsActivity : BaseActivity<MapAllPointViewModel>(
     R.layout.activity_maps,
-    MapAllPointViewModel::class), OnMapReadyCallback {//FragmentActivity(), OnMapReadyCallback {
+    MapAllPointViewModel::class), OnMapReadyCallback {
 
     private val REQUEST_LOCATION: Int = 1001
     private lateinit var mMap: GoogleMap
@@ -41,7 +41,6 @@ class MapsActivity : BaseActivity<MapAllPointViewModel>(
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_maps)
         toolbar.apply {
             title = getString(R.string.map)
             setNavigationOnClickListener { onBackPressed() }
@@ -67,7 +66,6 @@ class MapsActivity : BaseActivity<MapAllPointViewModel>(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun loadMapWithPermission() {
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -93,7 +91,7 @@ class MapsActivity : BaseActivity<MapAllPointViewModel>(
     fun finishActivityWithResultOK(location: Location){
         val intent = Intent()
         intent.putExtra(Constants.LOCATION,location)
-        setResult(AppCompatActivity.RESULT_OK, intent)
+        setResult(RESULT_OK, intent)
         finish()
     }
 

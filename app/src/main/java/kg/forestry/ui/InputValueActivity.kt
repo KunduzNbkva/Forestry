@@ -13,6 +13,8 @@ import kg.core.utils.Distance
 import kg.core.utils.TypeInDistance
 import kg.forestry.ui.plant.plant_info.AddPlantViewModel
 import kotlinx.android.synthetic.main.activity_input_value.*
+import kotlinx.android.synthetic.main.activity_input_value.toolbar
+import kotlinx.android.synthetic.main.activity_new_record.*
 import org.parceler.Parcels
 
 class InputValueActivity :
@@ -23,6 +25,10 @@ class InputValueActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         parseDataFromIntent()
+        toolbar.apply {
+            title = getString(R.string.input_indicators)
+            setNavigationOnClickListener { onBackPressed() }
+        }
         val listener10 = View.OnClickListener { v -> setup10(v as MarkImageButton);updateBtnSave() }
         btn_empty_10.setOnClickListener(listener10)
         btn_tree_10.setOnClickListener(listener10)

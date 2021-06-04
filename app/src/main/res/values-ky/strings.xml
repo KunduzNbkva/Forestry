@@ -188,6 +188,12 @@
     <string name="need_permission">Бул функцияны колдонуу үчүн тийиштүү уруксат талап кылынат.</string>
     <string name="updated">Жаңыртылды</string>
     <string name="choose_region">Алгач аймакты тандаңыз</string>
-    <string name="are_you_sure_to_delete_it">Чын эле чыккыңыз келеби, бардык сакталбаган дайындар жоголот?</string>
+    <string name="are_you_sure_to_exit">Чын эле чыккыңыз келеби, бардык сакталбаган дайындар жоголот?</string>
     <string name="choose_region_or_state">Алгач аймакты / районду тандаңыз</string>
+    <string name="input_indicators">Көрсөткүчтөр</string>
+    <string name="yes">Ооба</string>
+    <string name="are_you_sure_to_delete">Вы действительно хотите удалить запись?</string>
+    <string name="wet_cant_be_more_than_dry">Нымдуу масса кургак массанын аз болушу мүмкүн эмес!</string>
+    <string name="dry_cant_be_more_than_wet">Кургак масса нымдуу массанын чоң болушу мүмкүн эмес!</string>
+    <string name="error">Ката</string>
 </resources>

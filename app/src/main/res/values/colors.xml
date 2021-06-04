@@ -12,5 +12,7 @@
     <color name="soil_red">#FF0000</color>
     <color name="soil_brown">#BB7000</color>
     <color name="light_gray">#99FFFFFF</color>
+    <color name="blue">#0B63C1</color>
+    <color name="light_green">#449B00</color>
 
 </resources>

@@ -109,8 +109,8 @@ class AddPlantActivity :
     private fun showRemoveEntityQuery(plantInfo: Plant) {
         if (vm.isNetworkConnected) {
             AlertDialog.Builder(this)
-                .setMessage("Вы действительно хотите удалить запись?")
-                .setPositiveButton("Да") { _, _ ->
+                .setMessage(getString(R.string.are_you_sure_to_delete))
+                .setPositiveButton(getString(R.string.yes)) { _, _ ->
                     run {
                         vm.removePlant(plantInfo)
                         finish()
@@ -134,19 +134,15 @@ class AddPlantActivity :
             plant_type.setValue(this.plants)
             tree_type.setValue(this.trees)
             soil_texture.setValue(this.soilTexture)
-           // soil_color.setValue(this.soilColor)
             soilcolor.tv_text_expansion.text = this.soilColor
             degree_erosion.setValue(this.erosionDegree)
-            //cattle_pasture.setValue(this.cattlePasture)
             cattle_pasture.tv_text_expansion.text = this.cattlePasture
-            //type_pasture.setValue(this.typePasture)
             pasture_cattle.tv_text_expansion.text = this.typePasture
             name_village.setValue(this.village)
             name_region.setValue(this.region)
             name_district.setValue(this.district)
             if (plantInfo.plantPhoto.isNotEmpty()) {
                 setupImage(fl_take_photo, plantInfo.plantPhoto)
-//                fl_take_photo.setImageURI(Uri.parse("file:/" + plantInfo.plantPhoto))
             }
 
 
@@ -218,9 +214,7 @@ class AddPlantActivity :
                 && location.isValidValue()
                 && plant_type.isValidValue()
                 && soil_texture.isValidValue()
-                //&& soil_color.isValidValue()
                 && soilcolor.tv_text_expansion.text != null
-                //&& cattle_pasture.isValidValue()
                 && cattle_pasture.tv_text_expansion.text != null
                 && isValidPastureType()
                 && degree_erosion.isValidValue()
@@ -228,7 +222,6 @@ class AddPlantActivity :
 
     private fun isValidPastureType(): Boolean {
         return cattle_pasture.tv_text_expansion.text == getString(CattlePasture.NO_CATTLE.value)
-               // || type_pasture.isValidValue()
                 || pasture_cattle.tv_text_expansion.text != null
     }
 
@@ -252,42 +245,7 @@ class AddPlantActivity :
             }
         }
 
-
-//        if (!vm.isNetworkConnected){
-//            if (!vm.isEditMode()){
-//                if (ActivityCompat.checkSelfPermission(
-//                        this,
-//                        Manifest.permission.ACCESS_FINE_LOCATION
-//                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-//                        this,
-//                        Manifest.permission.ACCESS_COARSE_LOCATION
-//                    ) != PackageManager.PERMISSION_GRANTED
-//                ) {
-//                    // TODO: Consider calling
-//                    //    ActivityCompat#requestPermissions
-//                    // here to request the missing permissions, and then overriding
-//                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                    //                                          int[] grantResults)
-//                    // to handle the case where the user grants the permission. See the documentation
-//                    // for ActivityCompat#requestPermissions for more details.
-//                    return
-//                }
-//                fusedLocationClient.lastLocation.addOnSuccessListener {
-//                    if (it != null) {
-//                        location.setValue("${it.latitude} ${it.longitude}")
-//                    }
-//                }
-//
-//            }
-//            location.setOnClickListener { Toast.makeText(this,"Проверьте интернет соединение",Toast.LENGTH_SHORT).show() }
-//        }else {
-//            location.setOnClickListener { MapsActivity.start(this) }
-//        }
         location.setOnClickListener { MapsActivity.start(this) }
-
-        //cattle_pasture.setOnClickListener { CattlePastureActivity.start(this, vm.cattlePasture) }
-        //type_pasture.setOnClickListener { CattleTypeActivity.start(this, vm.cattleType) }
-        //soil_color.setOnClickListener { SoilColorActivity.start(this, vm.soilColor) }
         soil_texture.setOnClickListener { SoilTextureActivity.start(this, vm.soilTexture) }
         degree_erosion.setOnClickListener { SoilErossionActivity.start(this, vm.soilErossion) }
         plant_type.setOnClickListener { PlantTypeActivity.start(this, plant_type.getValue()) }
@@ -296,12 +254,12 @@ class AddPlantActivity :
             showImagePickerDialog {
                 vm.photoPath = it
             }
-        } //if (Helper.isNetworkConnected(this)) {  showImagePickerDialog { vm.photoPath = it } }}
+        }
         tv_take_photo.setOnClickListener {
             showImagePickerDialog {
                 vm.photoPath = it
             }
-        } //if (Helper.isNetworkConnected(this)) {  showImagePickerDialog { vm.photoPath = it } }}
+        }
 
 
         btn_next.setOnClickListener {
@@ -371,7 +329,7 @@ class AddPlantActivity :
                 else checkPermissions(Manifest.permission.READ_EXTERNAL_STORAGE) { pickPhotoFromGallery() }
             }
             .setCancelable(true)
-            .setNegativeButton("Отмена") { dialog, _ -> dialog.dismiss() }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
         builder.create().show()
 
     }
@@ -382,7 +340,7 @@ class AddPlantActivity :
     }
 
     private val REQUEST_EXTERNAL_STORAGE = 1
-    private val PERMISSIONS_STORAGE = arrayOf<String>(
+    private val PERMISSIONS_STORAGE = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE
     )
@@ -460,13 +418,12 @@ class AddPlantActivity :
 
     override fun onBackPressed() {
         val builder = AlertDialog.Builder(this)
-        builder.setMessage(getString(R.string.are_you_sure_to_delete_it))
+        builder.setMessage(getString(R.string.are_you_sure_to_exit))
             .setCancelable(false)
-            .setPositiveButton("Да") { dialog, id ->
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 super.onBackPressed()
             }
             .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                // Dismiss the dialog
                 dialog.dismiss()
             }
         val alert = builder.create()
@@ -534,9 +491,6 @@ class AddPlantActivity :
                             val bitmap = MediaStore.Images.Media
                                 .getBitmap(contentResolver, filePath)
                             fl_take_photo.setImageBitmap(bitmap)
-                            // val path = RealPathUtil.getRealPathFromURI_API19(this, filePath)
-//                            val bOut = ByteArrayOutputStream()
-//                            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bOut)
                             vm.photoPath =
                                 getRealPathFromURI(filePath!!)//data.data?.path.toString()
 
@@ -592,14 +546,7 @@ class AddPlantActivity :
         return ""
     }
 
-    private fun decideCattleTypeVisibility(cattlePasture: CattlePasture?) {
-        when (cattlePasture) {
-            //CattlePasture.NO_CATTLE -> type_pasture.gone()
-            //else -> type_pasture.visible()
-            CattlePasture.NO_CATTLE -> pasture_cattle.gone()
-            else -> pasture_cattle.visible()
-        }
-    }
+
 
     companion object {
         private const val PICK_IMAGE_REQUEST = 27

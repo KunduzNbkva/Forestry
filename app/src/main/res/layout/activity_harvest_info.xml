@@ -39,16 +39,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
+                <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/fl_take_photo"
                     android:layout_width="84dp"
                     android:layout_height="84dp"
+                    android:layout_gravity="center"
+                    app:riv_corner_radius="30dp"
+                    android:rotation="90"
                     android:layout_marginTop="24dp"
-                    app:srcCompat="@drawable/photo_placeholder"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/photo_placeholder"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-                </ImageView>
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
                     android:id="@+id/tv_take_photo"

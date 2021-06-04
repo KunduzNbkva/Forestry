@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
@@ -21,7 +22,9 @@ import kg.forestry.ui.harvest.harvest_info.AddHarvestActivity
 import kg.forestry.ui.reports.harvest_report.HarvestReportActivity
 import kotlinx.android.synthetic.main.activity_harvest_list.*
 
-class HarvestListActivity : BaseActivity<HarvestListViewModel>(R.layout.activity_harvest_list, HarvestListViewModel::class), HarvestListAdapter.HarvestListClickListener {
+class HarvestListActivity :
+    BaseActivity<HarvestListViewModel>(R.layout.activity_harvest_list, HarvestListViewModel::class),
+    HarvestListAdapter.HarvestListClickListener {
 
     private val adapter = HarvestListAdapter(listener = this)
     private val REQUEST_LOCATION: Int = 1001
@@ -43,12 +46,36 @@ class HarvestListActivity : BaseActivity<HarvestListViewModel>(R.layout.activity
         fab_add.setOnClickListener { AddHarvestActivity.start(this) }
         rv_list.layoutManager = LinearLayoutManager(this)
         rv_list.adapter = adapter
+        checkForNull()
+    }
+
+    private fun checkForNull() {
+        if (adapter.items.isEmpty()) {
+            visible()
+        } else {
+            invisible()
+        }
+    }
+
+    private fun visible() {
+        null_view.visibility = View.VISIBLE
+        rv_list.visibility = View.GONE
+    }
+
+    private fun invisible() {
+        null_view.visibility = View.GONE
+        rv_list.visibility = View.VISIBLE
     }
 
     private fun subscribeToLiveData() {
         vm.fetchHarvestsFromDb()
         vm.harvestListLiveData.observe(this, Observer { list ->
-            adapter.items = list.sortedByDescending { it.date.toDate() }.toMutableList()
+            if (list.isEmpty()) {
+                visible()
+            } else {
+                adapter.items = list.sortedByDescending { it.date.toDate() }.toMutableList()
+                invisible()
+            }
         })
     }
 

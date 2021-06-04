@@ -30,7 +30,6 @@ class BiomassActivity : BaseActivity<BiomassViewModel>(R.layout.activity_biomass
         dryBiomassSum = intent.getIntExtra(Constants.DRY_BIOMASS_SUM,0)
         wetBiomassEaten = intent.getIntExtra(Constants.BIOMASS_EATEN,0)
         wetBiomassNonEaten = intent.getIntExtra(Constants.BIOMASS_NON_EATEN,0)
-
         toolbar.apply {
             title = when(isWetBiomass()){
                 true -> getString(R.string.wet_biomass)
@@ -39,42 +38,37 @@ class BiomassActivity : BaseActivity<BiomassViewModel>(R.layout.activity_biomass
             setNavigationOnClickListener { onBackPressed() }
         }
         setupViews()
-
+        nextClick()
     }
 
     private fun isWetBiomass() = biomassType == BiomassType.WET.value
 
     private fun setupViews() {
-        inp_eat.setValue("0")
-        inp_noneat.setValue("0")
         tv_dry_biomass_info.setVisible(!isWetBiomass())
         btn_add_reminder.setVisible(isWetBiomass())
-
-        btn_next.setOnClickListener {
-            biomass.eated = inp_eat.getValue().trim().toInt()
-            biomass.nonEated = inp_noneat.getValue().trim().toInt()
-
-            if(isWetBiomass() && biomass.getSum() < dryBiomassSum){
-                showInvalidRelationAlert("Влажная масса не может быть меньше сухой массы!")
-            }else if(!isWetBiomass() && biomass.getSum() > wetBiomassSum){
-                showInvalidRelationAlert("Сухая масса не может быть больше влажной массы!")
-            }
-//            else if(!isWetBiomass() && biomass.eated > wetBiomassEaten){
-//                showInvalidRelationAlert("Сухая поедаемая масса не может быть больше влажной поедаемой массы!")
-//            }else if(!isWetBiomass() && biomass.nonEated > wetBiomassNonEaten){
-//                showInvalidRelationAlert("Сухая не поедаемая масса не может быть больше влажной не поедаемой массы!")
-//            }
-            else{
-                finishActivityWithResultOK(biomass,biomassType)
-            }
-        }
 
         btn_add_reminder.setOnClickListener {
             addCalendarEvent()
         }
     }
 
-    fun addCalendarEvent() {
+    private fun nextClick(){
+        btn_next.setOnClickListener {
+            biomass.eated = inp_eat.getValue().trim().toInt()
+            biomass.nonEated = inp_noneat.getValue().trim().toInt()
+
+            if(isWetBiomass() && biomass.getSum() < dryBiomassSum){
+                showInvalidRelationAlert(getString(R.string.wet_cant_be_more_than_dry))
+            }else if(!isWetBiomass() && biomass.getSum() > wetBiomassSum){
+                showInvalidRelationAlert(getString(R.string.dry_cant_be_more_than_wet))
+            }
+            else{
+                finishActivityWithResultOK(biomass,biomassType)
+            }
+        }
+    }
+
+    private fun addCalendarEvent() {
         val calendarEvent: Calendar = Calendar.getInstance()
         val intent = Intent(Intent.ACTION_EDIT)
         calendarEvent.add(Calendar.DAY_OF_YEAR, 15)
@@ -90,7 +84,7 @@ class BiomassActivity : BaseActivity<BiomassViewModel>(R.layout.activity_biomass
 
     private fun showInvalidRelationAlert(message: String) {
         AlertDialog.Builder(this)
-            .setTitle("Ошибка")
+            .setTitle(getString(R.string.error))
             .setMessage(message)
             .setPositiveButton("OK", null)
             .create().show()

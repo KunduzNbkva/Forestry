@@ -3,6 +3,8 @@ package kg.forestry.ui.plots
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kg.forestry.R
@@ -19,7 +21,6 @@ class PlotListActivity :
 
     private val adapter = SimpleListAdapter(false, listener = this)
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         subscribeToLiveData()
@@ -30,15 +31,38 @@ class PlotListActivity :
         fab_add.setOnClickListener { NewRecordActivity.start(this, ListType.PLOT.value) }
         rv_list.layoutManager = LinearLayoutManager(this)
         rv_list.adapter = adapter
+        checkForNull()
+    }
 
+    private fun checkForNull(){
+        if(adapter.items.isEmpty()){
+            visible()
+        } else {
+            invisible()
+        }
+    }
+
+    private fun visible(){
+        null_view.visibility = View.VISIBLE
+        rv_list.visibility = View.GONE
+    }
+    private fun invisible(){
+        null_view.visibility = View.GONE
+        rv_list.visibility = View.VISIBLE
     }
 
     private fun subscribeToLiveData() {
         vm.fetchPlotsFromDb()
         vm.plotsListLiveData.observe(this, Observer {
-            adapter.items = it.toMutableList()
+            if (it.isEmpty()){
+                visible()
+            } else{
+                adapter.items = it.toMutableList()
+                invisible()
+            }
         })
     }
+
 
 
     override fun onItemClick(title: String, position: Int) {
@@ -47,7 +71,7 @@ class PlotListActivity :
 
     fun finishActivityWithResultOK(
         item: String,
-        type: kg.forestry.localstorage.model.ListType
+        type: ListType
     ) {
         val intent = Intent()
         intent.putExtra(Constants.LIST_ITEM_TYPE, type)

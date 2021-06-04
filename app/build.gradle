@@ -88,5 +88,7 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
     //expansion panel
     implementation 'com.github.florent37:expansionpanel:1.2.4'
+    //seekBar
+    implementation 'com.github.warkiz.tickseekbar:tickseekbar:0.1.4'
 
 }

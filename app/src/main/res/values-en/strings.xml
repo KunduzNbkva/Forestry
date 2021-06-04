@@ -165,7 +165,13 @@
     <string name="need_permission">Appropriate permission is required to use this functionality.</string>
     <string name="updated">Updated</string>
     <string name="choose_region">Select the area first</string>
-    <string name="are_you_sure_to_delete_it">Are you sure you want to exit, all unsaved data will be lost?</string>
+    <string name="are_you_sure_to_exit">Are you sure you want to exit, all unsaved data will be lost?</string>
     <string name="choose_region_or_state">Select the region / district first</string>
+    <string name="input_indicators">Indicators</string>
+    <string name="yes">Yes</string>
+    <string name="are_you_sure_to_delete">Вы действительно хотите удалить запись?</string>
+    <string name="wet_cant_be_more_than_dry">The wet mass cannot be less than the dry mass!</string>
+    <string name="dry_cant_be_more_than_wet">The dry mass cannot be greater than the wet mass!</string>
+    <string name="error">Error</string>
 
 </resources>

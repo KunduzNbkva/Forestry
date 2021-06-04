@@ -21,6 +21,11 @@ import kg.forestry.ui.extensions.toDate
 import kg.forestry.ui.plant.plant_info.AddPlantActivity
 import kg.forestry.ui.reports.ReportActivity
 import kotlinx.android.synthetic.main.activity_harvest_list.*
+import kotlinx.android.synthetic.main.activity_harvest_list.fab_add
+import kotlinx.android.synthetic.main.activity_harvest_list.null_view
+import kotlinx.android.synthetic.main.activity_harvest_list.rv_list
+import kotlinx.android.synthetic.main.activity_harvest_list.toolbar
+import kotlinx.android.synthetic.main.activity_plot_list.*
 
 
 class PlantsListActivity :
@@ -47,20 +52,34 @@ class PlantsListActivity :
         fab_add.setOnClickListener { AddPlantActivity.start(this) }
         rv_list.layoutManager = LinearLayoutManager(this)
         rv_list.adapter = adapter
-        if (adapter.items != null) {
-            null_view.visibility = View.VISIBLE
-            rv_list.visibility = View.GONE
+        checkForNull()
+    }
+    private fun checkForNull(){
+        if(adapter.items.isEmpty()){
+            visible()
         } else {
-            null_view.visibility = View.GONE
-            rv_list.visibility = View.VISIBLE
+            invisible()
         }
     }
 
+    private fun visible(){
+        null_view.visibility = View.VISIBLE
+        rv_list.visibility = View.GONE
+    }
+
+    private fun invisible(){
+        null_view.visibility = View.GONE
+        rv_list.visibility = View.VISIBLE
+    }
     private fun subscribeToLiveData() {
         vm.fetchPlantsFromDb()
         vm.plantListLiveData.observe(this, Observer { list ->
-//            val items = it.toMutableList()
-            adapter.items = list.sortedByDescending { it.date.toDate() }.toMutableList()
+            if (list.isEmpty()){
+                visible()
+            } else{
+                adapter.items = list.sortedByDescending { it.date.toDate() }.toMutableList()
+                invisible()
+            }
         })
         vm.setProgress(false)
     }

@@ -192,7 +192,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:markerColor="#F4722B"
-                app:title="@string/bush" />
+                app:title="@string/bush"
+                android:clickable="false" />
 
             </LinearLayout>
 
