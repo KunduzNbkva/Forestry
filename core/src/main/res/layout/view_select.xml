@@ -18,22 +18,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_text"
+    <com.nex3z.flowlayout.FlowLayout
+        android:id="@+id/tv_text_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:flChildSpacing="auto"
+        app:flChildSpacingForLastRow="align"
+        app:flRowSpacing="8dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="10dp"
-        android:hint="Добавьте"
-        android:textColorHint="@color/grey"
-        android:textColor="#000000"
-        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageView4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_title">
+    <TextView
+        android:id="@+id/tv_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="Добавьте"
+        android:padding="5dp"
+        android:textColorHint="@color/grey"
+        android:textColor="#000000"
+        android:textSize="16sp" />
+    </com.nex3z.flowlayout.FlowLayout>
 
     <View
         android:id="@+id/frameLayout2"
@@ -52,8 +61,8 @@
         android:layout_marginEnd="24dp"
         android:rotation="180"
         android:tint="#000000"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_text"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_text_layout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_text"
+        app:layout_constraintTop_toTopOf="@+id/tv_text_layout"
         app:srcCompat="@drawable/ic_chevron_left_black_24dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

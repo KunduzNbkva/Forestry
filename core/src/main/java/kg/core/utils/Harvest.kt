@@ -119,6 +119,34 @@ data class Distance(
         (d10 !in excludeTypes || d30 !in excludeTypes || d50 !in excludeTypes || d70 !in excludeTypes || d90 !in excludeTypes)
 }
 
+
+
+//@Parcel
+//data class Distance(
+//    var d10: ArrayList<String>? = null,
+//    var d30: ArrayList<String>? = null,
+//    var d50: ArrayList<String>? = null,
+//    var d70: ArrayList<String>? = null,
+//    var d90: ArrayList<String>? = null,
+//    var plant_height: String = ""
+//) : Serializable {
+//    private val excludeTypes = arrayOf("EMPTY", "WIND", "STONE")
+//
+//    fun isValid(): Boolean {
+//        return ((d10.isNullOrEmpty()
+//                && d30.isNullOrEmpty()
+//                && d50.isNullOrEmpty()
+//                && d70.isNullOrEmpty()
+//                && d90.isNullOrEmpty()
+//                && plant_height.isNotEmpty())
+//                || !isNeedHeight())
+//    }
+//
+//    fun isNeedHeight() =
+//        (d10?.get(0) !in excludeTypes || d30?.get(0) !in excludeTypes || d50?.get(0) !in excludeTypes || d70?.get(0) !in excludeTypes || d90 !in excludeTypes)
+//}
+
+
 enum class TypeInDistance {
     NULL,
     EMPTY,
