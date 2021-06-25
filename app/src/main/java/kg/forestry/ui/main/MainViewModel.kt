@@ -147,7 +147,6 @@ class MainViewModel(
             }
 
         } else {
-//            event.value = Event.Message("Проверьте интернет соединение")
         }
 
         setProgress(false)
