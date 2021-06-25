@@ -4,7 +4,7 @@ package kg.forestry.ui.main
 import android.util.Log
 import com.google.firebase.database.*
 import kg.core.Event
-import kg.core.base.BaseViewModel
+import kg.forestry.ui.core.base.BaseViewModel
 import kg.core.utils.Constants
 import kg.core.utils.Harvest
 import kg.core.utils.Helper.getRandomString
@@ -47,6 +47,16 @@ class MainViewModel(
 
 //    private val userRegions = FirebaseDatabase.getInstance().getReference(Constants.REGIONS)
 
+    fun setUserPlant(azyr: String){
+        val plantInfo = Plant("fghjklgcvhjkl",Preferences.instance.userToken,"","","","","","","","","","","","",0,0,0,0,0,0,0,azyr,"")
+        plantsRepository.updateUserPlantInDB(plantInfo)
+        Log.e("plant","updated")
+    }
+
+    fun deleteUserPlant(){
+        plantsRepository.removePlantFromServer("")
+    }
+
     fun removeUserToken() {
         accountRepository.removeUserToken()
     }
@@ -64,7 +74,7 @@ class MainViewModel(
 
     }
 
-    fun saveLocalPlantsHarvests(){
+    fun saveLocalPlantsHarvests() {
 
     }
 
@@ -279,6 +289,5 @@ class MainViewModel(
     }
 
     fun isPlantsDbEmpty() = plantsRepository.isPlantsDbEmpty()
-
 
 }

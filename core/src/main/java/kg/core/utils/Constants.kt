@@ -1,7 +1,5 @@
 package kg.core.utils
 
-import android.graphics.Region
-
 object Constants {
     const val USERS_REFERENCE = "users"
     const val PLANTS_REFERENCE = "plants"

@@ -2,7 +2,7 @@ package kg.forestry.ui.plots
 
 import androidx.lifecycle.MutableLiveData
 import kg.core.Event
-import kg.core.base.BaseViewModel
+import kg.forestry.ui.core.base.BaseViewModel
 import kg.forestry.repos.HarvestRepository
 
 class PlotListViewModel (val harvestRepository: HarvestRepository

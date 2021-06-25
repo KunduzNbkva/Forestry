@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.DataSnapshot
 import kg.core.Event
-import kg.core.base.BaseViewModel
+import kg.forestry.ui.core.base.BaseViewModel
 import kg.forestry.localstorage.model.Region
 import kg.forestry.repos.FirebaseQueryLiveData
 import kg.forestry.repos.PlantsRepository

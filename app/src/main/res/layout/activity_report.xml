@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center">
@@ -36,7 +35,7 @@
         >
     </Button>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/main_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -125,59 +124,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/piechart"
+                android:layout_margin="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="300dp" />
-
-            <kg.core.custom.ColorValueView
-                android:id="@+id/cvv_golaya"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:value="@string/bare_place"
-                app:color="@color/dark_blue" />
-
-            <kg.core.custom.ColorValueView
-                android:id="@+id/cvv_kustarnik"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:value="@string/bush"
-                app:color="@color/orange" />
-
-            <kg.core.custom.ColorValueView
-                android:id="@+id/cvv_poedaemoe"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:value="@string/eaten_plant"
-                app:color="@color/blue" />
-
-            <kg.core.custom.ColorValueView
-                android:id="@+id/cvv_ne_poedaemoe"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:layout_marginTop="8dp"
-                app:value="@string/non_eaten_plant"
-                app:color="@color/light_green" />
-
-            <kg.core.custom.ColorValueView
-                android:id="@+id/cvv_osnova_rasteni"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:value="@string/plant_base"
-                app:color="@color/gray" />
-
-            <kg.core.custom.ColorValueView
-                android:id="@+id/cvv_kamen"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:value="@string/stone"
-                app:color="@color/dark_gray" />
 
             <kg.core.custom.ColorValueView
                 android:id="@+id/cvv_opad"
@@ -187,17 +139,66 @@
                 app:value="@string/decline"
                 app:color="@color/green" />
 
+                <kg.core.custom.ColorValueView
+                    android:id="@+id/cvv_kamen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:value="@string/stone"
+                    app:color="@color/dark_gray" />
+
+                <kg.core.custom.ColorValueView
+                    android:id="@+id/cvv_kustarnik"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:value="@string/bush"
+                    app:color="@color/orange" />
+
+                <kg.core.custom.ColorValueView
+                    android:id="@+id/cvv_golaya"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:value="@string/bare_place"
+                    app:color="@color/dark_blue" />
+
+                <kg.core.custom.ColorValueView
+                    android:id="@+id/cvv_osnova_rasteni"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:value="@string/plant_base"
+                    app:color="@color/gray" />
+
+                <kg.core.custom.ColorValueView
+                    android:id="@+id/cvv_poedaemoe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:value="@string/eaten_plant"
+                    app:color="@color/blue" />
+
+                <kg.core.custom.ColorValueView
+                    android:id="@+id/cvv_ne_poedaemoe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:value="@string/non_eaten_plant"
+                    app:color="@color/light_green" />
+
+
             <kg.core.custom.StatisticView
                 android:id="@+id/height_bush"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:markerColor="#F4722B"
-                app:title="@string/bush"
-                android:clickable="false" />
+                app:title="@string/bush" />
+
 
             </LinearLayout>
 
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,7 +2,7 @@ package kg.forestry.ui.tree_type
 
 import androidx.lifecycle.MutableLiveData
 import kg.core.Event
-import kg.core.base.BaseViewModel
+import kg.forestry.ui.core.base.BaseViewModel
 import kg.forestry.localstorage.model.TreeType
 import kg.forestry.repos.PlantsRepository
 

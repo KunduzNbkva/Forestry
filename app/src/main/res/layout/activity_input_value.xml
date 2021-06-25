@@ -23,149 +23,174 @@
             app:navigationIcon="@drawable/ic_chevron_left_black_24dp" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/main_linear"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" >
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/choose_indicators"
+            android:textColor="#000000"
+            android:textSize="24sp" />
+
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="17dp"
+                android:background="#D37200">
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="4dp"
+                        android:layout_height="17dp"
+                        android:background="#FFD400" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0cm"
+                        android:textColor="@color/colorAccent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="4dp"
+                        android:layout_height="17dp"
+                        android:background="#FFD400" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10cm"
+                        android:textColor="@color/colorAccent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="4dp"
+                        android:layout_height="17dp"
+                        android:background="#FFD400" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="30cm"
+                        android:textColor="@color/colorAccent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="4dp"
+                        android:layout_height="17dp"
+                        android:background="#FFD400" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="50cm"
+                        android:textColor="@color/colorAccent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="4dp"
+                        android:layout_height="17dp"
+                        android:background="#FFD400" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="70cm"
+                        android:textColor="@color/colorAccent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="4dp"
+                        android:layout_height="17dp"
+                        android:background="#FFD400" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="90cm"
+                        android:textColor="@color/colorAccent" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+        app:layout_constraintTop_toBottomOf="@+id/main_linear">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="sans-serif-medium"
-                android:text="@string/choose_indicators"
-                android:textColor="#000000"
-                android:textSize="24sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginRight="16dp">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="17dp"
-                    android:background="#D37200">
-
-                </FrameLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:layout_width="4dp"
-                            android:layout_height="17dp"
-                            android:background="#FFD400" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="10cm"
-                            android:textColor="@color/colorAccent" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:layout_width="4dp"
-                            android:layout_height="17dp"
-                            android:background="#FFD400" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="30cm"
-                            android:textColor="@color/colorAccent" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:layout_width="4dp"
-                            android:layout_height="17dp"
-                            android:background="#FFD400" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="50cm"
-                            android:textColor="@color/colorAccent" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:layout_width="4dp"
-                            android:layout_height="17dp"
-                            android:background="#FFD400" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="70cm"
-                            android:textColor="@color/colorAccent" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:layout_width="4dp"
-                            android:layout_height="17dp"
-                            android:background="#FFD400" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="90cm"
-                            android:textColor="@color/colorAccent" />
-                    </LinearLayout>
-
-                </LinearLayout>
-            </FrameLayout>
-
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -199,6 +224,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+                    <kg.core.custom.MarkImageButton
+                        android:id="@+id/btn_empty_0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_disturb"/>
 
                     <kg.core.custom.MarkImageButton
                         android:id="@+id/btn_empty_10"
@@ -252,6 +283,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
+                    <kg.core.custom.MarkImageButton
+                        android:id="@+id/btn_tree_0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_disturb" />
 
                     <kg.core.custom.MarkImageButton
                         android:id="@+id/btn_tree_10"
@@ -311,7 +349,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
+                    <kg.core.custom.MarkImageButton
+                        android:id="@+id/btn_bush_0"
+                        app:color="@color/colorPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_disturb" />
                     <kg.core.custom.MarkImageButton
                         android:id="@+id/btn_bush_10"
                         app:color="@color/colorPrimary"
@@ -375,6 +419,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
+                    <kg.core.custom.MarkImageButton
+                        android:id="@+id/btn_grass_0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_disturb"
+                        app:color="@color/red"/>
 
                     <kg.core.custom.MarkImageButton
                         app:color="@color/red"
@@ -441,6 +493,14 @@
                     android:orientation="horizontal">
 
                     <kg.core.custom.MarkImageButton
+                        android:id="@+id/btn_base_0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_disturb" />
+
+
+                    <kg.core.custom.MarkImageButton
                         app:color="@color/grey"
                         android:id="@+id/btn_base_10"
                         android:layout_width="wrap_content"
@@ -503,6 +563,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+                    <kg.core.custom.MarkImageButton
+                        android:id="@+id/btn_wind_0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_disturb"
+                        app:color="@color/colorPrimary"/>
+
 
                     <kg.core.custom.MarkImageButton
                         app:color="@color/colorPrimary"
@@ -567,6 +635,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
+                    <kg.core.custom.MarkImageButton
+                        android:id="@+id/btn_stone_0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_disturb" />
 
                     <kg.core.custom.MarkImageButton
                         android:id="@+id/btn_stone_10"
@@ -780,7 +855,6 @@
                     </LinearLayout>
                 </FrameLayout>
             </LinearLayout>
-
             <Button
                 android:id="@+id/button"
                 style="@style/AppTheme.Button.Round.Blue"
@@ -791,11 +865,10 @@
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="16dp"
                 android:enabled="false"
-                android:text="@string/save"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:text="@string/save" />
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

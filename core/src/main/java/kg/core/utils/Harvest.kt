@@ -10,20 +10,21 @@ import java.io.Serializable
 data class Harvest(
     @PrimaryKey
     var id: String = "",
-    var userId: String = "",
-    val plotName: String = "",
-    val pastureName: String = "",
-    var harvestLocation: String = "",
+    var userId: String? = null,
+    val plotName: String? = null,
+    val pastureName: String? = null,
+    var harvestLocation: String? = null,
     var sumWetBiomass: Biomass? = null,
     var sumDryBiomass: Biomass? = null,
-    val date: String = "",
+    val date: String? = null,
     var harvestPhoto: String? = "",
     var isInServer: Boolean = false,
-    var harvLocation: Location = Location(0.0,0.0),
-    var region: String = "",
-    var village: String = "",
-    var district: String = ""
-    )
+    var harvLocation: Location = Location(0.0, 0.0),
+    var region: String? = null,
+    var village: String? = null,
+    var district: String? = null,
+    var isDraft: Boolean = false
+)
 
 @Entity(tableName = "plots")
 data class PlotRecord(
@@ -31,7 +32,8 @@ data class PlotRecord(
     var id: String = "",
     var userId: String = "",
     val title: String = "",
-    var isInServer:Boolean = false)
+    var isInServer: Boolean = false
+)
 
 @Entity(tableName = "pastures")
 data class PastureRecord(
@@ -39,13 +41,15 @@ data class PastureRecord(
     var id: String = "",
     var userId: String = "",
     val title: String = "",
-    var isInServer:Boolean = false)
+    var isInServer: Boolean = false
+)
 
-data class Location(var lat: Double = 0.0, var lon: Double = 0.0) : Serializable{
+data class Location(var lat: Double = 0.0, var lon: Double = 0.0) : Serializable {
 
-    fun getLocationAsString():String = "${this.lat} ${this.lon}"
+    fun getLocationAsString(): String = "${this.lat} ${this.lon}"
 
 }
+
 data class Biomass(var eated: Int = 0, var nonEated: Int = 0) : Serializable {
     fun getSum(): Int = eated + nonEated
 
@@ -80,13 +84,14 @@ data class Erosion(
         return value
     }
 }
+
 @Parcel
 data class Side(
-    var m5: Distance = Distance(),
-    var m10: Distance = Distance(),
-    var m15: Distance = Distance(),
-    var m20: Distance = Distance(),
-    var m25: Distance = Distance()
+    var m5: NewDistance = NewDistance(),
+    var m10: NewDistance= NewDistance(),
+    var m15: NewDistance= NewDistance(),
+    var m20: NewDistance= NewDistance(),
+    var m25: NewDistance= NewDistance()
 ) : Serializable {
     fun isValid() = m5.isValid()
             && m10.isValid()
@@ -94,66 +99,29 @@ data class Side(
             && m20.isValid()
             && m25.isValid()
 }
+
 @Parcel
-data class Distance(
-    var d10: String = "NULL",
-    var d30: String = "NULL",
-    var d50: String = "NULL",
-    var d70: String = "NULL",
-    var d90: String = "NULL",
-    var plant_height: String = ""
+data class NewDistance(
+    var empty: String? = null,
+    var bush: String? = null,
+    var eatenPlant: String? = null,
+    var nonEatenPlant: String? = null,
+    var opad: String? = null,
+    var stone: String? = null,
+    var base: String? = null,
+    var plant_height: String? = null
 ) : Serializable {
-    private val excludeTypes = arrayOf("EMPTY", "WIND", "STONE")
 
     fun isValid(): Boolean {
-        return ((!d10.contentEquals("NULL")
-                && !d30.contentEquals("NULL")
-                && !d50.contentEquals("NULL")
-                && !d70.contentEquals("NULL")
-                && !d90.contentEquals("NULL")
-                && plant_height.isNotEmpty())
-                || !isNeedHeight())
+        return (!empty.equals(null)
+                && !bush.equals(null)
+                && !eatenPlant.equals(null)
+                && !nonEatenPlant.equals(null)
+                && !opad.equals(null)
+                && !stone.equals(null)
+                && !plant_height.equals(null))
+        }
     }
 
-    fun isNeedHeight() =
-        (d10 !in excludeTypes || d30 !in excludeTypes || d50 !in excludeTypes || d70 !in excludeTypes || d90 !in excludeTypes)
-}
 
 
-
-//@Parcel
-//data class Distance(
-//    var d10: ArrayList<String>? = null,
-//    var d30: ArrayList<String>? = null,
-//    var d50: ArrayList<String>? = null,
-//    var d70: ArrayList<String>? = null,
-//    var d90: ArrayList<String>? = null,
-//    var plant_height: String = ""
-//) : Serializable {
-//    private val excludeTypes = arrayOf("EMPTY", "WIND", "STONE")
-//
-//    fun isValid(): Boolean {
-//        return ((d10.isNullOrEmpty()
-//                && d30.isNullOrEmpty()
-//                && d50.isNullOrEmpty()
-//                && d70.isNullOrEmpty()
-//                && d90.isNullOrEmpty()
-//                && plant_height.isNotEmpty())
-//                || !isNeedHeight())
-//    }
-//
-//    fun isNeedHeight() =
-//        (d10?.get(0) !in excludeTypes || d30?.get(0) !in excludeTypes || d50?.get(0) !in excludeTypes || d70?.get(0) !in excludeTypes || d90 !in excludeTypes)
-//}
-
-
-enum class TypeInDistance {
-    NULL,
-    EMPTY,
-    TREE,
-    BUSH,
-    GRASS,
-    BASE,
-    WIND,
-    STONE
-}

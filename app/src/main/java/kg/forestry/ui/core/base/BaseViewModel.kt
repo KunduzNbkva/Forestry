@@ -1,4 +1,4 @@
-package kg.core.base
+package kg.forestry.ui.core.base
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

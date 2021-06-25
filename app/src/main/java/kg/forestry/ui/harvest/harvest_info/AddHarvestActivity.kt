@@ -25,7 +25,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kg.forestry.R
-import kg.core.base.BaseActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.*
 import kg.forestry.localstorage.model.ListType
 import kg.core.utils.Helper.fromStringToLocation
@@ -89,13 +89,35 @@ class AddHarvestActivity :
 
     override fun onBackPressed() {
         val builder = AlertDialog.Builder(this)
+        val harvest = Harvest(
+            vm.harvestInfo?.id ?: "",
+            vm.getUserId(),
+            name_site.getValue(),
+            name_pasture.getValue(),
+            location.getValue(),
+            vm.wetBiomassValue,
+            vm.dryBiomassValue,
+            getCurrentDate(),
+            vm.photoPath,
+            harvLocation = fromStringToLocation(location.getValue()),
+            region = name_region.getValue(),
+            village = name_village.getValue(),
+            district = name_district.getValue(),
+                    isDraft = true
+
+        )
         builder.setMessage(getString(R.string.are_you_sure_to_exit))
             .setCancelable(false)
             .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 super.onBackPressed()
             }
+            .setNeutralButton(getString(R.string.draft)){ _, _ ->
+                vm.saveHarvest(harvest)
+                Log.e("draft","harvest is ${harvest.isDraft}")
+                super.onBackPressed()
+                Toast.makeText(this,getString(R.string.draft_saved),Toast.LENGTH_SHORT).show()
+            }
             .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                // Dismiss the dialog
                 dialog.dismiss()
             }
         val alert = builder.create()
@@ -134,7 +156,7 @@ class AddHarvestActivity :
                 else checkPermissions(Manifest.permission.READ_EXTERNAL_STORAGE) { pickPhotoFromGallery() }
             }
             .setCancelable(true)
-            .setNegativeButton("Отмена") { dialog, _ -> dialog.dismiss() }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
         builder.create().show()
 
     }
@@ -280,7 +302,8 @@ class AddHarvestActivity :
                     harvLocation = fromStringToLocation(location.getValue()),
                     region = name_region.getValue(),
                     village = name_village.getValue(),
-                    district = name_district.getValue()
+                    district = name_district.getValue(),
+                    isDraft = false
                 )
             )
             Handler().postDelayed({
@@ -318,8 +341,8 @@ class AddHarvestActivity :
     private fun setupViewsForEditMode(harvestInfo: Harvest?) {
         harvestInfo?.run {
             toolbar.addOptionMenu(harvestInfo)
-            name_site.setValue(this.plotName)
-            name_pasture.setValue(this.pastureName)
+            name_site.setValue(this.plotName!!)
+            name_pasture.setValue(this.pastureName!!)
             location.setValue(this.harvLocation.getLocationAsString())
             this.sumWetBiomass?.let {
                 wetBiomass.setValue(it.getSum().toString())
@@ -329,9 +352,9 @@ class AddHarvestActivity :
                 dryBiomass.setValue(it.getSum().toString())
                 vm.dryBiomassValue = it
             }
-            name_village.setValue(this.village)
-            name_region.setValue(this.region)
-            name_district.setValue(this.district)
+            name_village.setValue(this.village!!)
+            name_region.setValue(this.region!!)
+            name_district.setValue(this.district!!)
 
             if (!harvestInfo.harvestPhoto.isNullOrEmpty()) {
                 setupImage(fl_take_photo, harvestInfo.harvestPhoto!!)

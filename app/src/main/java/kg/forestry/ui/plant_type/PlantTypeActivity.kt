@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import kg.forestry.R
-import kg.core.base.BaseActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.Constants
 import kg.core.utils.LocaleManager
 import kg.core.utils.gone

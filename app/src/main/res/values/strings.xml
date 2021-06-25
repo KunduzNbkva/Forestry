@@ -48,7 +48,7 @@
     <string name="soil_texture">Текстура почвы</string>
     <string name="glina">Глина</string>
     <string name="suglinok">Суглинок</string>
-    <string name="suspes">Суспесь</string>
+    <string name="suspes">Супесь</string>
     <string name="pesok">Песок</string>
     <string name="il">Ил</string>
     <string name="small">Слабокаменистые</string>
@@ -163,7 +163,7 @@
     <string name="first_enter_internet_is_required">Для первого входа необходимо интернет соединение</string>
     <string name="need_permission">Для использования данного функционала необходимо соответствующее разрешение.</string>
     <string name="updated">Обновлено</string>
-    <string name="are_you_sure_to_exit">Вы действительно хотите выйти, все несохраненные данные будут потеряны?</string>
+    <string name="are_you_sure_to_exit">Вы действительно хотите выйти? Все несохраненные данные будут потеряны или вы можете сохранить в черновик.</string>
     <string name="choose_region_or_state">Выберите сначала область/район</string>
     <string name="choose_region">Выберите сначала область</string>
     <string name="input_indicators">Индикаторы</string>
@@ -172,6 +172,26 @@
     <string name="wet_cant_be_more_than_dry">Влажная масса не может быть меньше сухой массы!</string>
     <string name="dry_cant_be_more_than_wet">Сухая масса не может быть больше влажной массы!</string>
     <string name="error">Ошибка</string>
+    <string name="draft">Черновик</string>
+    <string name="draft_saved">Сохранено как черновик</string>
+    <string name="draft_text">Черновик</string>
+    <string name="success">Успешно</string>
+    <string name="input_txt">Введите</string>
+    <string name="choose">Выберите</string>
+    <string name="add_txt">Добавьте</string>
+    <string name="you_want_to_exist">Вы действительно хотите выйти из приложения?</string>
+
+    <string name="not_observe">0</string>
+    <string name="ten">10</string>
+    <string name="thirty">30</string>
+    <string name="fifty">50</string>
+    <string name="seventy">70</string>
+    <string name="ninety">90</string>
+
+    <string name="dotOnCard">Точка на карте</string>
+
+    <string name="wait_loading">Подождите...загрузка</string>
+
 
 
 </resources>

@@ -4,11 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kg.forestry.R
-import kg.core.base.BaseActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.Constants
 import kg.forestry.localstorage.model.ListType
 import kg.forestry.ui.adapter.SimpleListAdapter

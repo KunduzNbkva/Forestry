@@ -42,7 +42,9 @@ data class Plant(
     var plantLocation: Location = Location(0.0,0.0),
     var region: String = "",
     var village: String = "",
-    var district: String = ""
+    var district: String = "",
+    var isDraft: Boolean = false
+
 
 ) : Serializable
 @Entity(tableName = "plant_type")

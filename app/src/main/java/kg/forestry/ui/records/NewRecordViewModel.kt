@@ -2,7 +2,7 @@ package kg.forestry.ui.records
 
 import kg.core.Event
 import kg.forestry.localstorage.model.ListType
-import kg.core.base.BaseViewModel
+import kg.forestry.ui.core.base.BaseViewModel
 import kg.core.utils.PastureRecord
 import kg.forestry.localstorage.model.PlantType
 import kg.core.utils.PlotRecord

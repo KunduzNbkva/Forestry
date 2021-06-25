@@ -25,7 +25,7 @@ import androidx.lifecycle.Observer
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.tbruyelle.rxpermissions2.RxPermissions
-import kg.core.base.BaseActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.Helper
 import kg.core.utils.LocaleManager
 import kg.forestry.R

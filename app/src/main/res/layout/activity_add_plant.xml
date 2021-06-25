@@ -44,14 +44,14 @@
                     android:layout_width="84dp"
                     android:layout_height="84dp"
                     android:layout_gravity="center"
-                    app:riv_corner_radius="30dp"
-                    android:rotation="180"
                     android:layout_marginTop="24dp"
+                    android:rotation="180"
                     android:scaleType="centerCrop"
                     android:src="@drawable/photo_placeholder"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:riv_corner_radius="30dp" />
 
                 <TextView
                     android:id="@+id/tv_take_photo"
@@ -67,107 +67,106 @@
                     app:layout_constraintTop_toBottomOf="@+id/fl_take_photo" />
 
                 <LinearLayout
-                    android:visibility="gone"
                     android:id="@+id/ll_photo"
-                    android:orientation="vertical"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginBottom="8dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:layout_weight="1"
                         android:id="@+id/iv_photopic"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
 
                     <TextView
                         android:id="@+id/tv_change_photo"
-                        android:textColor="#007AFF"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="Изменить/Удалить"
                         android:textAlignment="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:textColor="#007AFF" />
 
                 </LinearLayout>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-            <kg.core.custom.SelectView
+            <kg.forestry.ui.core.SelectView
                 android:id="@+id/name_site"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:lable=""
                 app:title="@string/plot_name" />
 
-            <kg.core.custom.SelectView
+            <kg.forestry.ui.core.SelectView
                 android:id="@+id/name_pasture"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:lable=""
                 app:title="@string/pasture_name" />
 
-            <kg.core.custom.SelectView
+            <kg.forestry.ui.core.SelectView
                 android:id="@+id/name_region"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:lable=""
                 app:title="@string/pasture_region" />
 
-            <kg.core.custom.SelectView
+            <kg.forestry.ui.core.SelectView
                 android:id="@+id/name_district"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:lable=""
                 app:title="@string/pasture_district" />
 
-            <kg.core.custom.SelectView
+            <kg.forestry.ui.core.SelectView
                 android:id="@+id/name_village"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:lable=""
                 app:title="@string/pasture_village" />
 
-            <kg.core.custom.SelectView
+            <kg.forestry.ui.core.SelectView
                 android:id="@+id/location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:lable=""
                 app:title="@string/location" />
 
-            <kg.core.custom.InputValueView
+            <kg.forestry.ui.core.InputValueView
                 android:id="@+id/desc_point"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/point_desc" />
 
-            <kg.core.custom.InputValueView
+            <kg.forestry.ui.core.InputValueView
                 android:id="@+id/desc_site"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/pasture_desc" />
 
-            <kg.core.custom.SelectView
+            <kg.forestry.ui.core.SelectView
                 android:id="@+id/plant_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:lable=""
                 app:title="@string/plants" />
 
-            <kg.core.custom.SelectView
+            <kg.forestry.ui.core.SelectView
                 android:id="@+id/tree_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:lable=""
                 app:title="@string/trees" />
 
-            <kg.core.custom.SelectView
+            <kg.forestry.ui.core.SelectView
                 android:id="@+id/soil_texture"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -175,7 +174,7 @@
                 app:title="@string/soil_texture" />
 
 
-            <kg.core.custom.SelectView
+            <kg.forestry.ui.core.SelectView
                 android:id="@+id/degree_erosion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -184,21 +183,21 @@
 
             <include
                 android:id="@+id/soilcolor"
+                layout="@layout/expansion_soil_color"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/expansion_soil_color"/>
+                android:layout_height="wrap_content" />
 
             <include
                 android:id="@+id/cattle_pasture"
+                layout="@layout/expansion_graze"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/expansion_graze"/>
+                android:layout_height="wrap_content" />
 
             <include
                 android:id="@+id/pasture_cattle"
+                layout="@layout/expansion_cattle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/expansion_cattle"/>
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/btn_next"

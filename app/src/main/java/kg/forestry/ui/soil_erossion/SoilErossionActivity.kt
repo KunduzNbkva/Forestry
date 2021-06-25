@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import kg.forestry.R
-import kg.core.base.BaseActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.core.custom.MarkTextButton
 import kg.core.utils.Constants
 import kg.core.utils.Erosion

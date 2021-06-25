@@ -7,13 +7,11 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kg.forestry.R
-import kg.core.base.BaseActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.Constants
 import kg.forestry.localstorage.model.ListType
 import kg.forestry.ui.adapter.SimpleListAdapter
 import kg.forestry.ui.records.NewRecordActivity
-import kotlinx.android.synthetic.main.activity_harvest_list.*
-import kotlinx.android.synthetic.main.activity_plot_list.*
 import kotlinx.android.synthetic.main.activity_plot_list.fab_add
 import kotlinx.android.synthetic.main.activity_plot_list.null_view
 import kotlinx.android.synthetic.main.activity_plot_list.rv_list

@@ -5,11 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import kg.forestry.R
-import kg.core.base.BaseActivity
 import kg.core.utils.Constants
 import kg.core.utils.setVisible
 import kg.core.utils.Biomass
 import kg.core.utils.BiomassType
+import kg.forestry.ui.core.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_biomass.*
 import java.util.*
 

@@ -14,7 +14,7 @@ import io.reactivex.Flowable
 class PlantsRepository(private val prefs: Preferences, private val db: AppDatabase, val scheduler: Scheduler) {
 
 
-    private val userPlants =
+     val userPlants =
         FirebaseDatabase.getInstance().getReference(Constants.PLANTS_REFERENCE)
 
     private val regions =

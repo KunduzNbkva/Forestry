@@ -2,7 +2,7 @@ package kg.forestry.ui.auth
 
 import androidx.lifecycle.LiveData
 import com.google.firebase.database.DataSnapshot
-import kg.core.base.BaseViewModel
+import kg.forestry.ui.core.base.BaseViewModel
 import kg.core.Event
 import kg.forestry.localstorage.Preferences
 import kg.forestry.repos.AccountRepository
@@ -29,3 +29,4 @@ class AuthViewModel(private val accountRepository: AccountRepository,
 
 
 }
+

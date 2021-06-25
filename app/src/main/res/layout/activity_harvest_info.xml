@@ -96,56 +96,56 @@
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <kg.core.custom.SelectView
+            <kg.forestry.ui.core.SelectView
                 android:id="@+id/name_site"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:lable=""
                 app:title="@string/plot_name" />
 
-            <kg.core.custom.SelectView
+            <kg.forestry.ui.core.SelectView
                 android:id="@+id/name_pasture"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:lable=""
                 app:title="@string/pasture_name" />
 
-            <kg.core.custom.SelectView
+            <kg.forestry.ui.core.SelectView
                 android:id="@+id/name_region"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:lable=""
                 app:title="@string/pasture_region" />
 
-            <kg.core.custom.SelectView
+            <kg.forestry.ui.core.SelectView
                 android:id="@+id/name_district"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:lable=""
                 app:title="@string/pasture_district" />
 
-            <kg.core.custom.SelectView
+            <kg.forestry.ui.core.SelectView
                 android:id="@+id/name_village"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:lable=""
                 app:title="@string/pasture_village" />
 
-            <kg.core.custom.SelectView
+            <kg.forestry.ui.core.SelectView
                 android:id="@+id/location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:lable=""
                 app:title="@string/location" />
 
-            <kg.core.custom.SelectView
+            <kg.forestry.ui.core.SelectView
                 android:id="@+id/wetBiomass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:lable=""
                 app:title="@string/wet_biomass_in_gramm" />
 
-            <kg.core.custom.SelectView
+            <kg.forestry.ui.core.SelectView
                 android:layout_marginBottom="16dp"
                 android:id="@+id/dryBiomass"
                 android:layout_width="match_parent"

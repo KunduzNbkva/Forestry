@@ -25,26 +25,36 @@
         android:background="#E7E7F1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/et_input" />
+        app:layout_constraintStart_toStartOf="@+id/et_input_layout" />
 
-    <EditText
-        android:id="@+id/et_input"
-        android:layout_width="0dp"
+
+    <com.nex3z.flowlayout.FlowLayout
+        android:id="@+id/et_input_layout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:flChildSpacing="auto"
+        app:flChildSpacingForLastRow="align"
+        app:flRowSpacing="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="8dp"
-        android:background="@android:color/transparent"
-        android:ems="10"
-        android:hint="Введите"
-        android:textColorHint="@color/grey"
-        android:textSize="16sp"
-        android:inputType="textCapSentences"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/tv_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_title"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0">
+    <EditText
+        android:id="@+id/et_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:ems="10"
+        android:padding="5dp"
+        android:hint="Введите"
+        android:textColorHint="@color/grey"
+        android:textSize="16sp"
+        android:inputType="textCapSentences" />
+    </com.nex3z.flowlayout.FlowLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,7 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Patterns
 import kg.forestry.R
-import kg.core.base.BaseActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.Constants
 import kg.forestry.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_profile.*

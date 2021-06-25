@@ -4,23 +4,11 @@ import androidx.room.TypeConverter
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import kg.core.utils.Biomass
-import kg.core.utils.Distance
 import kg.core.utils.Location
 import kg.core.utils.Side
 
 class Converter {
 
-    @TypeConverter
-    fun fromDistanceToJson(distance: Distance?): String {
-        val gson = GsonBuilder().setDateFormat("MMM dd, yyyy HH:mm:ss").create()
-        return gson.toJson(distance)
-    }
-
-    @TypeConverter
-    fun fromJsonToDistance(json: String?): Distance? {
-        val gson = GsonBuilder().setDateFormat("MMM dd, yyyy HH:mm:ss").create()
-        return gson.fromJson<Distance>(json, object : TypeToken<Distance>() {}.type)
-    }
     @TypeConverter
     fun fromSideToJson(side: Side?): String {
         val gson = GsonBuilder().setDateFormat("MMM dd, yyyy HH:mm:ss").create()

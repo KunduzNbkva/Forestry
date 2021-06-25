@@ -60,7 +60,7 @@ val vmModule = module {
     viewModel { CattleTypeViewNodel() }
     viewModel { SoilColorViewModel() }
     viewModel { SoilTextureViewModel() }
-    viewModel { StartViewModel() }
+    viewModel { StartViewModel(get(),get()) }
     viewModel { ReportViewModel(get()) }
     viewModel { PlatTypeViewModel(get()) }
     viewModel { TreeTypeViewModel(get()) }

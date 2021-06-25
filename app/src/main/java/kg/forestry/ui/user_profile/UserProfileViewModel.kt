@@ -3,7 +3,7 @@ package kg.forestry.ui.user_profile
 import androidx.lifecycle.LiveData
 import com.google.firebase.database.DataSnapshot
 import kg.core.Event
-import kg.core.base.BaseViewModel
+import kg.forestry.ui.core.base.BaseViewModel
 import kg.forestry.localstorage.model.User
 import kg.forestry.repos.AccountRepository
 import kg.forestry.repos.FirebaseQueryLiveData

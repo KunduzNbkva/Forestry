@@ -1,7 +1,7 @@
 package kg.forestry.ui
 
 import kg.core.Event
-import kg.core.base.BaseViewModel
+import kg.forestry.ui.core.base.BaseViewModel
 import kg.core.utils.Location
 import kg.forestry.repos.HarvestRepository
 import kg.forestry.repos.PlantsRepository

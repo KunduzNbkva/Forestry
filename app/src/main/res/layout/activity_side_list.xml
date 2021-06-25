@@ -19,25 +19,25 @@
             android:elevation="5dp"
             app:navigationIcon="@drawable/ic_chevron_left_black_24dp" />
     </com.google.android.material.appbar.AppBarLayout>
-    <kg.core.custom.SelectView
+    <kg.forestry.ui.core.SelectView
         android:id="@+id/south"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:lable="@string/south"
         app:title="" />
-    <kg.core.custom.SelectView
+    <kg.forestry.ui.core.SelectView
         android:id="@+id/north"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:lable="@string/north"
         app:title="" />
-    <kg.core.custom.SelectView
+    <kg.forestry.ui.core.SelectView
         android:id="@+id/east"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:lable="@string/east"
         app:title="" />
-    <kg.core.custom.SelectView
+    <kg.forestry.ui.core.SelectView
         android:id="@+id/west"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

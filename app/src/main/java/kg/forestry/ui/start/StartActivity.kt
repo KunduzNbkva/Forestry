@@ -4,15 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import kg.forestry.R
-import kg.core.base.BaseActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.LocaleManager
 import kg.forestry.ui.auth.AuthActivity
+import kg.forestry.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_start.*
 
 class StartActivity : BaseActivity<StartViewModel>(R.layout.activity_start,StartViewModel::class){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if(vm.isUserLoggedIn())MainActivity.start(this)
         when(LocaleManager.getLanguagePref(this)){
             LocaleManager.LANGUAGE_KEY_KYRGYZ -> rb_kg.isChecked = true
             LocaleManager.LANGUAGE_KEy_ENGLISH -> rb_en.isChecked = true

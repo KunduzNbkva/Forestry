@@ -1,4 +1,4 @@
-package kg.forestry.localstorage.db
+package kg.forestry.localstorage.db.dao
 
 import androidx.room.*
 import kg.forestry.localstorage.model.Plant

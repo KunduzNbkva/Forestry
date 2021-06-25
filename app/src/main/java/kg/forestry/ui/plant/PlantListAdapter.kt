@@ -17,6 +17,8 @@ class PlantListAdapter(val listener: PlantListClickListener) :
             notifyDataSetChanged()
         }
 
+    var position: Int  = 0
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return Holder.create(parent, listener)
     }
@@ -27,9 +29,16 @@ class PlantListAdapter(val listener: PlantListClickListener) :
         holder.bind(items[position], position + 1)
     }
 
+
+
+
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
         lateinit var plant: Plant
         fun bind(plant: Plant?, index: Int) {
+            when(plant!!.isDraft){
+                true->itemView.isDraftTxt.visibility = View.VISIBLE
+                false ->itemView.isDraftTxt.visibility = View.GONE
+            }
             if (plant != null)
                 this.plant = plant
             itemView.tv_plot_name.text = "$index) ${plant?.plotName}"
@@ -43,7 +52,8 @@ class PlantListAdapter(val listener: PlantListClickListener) :
             ): Holder {
                 val view =
                     LayoutInflater.from(parent.context).inflate(
-                        R.layout.item_multitle_list, parent, false)
+                        R.layout.item_multitle_list, parent, false
+                    )
                 val holder = Holder(view)
                 holder.itemView.setOnClickListener { listener.onItemClick(holder.plant) }
                 return holder

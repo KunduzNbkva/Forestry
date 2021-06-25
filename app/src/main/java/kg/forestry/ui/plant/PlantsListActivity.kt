@@ -6,13 +6,14 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import kg.core.base.BaseActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.Constants
 import kg.forestry.R
 import kg.forestry.localstorage.Preferences
@@ -20,12 +21,10 @@ import kg.forestry.localstorage.model.Plant
 import kg.forestry.ui.extensions.toDate
 import kg.forestry.ui.plant.plant_info.AddPlantActivity
 import kg.forestry.ui.reports.ReportActivity
-import kotlinx.android.synthetic.main.activity_harvest_list.*
 import kotlinx.android.synthetic.main.activity_harvest_list.fab_add
 import kotlinx.android.synthetic.main.activity_harvest_list.null_view
 import kotlinx.android.synthetic.main.activity_harvest_list.rv_list
 import kotlinx.android.synthetic.main.activity_harvest_list.toolbar
-import kotlinx.android.synthetic.main.activity_plot_list.*
 
 
 class PlantsListActivity :
@@ -54,6 +53,7 @@ class PlantsListActivity :
         rv_list.adapter = adapter
         checkForNull()
     }
+
     private fun checkForNull(){
         if(adapter.items.isEmpty()){
             visible()
@@ -76,8 +76,18 @@ class PlantsListActivity :
         vm.plantListLiveData.observe(this, Observer { list ->
             if (list.isEmpty()){
                 visible()
-            } else{
-                adapter.items = list.sortedByDescending { it.date.toDate() }.toMutableList()
+            } else if(!isReport){
+                    adapter.items = list.sortedByDescending { it.date.toDate() }.toMutableList()
+                    invisible()
+            } else if(isReport){
+                val reportListPlants: MutableList<Plant?> = mutableListOf()
+                list.forEach{
+                    if(!it.isDraft) {
+                        reportListPlants.add(it)
+                    }
+                }
+                adapter.items = reportListPlants
+                adapter.items.sortedByDescending { it!!.date.toDate() }
                 invisible()
             }
         })
@@ -89,7 +99,6 @@ class PlantsListActivity :
             Toast.makeText(this, getString(R.string.synchronization), Toast.LENGTH_LONG).show()
         }
         finish()
-        // MainActivity.start(this)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -117,8 +126,7 @@ class PlantsListActivity :
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
-        grantResults: IntArray
-    ) {
+        grantResults: IntArray) {
         if (requestCode == REQUEST_LOCATION) {
             requestPermissions()
         }

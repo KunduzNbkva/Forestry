@@ -8,7 +8,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import kg.forestry.R
-import kg.core.base.BaseActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.*
 import kg.forestry.ui.reports.ReportViewModel
 import kg.core.utils.gone
@@ -16,7 +16,7 @@ import kg.core.utils.visible
 import kotlinx.android.synthetic.main.activity_harvest_report.*
 import org.parceler.Parcels
 
-class HarvestReportActivity : BaseActivity<ReportViewModel>(R.layout.activity_harvest_report, ReportViewModel::class) {
+class  HarvestReportActivity : BaseActivity<ReportViewModel>(R.layout.activity_harvest_report, ReportViewModel::class) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,10 +63,10 @@ class HarvestReportActivity : BaseActivity<ReportViewModel>(R.layout.activity_ha
 
     private fun setupViews(harvest: Harvest) {
         harvest.let {
-            name_pasture.setTitle(it.pastureName)
-            plot_name.setTitle(it.plotName)
+            name_pasture.setTitle(it.pastureName!!)
+            plot_name.setTitle(it.plotName!!)
             location.setTitle(it.harvLocation.getLocationAsString())
-            date.setTitle(it.date)
+            date.setTitle(it.date!!)
             setupBarChart(it.sumWetBiomass)
             setupDryBarChart(it.sumDryBiomass)
         }

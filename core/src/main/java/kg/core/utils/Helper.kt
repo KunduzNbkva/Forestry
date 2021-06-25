@@ -31,9 +31,11 @@ object Helper {
 
     fun fromStringToLocation(strLocation:String): Location {
         val location = Location(0.0,0.0)
-        location.lat = strLocation.split(" ")[0].toDouble()
-        location.lon = strLocation.split(" ")[1].toDouble()
-        return location
+        return if(strLocation.isNotEmpty()){
+            location.lat = strLocation.split(" ")[0].toDouble()
+            location.lon = strLocation.split(" ")[1].toDouble()
+            location
+        } else location
     }
 
     fun getLocationFormattedString(location: Location):String{
@@ -52,7 +54,6 @@ object Helper {
         return if (activeNetwork?.isConnected != null) {
             activeNetwork.isConnected
         } else {
-            //Toast.makeText(context,"Проверьте интернет соединение",Toast.LENGTH_SHORT).show()
             false
         }
     }

@@ -20,14 +20,14 @@
         android:elevation="5dp"
         app:navigationIcon="@drawable/ic_chevron_left_black_24dp" />
 </com.google.android.material.appbar.AppBarLayout>
-    <kg.core.custom.SelectView
+    <kg.forestry.ui.core.SelectView
         android:id="@+id/plants"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:lable="@string/plant_label"
         app:title="" />
 
-    <kg.core.custom.SelectView
+    <kg.forestry.ui.core.SelectView
         android:id="@+id/harvest"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

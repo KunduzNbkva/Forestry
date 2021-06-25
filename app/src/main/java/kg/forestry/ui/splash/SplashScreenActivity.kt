@@ -2,7 +2,7 @@ package kg.forestry.ui.splash
 
 import android.os.Bundle
 import kg.forestry.R
-import kg.core.base.BaseActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.forestry.ui.auth.AuthViewModel
 import kg.forestry.ui.main.MainActivity
 import kg.forestry.ui.start.StartActivity

@@ -14,7 +14,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kg.forestry.R
-import kg.core.base.BaseActivity
+import kg.forestry.ui.core.base.BaseActivity
 
 
 class MapAllPointsActivity : BaseActivity<MapAllPointViewModel>(R.layout.activity_map_all_points,MapAllPointViewModel::class), OnMapReadyCallback {

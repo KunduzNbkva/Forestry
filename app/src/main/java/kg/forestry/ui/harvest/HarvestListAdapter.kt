@@ -1,5 +1,6 @@
 package kg.forestry.ui.harvest
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,11 +30,19 @@ class HarvestListAdapter(val listener: HarvestListClickListener) :
 
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
         lateinit var harvest: Harvest
+        @SuppressLint("SetTextI18n")
         fun bind(harvest: Harvest?, index: Int) {
-            if (harvest != null)
+            when(harvest!!.isDraft){
+                true->itemView.isDraftTxt.visibility = View.VISIBLE
+                false ->itemView.isDraftTxt.visibility = View.GONE
+            }
+            if (harvest != null) {
                 this.harvest = harvest
-            itemView.tv_plot_name.text = "$index) ${harvest?.plotName}"
-            itemView.tv_text.text = harvest?.date
+                itemView.tv_plot_name.text = "$index) ${harvest.plotName}"
+                itemView.tv_text.text = harvest.date
+            }
+
+
         }
 
         companion object {

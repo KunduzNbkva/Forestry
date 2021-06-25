@@ -1,7 +1,7 @@
 package kg.forestry.ui.plant_type
 
 import kg.core.Event
-import kg.core.base.BaseViewModel
+import kg.forestry.ui.core.base.BaseViewModel
 import kg.forestry.localstorage.model.PlantType
 import kg.forestry.repos.PlantsRepository
 

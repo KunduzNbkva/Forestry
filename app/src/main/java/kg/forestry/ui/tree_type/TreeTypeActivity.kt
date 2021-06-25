@@ -8,7 +8,7 @@ import android.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kg.forestry.R
-import kg.core.base.BaseActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.Constants
 import kg.core.utils.LocaleManager
 import kg.forestry.localstorage.Preferences

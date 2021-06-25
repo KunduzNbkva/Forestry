@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import kg.core.Event
-import kg.core.base.BaseViewModel
+import kg.forestry.ui.core.base.BaseViewModel
 import kg.core.utils.Helper
 import kg.forestry.localstorage.model.Plant
 import kg.forestry.repos.PlantsRepository

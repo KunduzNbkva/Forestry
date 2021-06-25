@@ -13,9 +13,9 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kg.forestry.R
-import kg.core.base.BaseActivity
 import kg.forestry.localstorage.Preferences
 import kg.forestry.localstorage.model.User
+import kg.forestry.ui.core.base.BaseActivity
 import kg.forestry.ui.main.MainActivity
 import kg.forestry.ui.user_profile.UserProfileActivity
 import kotlinx.android.synthetic.main.activity_auth.*

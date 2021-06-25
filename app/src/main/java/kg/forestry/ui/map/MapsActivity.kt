@@ -8,7 +8,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -19,7 +18,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kg.forestry.R
-import kg.core.base.BaseActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.Constants
 import kg.core.utils.Location
 import kg.forestry.localstorage.Preferences
@@ -45,7 +44,8 @@ class MapsActivity : BaseActivity<MapAllPointViewModel>(
             title = getString(R.string.map)
             setNavigationOnClickListener { onBackPressed() }
         }
-        location = Location(0.0, 0.0)
+       // 42.8700000,74.5900000
+        location = Location(0.0,0.0 )
         loadMapWithPermission()
         btn_next.isEnabled = true
         btn_next.setOnClickListener {
@@ -126,18 +126,8 @@ class MapsActivity : BaseActivity<MapAllPointViewModel>(
                 this,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
-        }
+        ) { return }
         mMap.isMyLocationEnabled = true
-
         if (location.lat <= 0 && location.lon <= 0) {
             mMap.setOnMyLocationChangeListener { location ->
                 if (moveToMyLocationOnce) {
@@ -163,7 +153,7 @@ class MapsActivity : BaseActivity<MapAllPointViewModel>(
                     location.lon
                 )
             )
-            val zoom = CameraUpdateFactory.zoomTo(18f)
+            val zoom = CameraUpdateFactory.zoomTo(5f)
             mMap.moveCamera(center)
             mMap.animateCamera(zoom)
         }
@@ -178,11 +168,12 @@ class MapsActivity : BaseActivity<MapAllPointViewModel>(
     }
 
     private fun addMarkers() {
+        val dotOnCard = getString(R.string.dotOnCard)
         vm.getAllLocations().forEachIndexed { index, location ->
             val latLng = LatLng(location.lat, location.lon)
             val markerOptions = MarkerOptions()
             markerOptions.position(latLng)
-            markerOptions.title("Точка на карте ${index + 1}")
+            markerOptions.title("$dotOnCard ${index + 1}")
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker))
             mMap.addMarker(markerOptions)
         }

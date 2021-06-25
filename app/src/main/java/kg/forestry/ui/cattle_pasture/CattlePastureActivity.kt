@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import kg.forestry.R
 import kg.forestry.localstorage.model.CattlePasture
-import kg.core.base.BaseActivity
 import kg.core.utils.Constants
+import kg.forestry.ui.core.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_cattle_pasture.*
 
 class CattlePastureActivity : BaseActivity<CattlePastureViewModel>(R.layout.activity_cattle_pasture, CattlePastureViewModel::class) {

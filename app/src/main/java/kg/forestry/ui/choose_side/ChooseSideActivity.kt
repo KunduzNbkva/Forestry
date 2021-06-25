@@ -3,8 +3,9 @@ package kg.forestry.ui.choose_side
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import kg.forestry.R
-import kg.core.base.BaseActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.Constants
 import kg.forestry.localstorage.model.Plant
 import kg.core.utils.Side
@@ -101,36 +102,6 @@ class ChooseSideActivity :
         }
     }
 
-//    private fun uploadImage(){
-//        if(vm.plantInfo.plantPhoto != ""){
-//            val storageRef = FirebaseStorage.getInstance()
-//            val reference = storageRef.getReference()
-//
-//            val ref = reference.child("uploads/" + UUID.randomUUID().toString())
-//            val uploadTask = ref.putFile(Uri.fromFile(File(vm.plantInfo.plantPhoto))
-//
-//            val urlTask = uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
-//                if (!task.isSuccessful) {
-//                    task.exception?.let {
-//                        throw it
-//                    }
-//                }
-//                return@Continuation ref.downloadUrl
-//            })?.addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    val downloadUri = task.result
-////                    addUploadRecordToDb(downloadUri.toString())
-//                } else {
-//                    // Handle failures
-//                }
-//            }?.addOnFailureListener{
-//
-//            }
-//        }else{
-////            Toast.makeText(this, "Please Upload an Image", Toast.LENGTH_SHORT).show()
-//        }
-//    }
-
     private fun updateViews(plant: Plant) {
         btn_north.setChecked(plant.northSide.isValid())
         btn_east.setChecked(plant.eastSide.isValid())
@@ -138,10 +109,11 @@ class ChooseSideActivity :
         btn_west.setChecked(plant.westSide.isValid())
     }
 
-    companion object {
+    companion  object {
         const val REQUEST_CODE = 11119
 
         fun start(context: Activity, plant: Plant, isEditMode:Boolean?=false) {
+            Log.e("THIS", "context is $context")
             val intent = Intent(context, ChooseSideActivity::class.java)
             intent.putExtra(
                 Plant::class.java.canonicalName,

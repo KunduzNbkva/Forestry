@@ -1,4 +1,4 @@
-package kg.core.base
+package kg.forestry.ui.core.base
 
 import android.app.Dialog
 import android.content.Context
@@ -18,10 +18,11 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import kg.core.Event
-import kg.core.custom.ProgressDialog
+import kg.forestry.ui.core.ProgressDialog
 import kg.core.utils.ConnectionLiveData
 import kg.core.utils.LocaleManager
 import kg.core.utils.isConnected
+import kg.forestry.R
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import kotlin.reflect.KClass
 
@@ -38,7 +39,7 @@ abstract class BaseActivity<T : ViewModel>(@LayoutRes val layout: Int, val vmCla
         vm = getViewModel(vmClass)
         setContentView(layout)
         connectionLiveData = ConnectionLiveData(this)
-        (vm as? BaseViewModel<*>)?.let {
+        (vm as? BaseViewModel<*>)?.let { it ->
             it.showProgress.observe(this, Observer {
                 it?.let { setProgressBarState(it) }
             })
@@ -94,9 +95,9 @@ abstract class BaseActivity<T : ViewModel>(@LayoutRes val layout: Int, val vmCla
 
     fun exitWithQuery() {
         AlertDialog.Builder(this)
-            .setMessage("Вы дейстивтельно хотите выйти из приложения?")
-            .setPositiveButton("Да") { dialogInterface, i -> finish() }
-            .setNegativeButton("Нет", null)
+            .setMessage(getString(R.string.you_want_to_exist))
+            .setPositiveButton(getString(R.string.yes)) { _, _ -> finish() }
+            .setNegativeButton(getString(R.string.no), null)
             .create().show()
     }
 

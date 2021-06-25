@@ -1,7 +1,7 @@
 package kg.forestry.ui.soil_erossion
 
 import kg.core.Event
-import kg.core.base.BaseViewModel
+import kg.forestry.ui.core.base.BaseViewModel
 
 class SoilErossionViewModel: BaseViewModel<Event>() {
 

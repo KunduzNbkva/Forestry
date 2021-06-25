@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="choose_lang">Тилди тандаңыз</string>
-
+    <string name="title_activity_maps">Карта</string>
     <string name="title_about">“Жайыттардын абалына мониторинг жүргүзүү” мобилдик тиркемесин иштеп чыгаруу  Германиянын Экономикалык кызматташтык жана өнүктүрүү Федералдык министрлигинин (BMZ) тапшырмасы боюнча  Deutsche Gesellschaft für Internationale Zusammenarbeit (GIZ) GmbH (Германия эл аралык кызматташтык коому) тарабынан ишке ашырылып жаткан «Жаңгак-мөмө токойлорду жана жайыттарды башкарууга жергиликтүү жамааттарды катыштыруу аркылуу биологиялык ар түрдүүлүктү сактоо жана жакырчылыкты кыскартуу» долбоорунун алкагында ишке ашырылды.
 \nТиркемедеги маалымат  авторлордун так жоопкерчилиги болуп саналат жана GIZ уюмунун расмий пикирин чагылдырбайт.\n
-\nАталган мобилдик тиркеме “Land PKS” тиркемесинин негизинде “Camp Aлатоо”коомдук фонду тарабынан түзүлүп, ЖЧК “Интерсофт ЛТД” техникалык көмөгү менен ишке ашырылды.
-</string>
-    <string name="contacts">Байланыш дареги:
-</string>
+\nАталган мобилдик тиркеме “Land PKS” тиркемесинин негизинде “Camp Aлатоо”коомдук фонду тарабынан түзүлүп, ЖЧК “Интерсофт ЛТД” техникалык көмөгү менен ишке ашырылды.</string>
+    <string name="contacts">Байланыш дареги:</string>
     <string name="info_camp">“CAMP Алатоо” Коомдук фонду, \nКыргыз Республикасы,\nБишкек шаары,
 , Уфим көчөсү, 3\n+996 312 90 97 03\n\n<a href="https://www.camp.kg/">www.camp.kg</a></string>
-
     <string name="analyse_pasture">Жайыттардын абалы тууралуу \nмаалымат жыйноо жана анализдөө</string>
     <string name="next">Кийинки кадам </string>
     <string name="welcome">Кош келиниз!</string>
@@ -18,11 +15,7 @@
     <string name="harvest">Түшүмдүүлүк</string>
     <string name="map">Карта</string>
     <string name="new_value">Жаны жазуу</string>
-
-    <string name="dry_biomass_info">Эскертүү!\nКургак биомассаны нымдуу биомасса жыйналгандан тартып 15-20 күн өткөндөн кийин гана, толук кургап бүткөн соң таразага тартып өлчөө керек.
-</string>
-
-
+    <string name="dry_biomass_info">Эскертүү!\nКургак биомассаны нымдуу биомасса жыйналгандан тартып 15–20 күн өткөндөн кийин гана, толук кургап бүткөн соң таразага тартып өлчөө керек.</string>
     <string name="report">Отчеттуулук</string>
     <string name="user_profile">Профиль</string>
     <string name="instruction">Тиркеме тууралуу маалымат</string>
@@ -32,7 +25,6 @@
     <string name="pasture_region">Областтын аталышы</string>
     <string name="pasture_village">Аймактын аталышы</string>
     <string name="pasture_district">Райондун аталышы</string>
-
     <string name="pasture_name">Жайыттын аталышы</string>
     <string name="location">Координаттары</string>
     <string name="point_desc">Чекитти сүрөттөө</string>
@@ -44,40 +36,27 @@
     <string name="cattle_pasture">Мал жаюу</string>
     <string name="cattle_type">Малдын түрү</string>
     <string name="save">Сактоо</string>
-
     <string name="developed">Иштелип чыккан</string>
     <string name="owner">Аткаруучу</string>
-
     <string name="capture">Сүрөткө тартуу</string>
     <string name="from_gallery">Сүрөттү алмаштыруу</string>
-
-
     <string name="glina">Чопо</string>
     <string name="suglinok">Чопо,кум </string>
     <string name="suspes">Кумай</string>
     <string name="pesok">Кум</string>
     <string name="il">Баткактуу</string>
-
     <string name="wet_biomass">Нымдуу биомасса</string>
     <string name="dry_biomass">Кургак биомасса</string>
-
     <string name="eaten_biomass"> Желүүчү биомасса, грамм/м2</string>
     <string name="not_eaten_biomass">Желбей турган биомасса, грамм/м2</string>
-
-
     <string name="plants">Өсүмдүктөр</string>
     <string name="wet_biomass_in_gramm">Нымдуу биомасса, грамм/м2 </string>
     <string name="dry_biomass_in_gram">Кургак биомасса, грамм/м2</string>
     <string name="level_soil">Топурактын таштак даражасы</string>
-    <string name="_10_n">10 %ке чейин\nАз таштактуу
-</string>
-    <string name="_10_20_n">10-20 %\nОрто таштактуу
-</string>
-    <string name="_20_40_n">20-40 %\nТаштактуу
-
-</string>
-    <string name="_40_n">40 % ден көп\nАбдан таштактуу
-</string>
+    <string name="_10_n">10 %ке чейин\nАз таштактуу</string>
+    <string name="_10_20_n">10-20 %\nОрто таштактуу</string>
+    <string name="_20_40_n">20-40 %\nТаштактуу</string>
+    <string name="_40_n">40 % ден көп\nАбдан таштактуу</string>
     <string name="title">Аталышы</string>
     <string name="black">Кара</string>
     <string name="gray">Боз</string>
@@ -188,12 +167,32 @@
     <string name="need_permission">Бул функцияны колдонуу үчүн тийиштүү уруксат талап кылынат.</string>
     <string name="updated">Жаңыртылды</string>
     <string name="choose_region">Алгач аймакты тандаңыз</string>
-    <string name="are_you_sure_to_exit">Чын эле чыккыңыз келеби, бардык сакталбаган дайындар жоголот?</string>
+    <string name="are_you_sure_to_exit">Чын эле кеткиңиз келеби? Бардык сакталбаган дайындар жоголот же сиз Сомо катары сактасаңыз болот.</string>
     <string name="choose_region_or_state">Алгач аймакты / районду тандаңыз</string>
     <string name="input_indicators">Көрсөткүчтөр</string>
     <string name="yes">Ооба</string>
-    <string name="are_you_sure_to_delete">Вы действительно хотите удалить запись?</string>
+    <string name="are_you_sure_to_delete">Киргизүүнү чын эле жок кылгыңыз келеби?</string>
     <string name="wet_cant_be_more_than_dry">Нымдуу масса кургак массанын аз болушу мүмкүн эмес!</string>
     <string name="dry_cant_be_more_than_wet">Кургак масса нымдуу массанын чоң болушу мүмкүн эмес!</string>
     <string name="error">Ката</string>
+    <string name="draft">Сомо</string>
+    <string name="draft_saved">Сомо катары сакталды</string>
+    <string name="draft_text">Сомо</string>
+    <string name="success">Ийгиликтүү</string>
+    <string name="input_txt">Tекст киргизүү</string>
+    <string name="add_txt">Кошуу</string>
+    <string name="choose">Тандаңыз</string>
+    <string name="you_want_to_exist">Колдонмодон чын эле чыккыңыз келеби?</string>
+
+    <string name="not_observe">0</string>
+    <string name="ten">10</string>
+    <string name="thirty">30</string>
+    <string name="fifty">50</string>
+    <string name="seventy">70</string>
+    <string name="ninety">90</string>
+
+    <string name="dotOnCard">Картадагы чекит</string>
+
+    <string name="wait_loading">Жүктөлүүдө</string>
+
 </resources>

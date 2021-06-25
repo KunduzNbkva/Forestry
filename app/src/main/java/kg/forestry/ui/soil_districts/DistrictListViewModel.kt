@@ -2,7 +2,7 @@ package kg.forestry.ui.soil_districts
 
 import androidx.lifecycle.MutableLiveData
 import kg.core.Event
-import kg.core.base.BaseViewModel
+import kg.forestry.ui.core.base.BaseViewModel
 import kg.forestry.localstorage.model.District
 import kg.forestry.repos.FirebaseQueryLiveData
 import kg.forestry.repos.PlantsRepository

@@ -3,7 +3,7 @@ package kg.forestry.ui.harvest
 import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import kg.core.Event
-import kg.core.base.BaseViewModel
+import kg.forestry.ui.core.base.BaseViewModel
 import kg.core.utils.Harvest
 import kg.forestry.repos.HarvestRepository
 

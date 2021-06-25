@@ -21,7 +21,7 @@ import androidx.lifecycle.Observer
 import com.google.firebase.auth.FirebaseAuth
 import kg.forestry.R
 import kg.core.Event
-import kg.core.base.BaseActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.Harvest
 import kg.core.utils.PastureRecord
 import kg.core.utils.PlotRecord
@@ -41,7 +41,6 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 
-
 class MainActivity : BaseActivity<MainViewModel>(R.layout.activity_main, MainViewModel::class) {
 
     private val REQUEST_LOCATION: Int = 1001
@@ -58,10 +57,10 @@ class MainActivity : BaseActivity<MainViewModel>(R.layout.activity_main, MainVie
         setupViews()
 
         if (Preferences(this).isFirstLoad){
-            // show Message
             showMessageForLoadMaps(this)
         }
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -166,16 +165,23 @@ class MainActivity : BaseActivity<MainViewModel>(R.layout.activity_main, MainVie
                         }
                         vm.saveHarvestsToLocalDb(harvests.sortedByDescending { it.date })
                     })
+
                     vm.plants.observe(this, Observer {list ->
                         val plants = mutableListOf<Plant>()
+                        Log.e("data","list of plants is $plants")
                         list?.children?.forEach { data ->
+                             Log.e("data","value is ${data.getValue(Plant::class.java)}")
                             val value = data.getValue(Plant::class.java)
+                           // key bareGround = 0
+                            Log.e("data","value userId is ${value?.userId}")
                             if (value?.userId == Preferences(this).userToken) {
                                 plants.add(value)
-                            }
+                                          }
                         }
-                        vm.savePlantsToLocalDb(plants.sortedByDescending { it.date })
+                       vm.savePlantsToLocalDb(plants.sortedByDescending { it.date })
                     })
+
+
                     vm.regions.observe(this, Observer {
                         val regions = mutableListOf<Region>()
                         it?.children?.forEach { data ->

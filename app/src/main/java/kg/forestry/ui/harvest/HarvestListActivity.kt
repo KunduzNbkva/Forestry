@@ -6,26 +6,25 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import kg.core.base.BaseActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.Constants
 import kg.core.utils.Harvest
 import kg.forestry.R
 import kg.forestry.localstorage.Preferences
+import kg.forestry.localstorage.model.Plant
 import kg.forestry.ui.extensions.toDate
 import kg.forestry.ui.harvest.harvest_info.AddHarvestActivity
 import kg.forestry.ui.reports.harvest_report.HarvestReportActivity
 import kotlinx.android.synthetic.main.activity_harvest_list.*
 
-class HarvestListActivity :
-    BaseActivity<HarvestListViewModel>(R.layout.activity_harvest_list, HarvestListViewModel::class),
-    HarvestListAdapter.HarvestListClickListener {
-
+class HarvestListActivity : BaseActivity<HarvestListViewModel>(R.layout.activity_harvest_list, HarvestListViewModel::class), HarvestListAdapter.HarvestListClickListener {
     private val adapter = HarvestListAdapter(listener = this)
     private val REQUEST_LOCATION: Int = 1001
     private var isReport = false
@@ -72,8 +71,18 @@ class HarvestListActivity :
         vm.harvestListLiveData.observe(this, Observer { list ->
             if (list.isEmpty()) {
                 visible()
-            } else {
-                adapter.items = list.sortedByDescending { it.date.toDate() }.toMutableList()
+            } else if(!isReport) {
+                adapter.items = list.sortedByDescending { it.date!!.toDate() }.toMutableList()
+                invisible()
+            } else if(isReport){
+                val reportListHarvest: MutableList<Harvest?> = mutableListOf()
+                list.forEach{
+                    if(!it.isDraft) {
+                        reportListHarvest.add(it)
+                    }
+                }
+                adapter.items = reportListHarvest
+                adapter.items.sortedByDescending { it!!.date!!.toDate() }
                 invisible()
             }
         })

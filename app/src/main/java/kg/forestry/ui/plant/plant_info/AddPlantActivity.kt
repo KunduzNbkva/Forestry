@@ -26,7 +26,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.tbruyelle.rxpermissions2.RxPermissions
-import kg.core.base.BaseActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.*
 import kg.core.utils.Helper.getLocationFormattedString
 import kg.forestry.R
@@ -43,10 +43,7 @@ import kg.forestry.ui.soil_texture.SoilTextureActivity
 import kg.forestry.ui.soil_villages.VillageListActivity
 import kg.forestry.ui.tree_type.TreeTypeActivity
 import kotlinx.android.synthetic.main.activity_add_plant.*
-import kotlinx.android.synthetic.main.expansion_cattle.*
-import kotlinx.android.synthetic.main.expansion_cattle.tv_text_expansion
 import kotlinx.android.synthetic.main.expansion_cattle.view.*
-import kotlinx.android.synthetic.main.expansion_soil_color.*
 import org.parceler.Parcels
 import java.io.File
 import java.io.FileOutputStream
@@ -279,7 +276,7 @@ class AddPlantActivity :
                 soil_texture.getValue(),
                 soilColor,
                 degree_erosion.getValue(),
-                 grazeType,
+                grazeType,
                 cattleType,
                 date = getCurrentDate(),
                 plantPhoto = vm.photoPath,
@@ -414,11 +411,43 @@ class AddPlantActivity :
     }
 
     override fun onBackPressed() {
+        val cattleType = pasture_cattle.tv_text_expansion.text.toString()
+        val grazeType = cattle_pasture.tv_text_expansion.text.toString()
+        val soilColor = soilcolor.tv_text_expansion.text.toString()
+        val plant = Plant(
+            vm.getUserId(),
+            name_site.getValue(),
+            name_pasture.getValue(),
+            location.getValue(),
+            desc_point.getValue(),
+            desc_site.getValue(),
+            plant_type.getValue(),
+            tree_type.getValue(),
+            soil_texture.getValue(),
+            soilColor,
+            degree_erosion.getValue(),
+            grazeType,
+            cattleType,
+            date = getCurrentDate(),
+            plantPhoto = vm.photoPath,
+            plantLocation = Helper.fromStringToLocation(location.getValue()),
+            region = name_region.getValue(),
+            village = name_village.getValue(),
+            district = name_district.getValue(),
+            isDraft = true
+        )
         val builder = AlertDialog.Builder(this)
         builder.setMessage(getString(R.string.are_you_sure_to_exit))
             .setCancelable(false)
             .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 super.onBackPressed()
+            }
+            .setNeutralButton(getString(R.string.draft)){ _, _ ->
+                vm.plantInfo = plant
+                vm.savePlant(vm.isEditMode())
+                Log.e("draft","plantInfo is ${vm.plantInfo}")
+                super.onBackPressed()
+                Toast.makeText(this,getString(R.string.draft_saved),Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()

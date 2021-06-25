@@ -23,7 +23,7 @@
             app:navigationIcon="@drawable/ic_chevron_left_black_24dp" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -127,7 +127,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:text="@string/wet"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -139,6 +138,7 @@
 
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/barchart"
+                    android:layout_margin="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
                     android:layout_marginStart="10dp"
@@ -192,6 +192,7 @@
 
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/barchart_dry"
+                    android:layout_margin="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
                     android:layout_marginStart="10dp"
@@ -237,5 +238,5 @@
 
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
