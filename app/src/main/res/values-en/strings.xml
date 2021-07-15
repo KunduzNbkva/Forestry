@@ -194,6 +194,9 @@ The content of the information in the application is the sole responsibility of 
     <string name="dotOnCard">A point on the map</string>
 
     <string name="wait_loading">Wait...loading</string>
+    <string name="email_error">Field can\'t be empty</string>
+    <string name="enter_valid_email">Please enter a valid email address</string>
+    <string name="no_data">No added data</string>
 
 
 </resources>

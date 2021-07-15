@@ -4,12 +4,9 @@ package kg.forestry.ui.main
 import android.util.Log
 import com.google.firebase.database.*
 import kg.core.Event
+import kg.core.utils.*
 import kg.forestry.ui.core.base.BaseViewModel
-import kg.core.utils.Constants
-import kg.core.utils.Harvest
 import kg.core.utils.Helper.getRandomString
-import kg.core.utils.PastureRecord
-import kg.core.utils.PlotRecord
 import kg.forestry.localstorage.Preferences
 import kg.forestry.localstorage.db.AppDatabase
 import kg.forestry.localstorage.model.*
@@ -45,8 +42,6 @@ class MainViewModel(
     private val userPlots = FirebaseDatabase.getInstance().getReference(Constants.PLOTS)
     private val userPastures = FirebaseDatabase.getInstance().getReference(Constants.PASTURES)
 
-//    private val userRegions = FirebaseDatabase.getInstance().getReference(Constants.REGIONS)
-
     fun setUserPlant(azyr: String){
         val plantInfo = Plant("fghjklgcvhjkl",Preferences.instance.userToken,"","","","","","","","","","","","",0,0,0,0,0,0,0,azyr,"")
         plantsRepository.updateUserPlantInDB(plantInfo)
@@ -54,7 +49,7 @@ class MainViewModel(
     }
 
     fun deleteUserPlant(){
-        plantsRepository.removePlantFromServer("")
+        plantsRepository.removePlantFromServer("fghjklgcvhjkl")
     }
 
     fun removeUserToken() {

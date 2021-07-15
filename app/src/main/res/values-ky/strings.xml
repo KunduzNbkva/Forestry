@@ -194,5 +194,8 @@
     <string name="dotOnCard">Картадагы чекит</string>
 
     <string name="wait_loading">Жүктөлүүдө</string>
+    <string name="email_error">Талаа бош болбойт</string>
+    <string name="enter_valid_email">Сураныч, жарактуу электрондук почта дарегин киргизиңиз</string>
+    <string name="no_data">Кошулган маалыматтар жок</string>
 
 </resources>

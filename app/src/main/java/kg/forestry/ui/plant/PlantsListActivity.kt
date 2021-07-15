@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.activity_harvest_list.fab_add
 import kotlinx.android.synthetic.main.activity_harvest_list.null_view
 import kotlinx.android.synthetic.main.activity_harvest_list.rv_list
 import kotlinx.android.synthetic.main.activity_harvest_list.toolbar
+import java.lang.Exception
 
 
 class PlantsListActivity :
@@ -51,16 +52,8 @@ class PlantsListActivity :
         fab_add.setOnClickListener { AddPlantActivity.start(this) }
         rv_list.layoutManager = LinearLayoutManager(this)
         rv_list.adapter = adapter
-        checkForNull()
     }
 
-    private fun checkForNull(){
-        if(adapter.items.isEmpty()){
-            visible()
-        } else {
-            invisible()
-        }
-    }
 
     private fun visible(){
         null_view.visibility = View.VISIBLE
@@ -74,20 +67,10 @@ class PlantsListActivity :
     private fun subscribeToLiveData() {
         vm.fetchPlantsFromDb()
         vm.plantListLiveData.observe(this, Observer { list ->
-            if (list.isEmpty()){
+            if (list.isNullOrEmpty()){
                 visible()
-            } else if(!isReport){
-                    adapter.items = list.sortedByDescending { it.date.toDate() }.toMutableList()
-                    invisible()
-            } else if(isReport){
-                val reportListPlants: MutableList<Plant?> = mutableListOf()
-                list.forEach{
-                    if(!it.isDraft) {
-                        reportListPlants.add(it)
-                    }
-                }
-                adapter.items = reportListPlants
-                adapter.items.sortedByDescending { it!!.date.toDate() }
+            } else {
+                adapter.items = list.sortedByDescending { it.date.toDate() }.toMutableList()
                 invisible()
             }
         })
@@ -137,7 +120,14 @@ class PlantsListActivity :
         if (isReport) {
             ReportActivity.start(this, plantInfo)
         } else {
-            AddPlantActivity.start(this, plantInfo)
+            try {
+                AddPlantActivity.start(this, plantInfo)
+                Log.e("data","sending plant info is $plantInfo")
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+
+            Log.e("data","sending plant info is $plantInfo")
         }
     }
 

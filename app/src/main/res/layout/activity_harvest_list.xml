@@ -50,7 +50,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appBarLayout"
-        android:text="Нет добавленных данных"
+        android:text="@string/no_data"
         android:textSize="20sp"
         android:visibility="gone"
         android:fontFamily="sans-serif-light"

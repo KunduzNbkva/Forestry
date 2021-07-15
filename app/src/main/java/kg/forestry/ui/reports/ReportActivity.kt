@@ -64,20 +64,6 @@ class ReportActivity :
         }
     }
 
-
-//    private fun countEmptyValue( list:MutableList<String>, value: Int){
-//        list.forEach{
-//            when(it){
-//                getString(R.string.not_observe) -> value = value
-//                getString(R.string.ten) -> value += 10
-//                getString(R.string.thirty) -> value += 30
-//                getString(R.string.fifty) -> emptyCount += 50
-//                getString(R.string.seventy) -> emptyCount += 70
-//                getString(R.string.ninety) -> emptyCount += 90
-//            }
-//        }
-//    }
-
     @SuppressLint("SetTextI18n")
     private fun countEachStateInPlant(it: Plant) {
         var emptyCount = 0
@@ -87,31 +73,12 @@ class ReportActivity :
         var grassCount = 0
         var windCount = 0
         var stoneCount = 0
-        var eatenCount = 0
-        var nonEatenCount = 0
-
-
 
         val sideList = mutableListOf<Side>()
-        val distancesList = mutableListOf<NewDistance>()
+        val distancesList = mutableListOf<Distance>()
         val values = mutableListOf<String>()
         val heights = mutableListOf<String>()
-        val averageHeight = mutableListOf<String>()
-
-        //---
-        val emptyValues = mutableListOf<String>()
-        val bushValues = mutableListOf<String>()
-        val treeValues = mutableListOf<String>()
-        val baseValues = mutableListOf<String>()
-        val grassValues = mutableListOf<String>()
-        val eatenValues = mutableListOf<String>()
-        val nonEatenValues = mutableListOf<String>()
-        val stoneValues = mutableListOf<String>()
-        val opadValues = mutableListOf<String>()
-
-
-
-
+        var averageHeight = mutableListOf<String>()
 
         sideList.add(it.southSide)
         sideList.add(it.westSide)
@@ -126,89 +93,24 @@ class ReportActivity :
             distancesList.add(it.m25)
         }
         distancesList.forEach {
-            if(!it.bush.isNullOrEmpty())  bushValues.add(it.bush!!)
-            if(!it.stone.isNullOrEmpty())  stoneValues.add(it.stone!!)
-            if(!it.eatenPlant.isNullOrEmpty()) eatenValues.add(it.eatenPlant!!)
-            if(!it.nonEatenPlant.isNullOrEmpty())  nonEatenValues.add(it.nonEatenPlant!!)
-            if(!it.base.isNullOrEmpty())  baseValues.add(it.base!!)
-            if(!it.empty.isNullOrEmpty())  emptyValues.add(it.empty!!)
-            if(!it.opad.isNullOrEmpty())  opadValues.add(it.opad!!)
-            heights.add(it.plant_height!!)
+            values.add(it.d50)
+            values.add(it.d30)
+            values.add(it.d70)
+            values.add(it.d90)
+            values.add(it.d10)
+            heights.add(it.plant_height)
         }
-
-        emptyValues.forEach{
-            when(it){
-                getString(R.string.not_observe) -> emptyCount = 0
-                getString(R.string.ten) -> emptyCount += 10
-                getString(R.string.thirty) -> emptyCount += 30
-                getString(R.string.fifty) -> emptyCount += 50
-                getString(R.string.seventy) -> emptyCount += 70
-                getString(R.string.ninety) -> emptyCount += 90
+        values.forEach {
+            when (it) {
+                "EMPTY" -> emptyCount++
+                "TREE" -> treeCount++
+                "BUSH" -> bushCount++
+                "BASE" -> baseCount++
+                "GRASS" -> grassCount++
+                "WIND" -> windCount++
+                "STONE" -> stoneCount++
             }
         }
-        bushValues.forEach{
-            when(it){
-                getString(R.string.not_observe) -> bushCount = 0
-                getString(R.string.ten) -> bushCount += 10
-                getString(R.string.thirty) -> bushCount += 30
-                getString(R.string.fifty) -> bushCount += 50
-                getString(R.string.seventy) -> bushCount += 70
-                getString(R.string.ninety) -> bushCount += 90
-            }
-        }
-        eatenValues.forEach{
-            when(it){
-                getString(R.string.not_observe) -> eatenCount = 0
-                getString(R.string.ten) -> eatenCount += 10
-                getString(R.string.thirty) -> eatenCount += 30
-                getString(R.string.fifty) -> eatenCount += 50
-                getString(R.string.seventy) -> eatenCount += 70
-                getString(R.string.ninety) -> eatenCount += 90
-            }
-        }
-        nonEatenValues.forEach{
-            when(it){
-                getString(R.string.not_observe) -> nonEatenCount = 0
-                getString(R.string.ten) -> nonEatenCount += 10
-                getString(R.string.thirty) -> nonEatenCount += 30
-                getString(R.string.fifty) -> nonEatenCount += 50
-                getString(R.string.seventy) -> nonEatenCount += 70
-                getString(R.string.ninety) -> nonEatenCount += 90
-            }
-        }
-        stoneValues.forEach{
-            when(it){
-                getString(R.string.not_observe) -> stoneCount = 0
-                getString(R.string.ten) -> stoneCount += 10
-                getString(R.string.thirty) -> stoneCount += 30
-                getString(R.string.fifty) -> stoneCount += 50
-                getString(R.string.seventy) -> stoneCount += 70
-                getString(R.string.ninety) -> stoneCount += 90
-            }
-        }
-        opadValues.forEach{
-            when(it){
-                getString(R.string.not_observe) -> windCount = 0
-                getString(R.string.ten) -> windCount += 10
-                getString(R.string.thirty) -> windCount += 30
-                getString(R.string.fifty) -> windCount += 50
-                getString(R.string.seventy) -> windCount += 70
-                getString(R.string.ninety) -> windCount += 90
-            }
-        }
-        baseValues.forEach{
-            when(it){
-                getString(R.string.not_observe) -> baseCount = 0
-                getString(R.string.ten) -> baseCount += 10
-                getString(R.string.thirty) -> baseCount += 30
-                getString(R.string.fifty) -> baseCount += 50
-                getString(R.string.seventy) -> baseCount += 70
-                getString(R.string.ninety) -> baseCount += 90
-            }
-        }
-
-        stoneCount /= stoneValues.size
-
 
         heights.forEach {
             averageHeight.add(it.replace(("[^\\d.]").toRegex(), ""))
@@ -222,18 +124,11 @@ class ReportActivity :
         if(sum.count() > 0){
             summ = value / sum.size
         }
-        stoneCount /= stoneValues.size
-        emptyCount /= emptyValues.size
-        nonEatenCount /= nonEatenValues.size
-        eatenCount /= eatenValues.size
-        baseCount /= baseValues.size
-        bushCount /= bushValues.size
-        windCount /= opadValues.size
 
-        valuesPie.add(PieEntry(nonEatenCount.toFloat()))
+        valuesPie.add(PieEntry(treeCount.toFloat()))
         valuesPie.add(PieEntry(emptyCount.toFloat()))
         valuesPie.add(PieEntry(bushCount.toFloat()))
-        valuesPie.add(PieEntry(eatenCount.toFloat()))
+        valuesPie.add(PieEntry(grassCount.toFloat()))
         valuesPie.add(PieEntry(baseCount.toFloat()))
         valuesPie.add(PieEntry(stoneCount.toFloat()))
         valuesPie.add(PieEntry(windCount.toFloat()))
@@ -243,9 +138,9 @@ class ReportActivity :
         cvv_golaya.setNewTitle(getResourceString(R.string.bare_place).plus(" - $emptyCount"))
         cvv_opad.setNewTitle(getResourceString(R.string.decline).plus(" - $windCount"))
         cvv_osnova_rasteni.setNewTitle(getResourceString(R.string.plant_base).plus(" - $baseCount"))
-        cvv_kustarnik.setNewTitle(getResourceString(R.string.bush).plus(" - $bushCount"))
-        cvv_poedaemoe.setNewTitle(getResourceString(R.string.eaten_plant).plus(" - $eatenCount"))
-        cvv_ne_poedaemoe.setNewTitle(getResourceString(R.string.non_eaten_plant).plus(" - $nonEatenCount"))
+        cvv_kustarnik.setNewTitle(getResourceString(R.string.bush).plus(" - $treeCount"))
+        cvv_poedaemoe.setNewTitle(getResourceString(R.string.eaten_plant).plus(" - $bushCount"))
+        cvv_ne_poedaemoe.setNewTitle(getResourceString(R.string.non_eaten_plant).plus(" - $grassCount"))
 
     }
 
@@ -310,7 +205,7 @@ class ReportActivity :
     }
 
     private fun saveImage(bitmap: Bitmap) {
-            //Generating a file name
+        //Generating a file name
 //            val filename = "${System.currentTimeMillis()}.jpg"
 //
 //            //Output stream
@@ -353,7 +248,7 @@ class ReportActivity :
 //        }
 
 
-        }
+    }
 
     companion object {
         fun start(context: Context, plant: Plant? = null) {

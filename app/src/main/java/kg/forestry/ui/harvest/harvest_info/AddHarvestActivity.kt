@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.provider.MediaStore
-import android.util.Base64
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.ImageView
@@ -24,34 +23,23 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import kg.forestry.R
-import kg.forestry.ui.core.base.BaseActivity
+import com.tbruyelle.rxpermissions2.RxPermissions
 import kg.core.utils.*
-import kg.forestry.localstorage.model.ListType
 import kg.core.utils.Helper.fromStringToLocation
 import kg.core.utils.Helper.getLocationFormattedString
+import kg.forestry.R
 import kg.forestry.localstorage.model.District
+import kg.forestry.localstorage.model.ListType
 import kg.forestry.localstorage.model.Region
 import kg.forestry.ui.biomass.BiomassActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.forestry.ui.map.MapsActivity
 import kg.forestry.ui.pastures.PastureListActivity
 import kg.forestry.ui.plots.PlotListActivity
 import kg.forestry.ui.soil_districts.DistrictListActivity
 import kg.forestry.ui.soil_regions.RegionListActivity
 import kg.forestry.ui.soil_villages.VillageListActivity
-import com.tbruyelle.rxpermissions2.RxPermissions
-import kg.core.utils.Constants
 import kotlinx.android.synthetic.main.activity_harvest_info.*
-import kotlinx.android.synthetic.main.activity_harvest_info.btn_next
-import kotlinx.android.synthetic.main.activity_harvest_info.fl_take_photo
-import kotlinx.android.synthetic.main.activity_harvest_info.location
-import kotlinx.android.synthetic.main.activity_harvest_info.name_district
-import kotlinx.android.synthetic.main.activity_harvest_info.name_pasture
-import kotlinx.android.synthetic.main.activity_harvest_info.name_region
-import kotlinx.android.synthetic.main.activity_harvest_info.name_site
-import kotlinx.android.synthetic.main.activity_harvest_info.name_village
-import kotlinx.android.synthetic.main.activity_harvest_info.toolbar
-import kotlinx.android.synthetic.main.activity_harvest_info.tv_take_photo
 import org.parceler.Parcels
 import java.io.File
 import java.io.FileOutputStream
@@ -59,8 +47,7 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddHarvestActivity :
-    BaseActivity<AddHarvestViewModel>(R.layout.activity_harvest_info, AddHarvestViewModel::class) {
+class AddHarvestActivity : BaseActivity<AddHarvestViewModel>(R.layout.activity_harvest_info, AddHarvestViewModel::class) {
     private var filePath: Uri? = null
     lateinit var storage: FirebaseStorage
     lateinit var storageReference: StorageReference
@@ -71,7 +58,6 @@ class AddHarvestActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         parseDataFromIntent()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         storage = FirebaseStorage.getInstance()
@@ -89,33 +75,35 @@ class AddHarvestActivity :
 
     override fun onBackPressed() {
         val builder = AlertDialog.Builder(this)
-        val harvest = Harvest(
-            vm.harvestInfo?.id ?: "",
-            vm.getUserId(),
-            name_site.getValue(),
-            name_pasture.getValue(),
-            location.getValue(),
-            vm.wetBiomassValue,
-            vm.dryBiomassValue,
-            getCurrentDate(),
-            vm.photoPath,
-            harvLocation = fromStringToLocation(location.getValue()),
-            region = name_region.getValue(),
-            village = name_village.getValue(),
-            district = name_district.getValue(),
-                    isDraft = true
-
-        )
         builder.setMessage(getString(R.string.are_you_sure_to_exit))
             .setCancelable(false)
             .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 super.onBackPressed()
+                finish()
             }
             .setNeutralButton(getString(R.string.draft)){ _, _ ->
+                val harvest = Harvest(
+                    vm.harvestInfo?.id ?: "",
+                    vm.getUserId(),
+                    name_site.getValue(),
+                    name_pasture.getValue(),
+                    location.getValue(),
+                    vm.wetBiomassValue,
+                    vm.dryBiomassValue,
+                    getCurrentDate(),
+                    vm.photoPath,
+                    harvLocation = fromStringToLocation(location.getValue()),
+                    region = name_region.getValue(),
+                    village = name_village.getValue(),
+                    district = name_district.getValue(),
+                    isDraft = true)
                 vm.saveHarvest(harvest)
-                Log.e("draft","harvest is ${harvest.isDraft}")
+                Handler().postDelayed({
+                    finish()
+                }, 1000)
                 super.onBackPressed()
-                Toast.makeText(this,getString(R.string.draft_saved),Toast.LENGTH_SHORT).show()
+                finish()
+                Toast.makeText(this, getString(R.string.draft_saved), Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
@@ -197,8 +185,8 @@ class AddHarvestActivity :
         return when (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.P) {
             true -> File(
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                directory
-            )
+                directory)
+//            getExternalFilesDir("/")?.absolutePath,directory)
             else -> File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), directory)
         }
     }
@@ -247,14 +235,14 @@ class AddHarvestActivity :
             if (region != null && district != null){
                 VillageListActivity.start(this, district!!.id)
             }else {
-                Toast.makeText(this,getString(R.string.choose_region_or_state), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.choose_region_or_state), Toast.LENGTH_SHORT).show()
             }
         }
         name_district.setOnClickListener {
             if (region != null){
                 DistrictListActivity.start(this, false, region!!.id)
             }else {
-                Toast.makeText(this,getString(R.string.choose_region), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.choose_region), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -288,27 +276,29 @@ class AddHarvestActivity :
         }
 
         btn_next.setOnClickListener {
-            vm.saveHarvest(
-                Harvest(
-                    vm.harvestInfo?.id ?: "",
-                    vm.getUserId(),
-                    name_site.getValue(),
-                    name_pasture.getValue(),
-                    location.getValue(),
-                    vm.wetBiomassValue,
-                    vm.dryBiomassValue,
-                    getCurrentDate(),
-                    vm.photoPath,
-                    harvLocation = fromStringToLocation(location.getValue()),
-                    region = name_region.getValue(),
-                    village = name_village.getValue(),
-                    district = name_district.getValue(),
-                    isDraft = false
+            btn_next.setOnClickListener {
+                vm.saveHarvest(
+                    Harvest(
+                        vm.harvestInfo?.id ?: "",
+                        vm.getUserId(),
+                        name_site.getValue(),
+                        name_pasture.getValue(),
+                        location.getValue(),
+                        vm.wetBiomassValue,
+                        vm.dryBiomassValue,
+                        getCurrentDate(),
+                        harvestPhoto = vm.photoPath,
+                        harvLocation = fromStringToLocation(location.getValue()),
+                        region = name_region.getValue(),
+                        village = name_village.getValue(),
+                        district = name_district.getValue(),
+                        isDraft = false
+                    )
                 )
-            )
-            Handler().postDelayed({
-                finish()
-            }, 1000)
+                Handler().postDelayed({
+                    finish()
+                }, 1000)
+            }
         }
     }
 
@@ -359,15 +349,19 @@ class AddHarvestActivity :
             if (!harvestInfo.harvestPhoto.isNullOrEmpty()) {
                 setupImage(fl_take_photo, harvestInfo.harvestPhoto!!)
             }
-        }
-    }
 
-    private fun setupImage(imageView: ImageView, imageBase64: String) {
-        if(!File(imageBase64).isFile){
-            val imageAsBytes: ByteArray = Base64.decode(imageBase64.toByteArray(), Base64.DEFAULT)
-            imageView.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.size))
+            if(harvestInfo.isDraft){
+                harvestInfo.isDraft = true
+            }
         }
     }
+    private fun setupImage(imageView: ImageView, imageBase64: String) {
+        val file = File(imageBase64)
+        if(file.exists()){
+            val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+            imageView.setImageBitmap(bitmap)
+        }
+        }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -388,12 +382,18 @@ class AddHarvestActivity :
                 BiomassActivity.REQUEST_CODE -> {
                     when (data?.getSerializableExtra(Constants.BIOMASS_TYPE) as String?) {
                         BiomassType.WET.value -> {
-                            wetBiomass.setValue((data?.getSerializableExtra(Constants.BIOMASS_SUM) as Biomass).getSum().toString())
+                            wetBiomass.setValue(
+                                (data?.getSerializableExtra(Constants.BIOMASS_SUM) as Biomass).getSum()
+                                    .toString()
+                            )
                             vm.wetBiomassValue =
                                 data.getSerializableExtra(Constants.BIOMASS_SUM) as Biomass
                         }
                         BiomassType.DRY.value -> {
-                            dryBiomass.setValue((data?.getSerializableExtra(Constants.BIOMASS_SUM) as Biomass).getSum().toString())
+                            dryBiomass.setValue(
+                                (data?.getSerializableExtra(Constants.BIOMASS_SUM) as Biomass).getSum()
+                                    .toString()
+                            )
                             vm.dryBiomassValue =
                                 data.getSerializableExtra(Constants.BIOMASS_SUM) as Biomass
                         }
@@ -406,19 +406,18 @@ class AddHarvestActivity :
                 PICK_IMAGE_REQUEST -> {
                     if (data != null && data.data != null) {
                         filePath = data.data
-                        try { // Setting image on image view using Bitmap
+                        try {
                             val bitmap = MediaStore.Images.Media
                                 .getBitmap(contentResolver, filePath)
                             fl_take_photo.setImageBitmap(bitmap)
-                            vm.photoPath = getRealPathFromURI(filePath!!)//data.data?.path.toString()
-
-                        } catch (e: IOException) { // Log the exception
+                            vm.photoPath = getRealPathFromURI(filePath!!)
+                        } catch (e: IOException) {
                             e.printStackTrace()
                         }
                     }
                 }
                 REQUEST_CAMERA -> {
-                    vm.photoPath?.let {
+                    vm.photoPath.let {
                         val bitmap = BitmapFactory.decodeFile(it)
                         saveImage(bitmap)
                         fl_take_photo.setImageBitmap(bitmap)

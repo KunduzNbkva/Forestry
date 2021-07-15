@@ -191,7 +191,9 @@
     <string name="dotOnCard">Точка на карте</string>
 
     <string name="wait_loading">Подождите...загрузка</string>
-
+    <string name="email_error">Поле не может быть пустым</string>
+    <string name="enter_valid_email">Пожалуйста, введите действительный адрес электронной почты</string>
+    <string name="no_data">Нет добавленных данных</string>
 
 
 </resources>

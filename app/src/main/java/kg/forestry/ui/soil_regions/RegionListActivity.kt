@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kg.forestry.R
 import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.Constants
+import kg.forestry.localstorage.Preferences
 import kg.forestry.localstorage.model.Region
 import kotlinx.android.synthetic.main.activity_region_list.*
 
@@ -53,7 +54,7 @@ class RegionListActivity :
     override fun onBackPressed() {
         finish()
 //        MainActivity.start(this)
-////        if (vm.isNetworkConnected && Preferences(this).isUserAuthorized()) {
+//        if (vm.isNetworkConnected && Preferences(this).isUserAuthorized()) {
 ////            Toast.makeText(this, "Синхронизация данных", Toast.LENGTH_SHORT).show()
 ////        }
     }

@@ -41,8 +41,6 @@ class HarvestListAdapter(val listener: HarvestListClickListener) :
                 itemView.tv_plot_name.text = "$index) ${harvest.plotName}"
                 itemView.tv_text.text = harvest.date
             }
-
-
         }
 
         companion object {

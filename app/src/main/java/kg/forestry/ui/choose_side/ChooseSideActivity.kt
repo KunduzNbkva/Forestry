@@ -15,8 +15,7 @@ import kotlinx.android.synthetic.main.activity_choose_side.*
 import org.parceler.Parcels
 
 
-class ChooseSideActivity :
-    BaseActivity<ChooseSideViewModel>(R.layout.activity_choose_side, ChooseSideViewModel::class) {
+class ChooseSideActivity : BaseActivity<ChooseSideViewModel>(R.layout.activity_choose_side, ChooseSideViewModel::class) {
 
     private var isEditMode = false
 

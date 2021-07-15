@@ -12,7 +12,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Base64
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.ImageView
@@ -21,17 +20,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.tbruyelle.rxpermissions2.RxPermissions
-import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.*
 import kg.core.utils.Helper.getLocationFormattedString
 import kg.forestry.R
 import kg.forestry.localstorage.model.*
 import kg.forestry.ui.choose_side.ChooseSideActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.forestry.ui.map.MapsActivity
 import kg.forestry.ui.pastures.PastureListActivity
 import kg.forestry.ui.plant_type.PlantTypeActivity
@@ -43,6 +38,16 @@ import kg.forestry.ui.soil_texture.SoilTextureActivity
 import kg.forestry.ui.soil_villages.VillageListActivity
 import kg.forestry.ui.tree_type.TreeTypeActivity
 import kotlinx.android.synthetic.main.activity_add_plant.*
+import kotlinx.android.synthetic.main.activity_add_plant.btn_next
+import kotlinx.android.synthetic.main.activity_add_plant.fl_take_photo
+import kotlinx.android.synthetic.main.activity_add_plant.location
+import kotlinx.android.synthetic.main.activity_add_plant.name_district
+import kotlinx.android.synthetic.main.activity_add_plant.name_pasture
+import kotlinx.android.synthetic.main.activity_add_plant.name_region
+import kotlinx.android.synthetic.main.activity_add_plant.name_site
+import kotlinx.android.synthetic.main.activity_add_plant.name_village
+import kotlinx.android.synthetic.main.activity_add_plant.toolbar
+import kotlinx.android.synthetic.main.activity_add_plant.tv_take_photo
 import kotlinx.android.synthetic.main.expansion_cattle.view.*
 import org.parceler.Parcels
 import java.io.File
@@ -50,11 +55,18 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
+
 
 data class ExpansionModel(
     var img: Int,
     var title: String,
     var isColor: Boolean
+)
+data class AnimalModel(
+    var img: Int,
+    var title: String,
+    var isSelected: Boolean
 )
 
 class AddPlantActivity :
@@ -62,19 +74,13 @@ class AddPlantActivity :
     ExpansionClick, ExpansionGrazeClick {
 
     private var filePath: Uri? = null
-    lateinit var storage: FirebaseStorage
-    private lateinit var storageReference: StorageReference
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-
     private var region: Region? = null
     private var district: District? = null
+    private lateinit var cattleList:ArrayList<AnimalModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         parseDataFromIntent()
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        storage = FirebaseStorage.getInstance()
-        storageReference = storage.reference
         toolbar.apply {
             title = when (vm.isEditMode()) {
                 true -> getString(R.string.edit_mode)
@@ -83,6 +89,7 @@ class AddPlantActivity :
             setNavigationOnClickListener { onBackPressed() }
         }
         if (vm.isEditMode()) setupViewsForEditMode(vm.plantInfo)
+        Log.e("data", "is edit mode ${vm.isEditMode()}")
         initClickListeners()
         setExpansionCattle()
         setExpansionGraze()
@@ -139,21 +146,23 @@ class AddPlantActivity :
             name_region.setValue(this.region)
             name_district.setValue(this.district)
             if (plantInfo.plantPhoto.isNotEmpty()) {
-                setupImage(fl_take_photo, plantInfo.plantPhoto)
+                 setupImage(fl_take_photo, plantInfo.plantPhoto)
             }
-
-
+            if(plantInfo.isDraft){
+                plantInfo.isDraft = true
+            }
         }
     }
 
+
     private fun setExpansionCattle(){
-        val cattleList = ArrayList<ExpansionModel>()
-        cattleList.add(ExpansionModel(R.drawable.cow,getString(R.string.cows_valid), false))
-        cattleList.add(ExpansionModel(R.drawable.sheep,getString(R.string.sheeps_valid), false))
-        cattleList.add(ExpansionModel(R.drawable.horse,getString(R.string.horses_valid), false))
-        cattleList.add(ExpansionModel(R.drawable.yak,getString(R.string.yaks_valid),false))
+        cattleList = ArrayList()
+        cattleList.add(AnimalModel(R.drawable.cow, getString(R.string.cows_valid), false))
+        cattleList.add(AnimalModel(R.drawable.sheep, getString(R.string.sheeps_valid), false))
+        cattleList.add(AnimalModel(R.drawable.horse, getString(R.string.horses_valid), false))
+        cattleList.add(AnimalModel(R.drawable.yak, getString(R.string.yaks_valid), false))
         val recyclerCattle = findViewById<RecyclerView>(R.id.cattle_list)
-        val adapter = CattleAdapter(cattleList,this)
+        val adapter = AnimalAdapter(cattleList, this)
         recyclerCattle.adapter = adapter
     }
     private fun setExpansionGraze(){
@@ -163,29 +172,35 @@ class AddPlantActivity :
         grazeList.add(getString(R.string.intensively))
         grazeList.add(getString(R.string.temperately))
         val recyclerCattle = findViewById<RecyclerView>(R.id.graze_list)
-        val adapter = GrazeAdapter(grazeList,this)
+        val adapter = GrazeAdapter(grazeList, this)
         recyclerCattle.adapter = adapter
     }
 
     private fun setExpansionSoilColor(){
         val soilColorList = ArrayList<ExpansionModel>()
-        soilColorList.add(ExpansionModel(R.drawable.soil_black,getString(R.string.black), true))
-        soilColorList.add(ExpansionModel(R.drawable.soil_gray,getString(R.string.gray), true))
-        soilColorList.add(ExpansionModel(R.drawable.soil_white,getString(R.string.white), true))
-        soilColorList.add(ExpansionModel(R.drawable.soil_yellow,getString(R.string.yellow), true))
-        soilColorList.add(ExpansionModel(R.drawable.soil_red,getString(R.string.red), true))
-        soilColorList.add(ExpansionModel(R.drawable.soil_brown,getString(R.string.brown), true))
+        soilColorList.add(ExpansionModel(R.drawable.soil_black, getString(R.string.black), true))
+        soilColorList.add(ExpansionModel(R.drawable.soil_gray, getString(R.string.gray), true))
+        soilColorList.add(ExpansionModel(R.drawable.soil_white, getString(R.string.white), true))
+        soilColorList.add(ExpansionModel(R.drawable.soil_yellow, getString(R.string.yellow), true))
+        soilColorList.add(ExpansionModel(R.drawable.soil_red, getString(R.string.red), true))
+        soilColorList.add(ExpansionModel(R.drawable.soil_brown, getString(R.string.brown), true))
         val recyclerCattle = findViewById<RecyclerView>(R.id.soil_color_list)
-        val adapter = CattleAdapter(soilColorList,this)
+        val adapter = ColorAdapter(soilColorList, this)
         recyclerCattle.adapter = adapter
-    }
-
-    override fun expansionItemClick(model: ExpansionModel) {
-        pasture_cattle.tv_text_expansion.text = model.title
     }
 
     override fun colorClick(model: ExpansionModel) {
         soilcolor.tv_text_expansion.text = model.title
+    }
+
+    override fun animalClick(model: AnimalModel) {
+        var text = ""
+        for (model in cattleList ) {
+            if (model.isSelected) {
+                text += model.title +" "
+            }
+        }
+        pasture_cattle.tv_text_expansion.text = text
     }
 
     override fun expansionItemClick(string: String) {
@@ -193,15 +208,10 @@ class AddPlantActivity :
     }
 
     private fun setupImage(imageView: ImageView, imageBase64: String) {
-        if (!File(imageBase64).isFile) {
-            val imageAsBytes: ByteArray = Base64.decode(imageBase64.toByteArray(), Base64.DEFAULT)
-            imageView.setImageBitmap(
-                BitmapFactory.decodeByteArray(
-                    imageAsBytes,
-                    0,
-                    imageAsBytes.size
-                )
-            )
+        val file = File(imageBase64)
+        if(file.exists()){
+            val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+            imageView.setImageBitmap(bitmap)
         }
     }
 
@@ -257,42 +267,45 @@ class AddPlantActivity :
                 vm.photoPath = it
             }
         }
-
-
         btn_next.setOnClickListener {
-            val cattleType = pasture_cattle.tv_text_expansion.text.toString()
-            val grazeType = cattle_pasture.tv_text_expansion.text.toString()
-            val soilColor = soilcolor.tv_text_expansion.text.toString()
-            val plant = Plant(
-                vm.plantInfo?.id ?: "",
-                vm.getUserId(),
-                name_site.getValue(),
-                name_pasture.getValue(),
-                location.getValue(),
-                desc_point.getValue(),
-                desc_site.getValue(),
-                plant_type.getValue(),
-                tree_type.getValue(),
-                soil_texture.getValue(),
-                soilColor,
-                degree_erosion.getValue(),
-                grazeType,
-                cattleType,
-                date = getCurrentDate(),
-                plantPhoto = vm.photoPath,
-                plantLocation = Helper.fromStringToLocation(location.getValue()),
-                region = name_region.getValue(),
-                village = name_village.getValue(),
-                district = name_district.getValue()
-            )
-            if (vm.isEditMode()) {
-                plant.southSide = vm.plantInfo!!.southSide
-                plant.northSide = vm.plantInfo!!.northSide
-                plant.westSide = vm.plantInfo!!.westSide
-                plant.eastSide = vm.plantInfo!!.eastSide
-            }
-            ChooseSideActivity.start(this, plant, vm.isEditMode())
+          getInfo()
         }
+    }
+
+    private fun getInfo(){
+        val cattleType = pasture_cattle.tv_text_expansion.text.toString()
+        val grazeType = cattle_pasture.tv_text_expansion.text.toString()
+        val soilColor = soilcolor.tv_text_expansion.text.toString()
+        val plant = Plant(
+            vm.plantInfo?.id ?: "",
+            vm.getUserId(),
+            name_site.getValue(),
+            name_pasture.getValue(),
+            location.getValue(),
+            desc_point.getValue(),
+            desc_site.getValue(),
+            plant_type.getValue(),
+            tree_type.getValue(),
+            soil_texture.getValue(),
+            soilColor,
+            degree_erosion.getValue(),
+            grazeType,
+            cattleType,
+            date = getCurrentDate(),
+            plantPhoto = vm.photoPath,
+            plantLocation = Helper.fromStringToLocation(location.getValue()),
+            region = name_region.getValue(),
+            village = name_village.getValue(),
+            district = name_district.getValue(),
+            isDraft = false
+        )
+        if (vm.isEditMode()) {
+            plant.southSide = vm.plantInfo!!.southSide
+            plant.northSide = vm.plantInfo!!.northSide
+            plant.westSide = vm.plantInfo!!.westSide
+            plant.eastSide = vm.plantInfo!!.eastSide
+        }
+        ChooseSideActivity.start(this, plant, vm.isEditMode())
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -371,8 +384,7 @@ class AddPlantActivity :
     private fun getExternalStorage(directory: String): File {
         return when (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.P) {
             true -> File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                directory
+                this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), directory
             )
             else -> File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), directory)
         }
@@ -407,14 +419,37 @@ class AddPlantActivity :
         val name = Plant::class.java.canonicalName
         Parcels.unwrap<Plant>(intent.getParcelableExtra(name))?.let {
             vm.plantInfo = it
+            Log.e("data", "plantInfo is $it")
         }
     }
 
     override fun onBackPressed() {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(getString(R.string.are_you_sure_to_exit))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                super.onBackPressed()
+            }
+            .setNeutralButton(getString(R.string.draft)){ _, _ ->
+                vm.plantInfo = getDraftInfo()
+                vm.savePlant(vm.isEditMode())
+                super.onBackPressed()
+                Toast.makeText(this, getString(R.string.draft_saved), Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+        val alert = builder.create()
+        alert.show()
+
+    }
+
+    private fun getDraftInfo(): Plant{
         val cattleType = pasture_cattle.tv_text_expansion.text.toString()
         val grazeType = cattle_pasture.tv_text_expansion.text.toString()
         val soilColor = soilcolor.tv_text_expansion.text.toString()
-        val plant = Plant(
+        return  Plant(
+            vm.plantInfo?.id ?: "",
             vm.getUserId(),
             name_site.getValue(),
             name_pasture.getValue(),
@@ -436,24 +471,6 @@ class AddPlantActivity :
             district = name_district.getValue(),
             isDraft = true
         )
-        val builder = AlertDialog.Builder(this)
-        builder.setMessage(getString(R.string.are_you_sure_to_exit))
-            .setCancelable(false)
-            .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                super.onBackPressed()
-            }
-            .setNeutralButton(getString(R.string.draft)){ _, _ ->
-                vm.plantInfo = plant
-                vm.savePlant(vm.isEditMode())
-                Log.e("draft","plantInfo is ${vm.plantInfo}")
-                super.onBackPressed()
-                Toast.makeText(this,getString(R.string.draft_saved),Toast.LENGTH_SHORT).show()
-            }
-            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                dialog.dismiss()
-            }
-        val alert = builder.create()
-        alert.show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -509,33 +526,45 @@ class AddPlantActivity :
                     district = intent
                     name_district.setValue(intent.name)
                 }
-
                 PICK_IMAGE_REQUEST -> {
+
                     if (data != null && data.data != null) {
                         filePath = data.data
-                        try { // Setting image on image view using Bitmap
+                        try {
                             val bitmap = MediaStore.Images.Media
                                 .getBitmap(contentResolver, filePath)
                             fl_take_photo.setImageBitmap(bitmap)
-                            vm.photoPath =
-                                getRealPathFromURI(filePath!!)//data.data?.path.toString()
-
-                        } catch (e: IOException) { // Log the exception
+                            vm.photoPath = getRealPathFromURI(filePath!!)
+                        } catch (e: IOException) {
                             e.printStackTrace()
                         }
                     }
+//                    if (data != null && data.data != null) {
+//                        filePath = data.data
+//                        fl_take_photo.loadImage(filePath.toString())
+//                        vm.photoPath = getRealPathFromURI(filePath!!)
+//                    }
                 }
                 REQUEST_CAMERA -> {
-                    vm.photoPath?.let {
+                    vm.photoPath.let {
                         val bitmap = BitmapFactory.decodeFile(it)
                         saveImage(bitmap)
                         fl_take_photo.setImageBitmap(bitmap)
                         vm.photoPath = saveTemporarilyCapturedImage(bitmap)
                     }
+
+//                    vm.photoPath.let {
+//                        val bitmap = BitmapFactory.decodeFile(it)
+//                        saveImage(bitmap)
+//                        fl_take_photo.loadImage(it)
+//                        vm.photoPath = getRealPathFromURI(data?.data!!)
+//                       // vm.photoPath = saveTemporarilyCapturedImage(bitmap)
+//                    }
+                }
                 }
             }
         }
-    }
+
 
     private fun getRealPathFromURI(contentURI: Uri): String {
         val filePath: String?

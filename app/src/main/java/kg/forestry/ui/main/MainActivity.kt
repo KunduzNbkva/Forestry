@@ -50,9 +50,10 @@ class MainActivity : BaseActivity<MainViewModel>(R.layout.activity_main, MainVie
         super.onCreate(savedInstanceState)
         requestPermissions()
 
+        //vm.setUserPlant("00-00-00")
+        //vm.deleteUserPlant()
         vm.setProgress(true)
         vm.fetchUserData()
-
         subscribeToLiveData()
         setupViews()
 
@@ -168,12 +169,8 @@ class MainActivity : BaseActivity<MainViewModel>(R.layout.activity_main, MainVie
 
                     vm.plants.observe(this, Observer {list ->
                         val plants = mutableListOf<Plant>()
-                        Log.e("data","list of plants is $plants")
                         list?.children?.forEach { data ->
-                             Log.e("data","value is ${data.getValue(Plant::class.java)}")
                             val value = data.getValue(Plant::class.java)
-                           // key bareGround = 0
-                            Log.e("data","value userId is ${value?.userId}")
                             if (value?.userId == Preferences(this).userToken) {
                                 plants.add(value)
                                           }
@@ -228,7 +225,6 @@ class MainActivity : BaseActivity<MainViewModel>(R.layout.activity_main, MainVie
             }
             vm.saveTreesToDB(treesCatalog)
         })
-        Log.d("ISEMPTY ",vm.isPlantsDbEmpty().toString())
         vm.test()
     }
 

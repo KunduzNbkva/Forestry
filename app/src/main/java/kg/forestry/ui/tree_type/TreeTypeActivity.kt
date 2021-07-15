@@ -39,13 +39,10 @@ class TreeTypeActivity:
         rv_list.adapter = adapter
         subscribeToLiveData()
         button.setOnClickListener {
-            var treeType = multiValues.joinToString()
-
+            val treeType = multiValues.joinToString()
             finishActivityWithResultOK(treeType)
         }
-
         setupSearchView()
-
     }
 
     private fun subscribeToLiveData() {

@@ -87,11 +87,11 @@ data class Erosion(
 
 @Parcel
 data class Side(
-    var m5: NewDistance = NewDistance(),
-    var m10: NewDistance= NewDistance(),
-    var m15: NewDistance= NewDistance(),
-    var m20: NewDistance= NewDistance(),
-    var m25: NewDistance= NewDistance()
+    var m5: Distance = Distance(),
+    var m10: Distance = Distance(),
+    var m15: Distance = Distance(),
+    var m20: Distance = Distance(),
+    var m25: Distance = Distance()
 ) : Serializable {
     fun isValid() = m5.isValid()
             && m10.isValid()
@@ -99,29 +99,40 @@ data class Side(
             && m20.isValid()
             && m25.isValid()
 }
-
 @Parcel
-data class NewDistance(
-    var empty: String? = null,
-    var bush: String? = null,
-    var eatenPlant: String? = null,
-    var nonEatenPlant: String? = null,
-    var opad: String? = null,
-    var stone: String? = null,
-    var base: String? = null,
-    var plant_height: String? = null
+data class Distance(
+    var d10: String = "NULL",
+    var d30: String = "NULL",
+    var d50: String = "NULL",
+    var d70: String = "NULL",
+    var d90: String = "NULL",
+    var plant_height: String = ""
 ) : Serializable {
+    private val excludeTypes = arrayOf("EMPTY", "WIND", "STONE")
 
     fun isValid(): Boolean {
-        return (!empty.equals(null)
-                && !bush.equals(null)
-                && !eatenPlant.equals(null)
-                && !nonEatenPlant.equals(null)
-                && !opad.equals(null)
-                && !stone.equals(null)
-                && !plant_height.equals(null))
-        }
+        return ((!d10.contentEquals("NULL")
+                && !d30.contentEquals("NULL")
+                && !d50.contentEquals("NULL")
+                && !d70.contentEquals("NULL")
+                && !d90.contentEquals("NULL")
+                && plant_height.isNotEmpty())
+                || !isNeedHeight())
     }
 
+    fun isNeedHeight() =
+        (d10 !in excludeTypes || d30 !in excludeTypes || d50 !in excludeTypes || d70 !in excludeTypes || d90 !in excludeTypes)
+}
+
+enum class TypeInDistance {
+    NULL,
+    EMPTY,
+    TREE,
+    BUSH,
+    GRASS,
+    BASE,
+    WIND,
+    STONE
+}
 
 

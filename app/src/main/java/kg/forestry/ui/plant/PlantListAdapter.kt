@@ -35,14 +35,13 @@ class PlantListAdapter(val listener: PlantListClickListener) :
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
         lateinit var plant: Plant
         fun bind(plant: Plant?, index: Int) {
-            when(plant!!.isDraft){
+            this.plant = plant!!
+            when(plant.isDraft){
                 true->itemView.isDraftTxt.visibility = View.VISIBLE
                 false ->itemView.isDraftTxt.visibility = View.GONE
             }
-            if (plant != null)
-                this.plant = plant
-            itemView.tv_plot_name.text = "$index) ${plant?.plotName}"
-            itemView.tv_text.text = plant?.date
+            itemView.tv_plot_name.text = "$index) ${plant.plotName}"
+            itemView.tv_text.text = plant.date
         }
 
         companion object {

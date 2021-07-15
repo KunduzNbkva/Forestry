@@ -5,8 +5,10 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -25,46 +27,34 @@ import androidx.lifecycle.Observer
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.tbruyelle.rxpermissions2.RxPermissions
-import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.Helper
 import kg.core.utils.LocaleManager
 import kg.forestry.R
 import kg.forestry.localstorage.model.User
+import kg.forestry.ui.core.base.BaseActivity
+import kg.forestry.ui.extensions.getExifOrientation
+import kg.forestry.ui.extensions.loadImage
 import kg.forestry.ui.main.MainActivity
+import kotlinx.android.synthetic.main.activity_harvest_info.*
 import kotlinx.android.synthetic.main.activity_user_profile.*
+import kotlinx.android.synthetic.main.activity_user_profile.toolbar
+import kotlinx.android.synthetic.main.activity_user_profile.tv_take_photo
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.*
 
 
-class EditProfileActivity : BaseActivity<UserProfileViewModel>(
-    R.layout.activity_user_profile,
-    UserProfileViewModel::class
-) {
-    lateinit var storage: FirebaseStorage
-    lateinit var storageReference: StorageReference
+class EditProfileActivity : BaseActivity<UserProfileViewModel>(R.layout.activity_user_profile, UserProfileViewModel::class) {
     private var filePath: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupLanguage()
-        setDefImage()
-        storage = FirebaseStorage.getInstance()
-        storageReference = storage.reference
         setupViews()
         if (!Helper.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
         } else {
             subscribeToLiveData()
-        }
-    }
-
-    private fun setDefImage(){
-        if(vm.userInfo.userPhoto == ""){
-           img_profile.setImageResource(R.drawable.photo_placeholder)
         }
     }
 
@@ -77,15 +67,11 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(
     }
 
     private fun setupImage(imageView: ImageView, imageBase64: String) {
-        if (!File(imageBase64).isFile) {
-            val imageAsBytes: ByteArray = Base64.decode(imageBase64.toByteArray(), Base64.DEFAULT)
-            imageView.setImageBitmap(
-                BitmapFactory.decodeByteArray(
-                    imageAsBytes,
-                    0,
-                    imageAsBytes.size
-                )
-            )
+        val file = File(imageBase64)
+        if(file.exists()){
+            Log.e("file","file path is $file.absolutePath")
+            val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+            imageView.setImageBitmap(bitmap)
         }
     }
 
@@ -102,16 +88,26 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(
                 kvv_date_reg.setValue(userInfo?.date)
                 phone.setValue(userInfo?.phone)
 
-                if (vm.imageBase64 != "") {
-                    setupImage(img_profile, vm.imageBase64)
+                if (vm.photoPath != "") {
+                    setupImage(img_profile, vm.photoPath)
                 } else {
                     userInfo?.userPhoto?.let { it1 -> setupImage(img_profile, it1) }
                 }
-//                if (!userInfo?.userPhoto.isNullOrEmpty()) {
-//                    img_profile.setImageURI(Uri.parse("file:/" + userInfo?.userPhoto))
-//                }
             }
         })
+    }
+    private fun getRealPathFromURI(contentURI: Uri): String {
+        val filePath: String?
+        val cursor: Cursor? = contentResolver.query(contentURI, null, null, null, null)
+        if (cursor == null) {
+            filePath = contentURI.path
+        } else {
+            cursor.moveToFirst()
+            val idx: Int = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+            filePath = cursor.getString(idx)
+            cursor.close()
+        }
+        return filePath!!
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -121,39 +117,23 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(
                 PICK_IMAGE_REQUEST -> {
                     if (data != null && data.data != null) {
                         filePath = data.data
-                        try { // Setting image on image view using Bitmap
-                            val bitmap =
-                                MediaStore.Images.Media.getBitmap(contentResolver, filePath)
-
-                            val scaledImage = compressBitmap(bitmap, 20)
-                            val base64 = toBase64(scaledImage)
-
-                            vm.imageBase64 = base64 //data.data?.path.toString()
-                            img_profile.setImageURI(null)
-
-                            // img_profile.setImageURI(filePath)
-                           // val rotatedBitmap = bitmap.rotate(90f)
-                            img_profile.setImageBitmap(bitmap)
-
-
-                        } catch (e: IOException) { // Log the exception
+                        try {
+                            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, filePath)
+                            vm.photoPath = getRealPathFromURI(filePath!!)
+                            Log.e("photo","profile path is $filePath and ${vm.photoPath} ")
+                            img_profile.setImageURI(filePath)
+                        } catch (e: IOException) {
                             e.printStackTrace()
                         }
                     }
+
                 }
                 REQUEST_CAMERA -> {
                     vm.photoPath.let {
                         val bitmap = BitmapFactory.decodeFile(it)
-                        val scaledImage = compressBitmap(bitmap, 20)
-                        val base64 = toBase64(scaledImage)
-
-                        vm.imageBase64 = base64
-//                        img_profile.setImageBitmap(bitmap)
-                        img_profile.setImageURI(null)
-                        img_profile.setImageURI(filePath)
-
-
-//                        vm.photoPath = "/raw/" + saveTemporarilyCapturedImage(bitmap)
+                        vm.photoPath = it
+                        Log.e("photo","camera profile path is $filePath and ${vm.photoPath} ")
+                        img_profile.setImageBitmap(bitmap)
                     }
                 }
             }
@@ -201,8 +181,8 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(
         vm.userInfo.organization = inp_layout_organization.editText?.text.toString().trim()
         vm.userInfo.date = kvv_date_reg.getValue()
         vm.userInfo.phone = phone.getValue()
-        if (vm.imageBase64 != "") {
-            vm.userInfo.userPhoto = vm.imageBase64
+        if (vm.photoPath != "") {
+            vm.userInfo.userPhoto = vm.photoPath
         }
         if (Helper.isNetworkConnected(this)) {
             vm.updateUserInfo(vm.userInfo)
@@ -213,9 +193,9 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(
         val emailTxt = inp_email.text.toString().trim()
 
         if (emailTxt.isEmpty()) {
-            inp_layout_email.error = "Field can't be empty"
+            inp_layout_email.error = getString(R.string.email_error)
         } else if (!Patterns.EMAIL_ADDRESS.matcher(emailTxt).matches()) {
-            inp_layout_email.error = "Please enter a valid email address"
+            inp_layout_email.error = getString(R.string.enter_valid_email)
         } else {
             inp_layout_email.error = null
             updateUser()
@@ -245,10 +225,8 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(
     }
 
     private fun compressBitmap(bitmap: Bitmap, quality: Int): ByteArray {
-        // Initialize a new ByteArrayStream
         val stream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream)
-
         return stream.toByteArray()
     }
 
@@ -272,8 +250,6 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(
             "English" -> LocaleManager.setNewLocale(this, LocaleManager.LANGUAGE_KEy_ENGLISH)
             "Кыргызча" -> LocaleManager.setNewLocale(this, LocaleManager.LANGUAGE_KEY_KYRGYZ)
         }
-        /* vm.updateUserInfo(User(kvv_language.getValue(), photoPath))
-         MainActivity.start(this)*/
     }
 
     private fun showImagePickerDialog(onFileCreated: ((String) -> Unit)? = null) {
@@ -333,8 +309,7 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(
     private fun getExternalStorage(directory: String): File {
         return when (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.P) {
             true -> File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                directory
+            this.getExternalFilesDir(Environment.DIRECTORY_PICTURES),directory
             )
             else -> File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), directory)
         }
@@ -357,28 +332,6 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(
             applicationContext,
             "${packageName}.fileprovider", file
         )
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    private fun saveTemporarilyCapturedImage(bitmap: Bitmap?): String {
-        val fileName = "IMG_" + SimpleDateFormat("yyyyMMddHHmmss").format(Date()) + ".jpg"
-        if (bitmap != null) {
-            val mediaStorageDir = this.getExternalStorage("/forestry")
-            if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) return ""
-            val filePath = mediaStorageDir!!.path + File.separator + fileName
-            val file = File(filePath)
-            try {
-                val fileOutputStream = FileOutputStream(file)
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 60, fileOutputStream)
-                fileOutputStream.flush()
-                fileOutputStream.close()
-                return filePath
-
-            } catch (exception: Exception) {
-                Log.i("TAG", "saveCapturedImage: could not save picture")
-            }
-        }
-        return ""
     }
 
     companion object {
