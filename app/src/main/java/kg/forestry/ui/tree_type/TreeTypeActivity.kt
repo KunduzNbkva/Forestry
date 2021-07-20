@@ -48,7 +48,6 @@ class TreeTypeActivity:
     private fun subscribeToLiveData() {
         val types = mutableListOf<Pair<String, Boolean>>()
         val keyValue  = intent.getStringExtra(Constants.TREES_CATALOG)?:""
-        Log.d("ISRAIL",keyValue)
 
         if (Preferences(this).userToken.isNotEmpty()) {
             vm.treesCatalogLiveData.observe(this, Observer {

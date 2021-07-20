@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.core.view.get
 import kg.forestry.R
 import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.Constants
@@ -22,7 +23,6 @@ class ChooseSideActivity : BaseActivity<ChooseSideViewModel>(R.layout.activity_c
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         parseDataFromIntent()
-
         toolbar.apply {
             title = context.getString(R.string.direction)
             setNavigationOnClickListener { onBackPressed() }
@@ -43,6 +43,19 @@ class ChooseSideActivity : BaseActivity<ChooseSideViewModel>(R.layout.activity_c
         }
         if (isEditMode){
             updateViews(vm.plantInfo)
+        }
+
+        checkSides()
+
+    }
+
+    private fun checkSides(){
+        if(btn_west.getChecked()==true && btn_south.getChecked() == true && btn_north.getChecked() == true && btn_east.getChecked() == true){
+            vm.savePlant(isEditMode)
+            val intent = Intent(this, PlantsListActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+       //      PlantsListActivity.start(this,false)
         }
     }
 

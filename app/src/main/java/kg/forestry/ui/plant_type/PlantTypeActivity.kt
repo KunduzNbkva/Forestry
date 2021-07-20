@@ -44,8 +44,6 @@ class PlantTypeActivity :
             setNavigationOnClickListener { onBackPressed() }
         }
         vm.fetchPlantsFromDb()
-        Log.d("LIST TYPE",vm.fetchPlantsFromDb().toString())
-
         button.setOnClickListener {
             multiValues.forEach {
                 selectedPlantNames.add(it.name_ru)
@@ -124,6 +122,7 @@ class PlantTypeActivity :
                         LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = it.name_ky
                         LocaleManager.LANGUAGE_KEy_ENGLISH -> name = it.name_en
                     }
+                    Log.e("language","ky name is ${it.name_ky},en name is ${it.name_en},ru name is ${it.name_ru}")
 
                     val isSelected = keyValue.contains(name)
                     if (isSelected && !selectedPlantNames.contains(name)) selectedPlantNames.add(name)

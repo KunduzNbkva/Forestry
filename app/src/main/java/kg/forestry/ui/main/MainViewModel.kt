@@ -49,7 +49,7 @@ class MainViewModel(
     }
 
     fun deleteUserPlant(){
-        plantsRepository.removePlantFromServer("fghjklgcvhjkl")
+        plantsRepository.removePlantFromServer("")
     }
 
     fun removeUserToken() {

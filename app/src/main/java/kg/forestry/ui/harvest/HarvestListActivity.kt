@@ -66,7 +66,7 @@ class HarvestListActivity :
     private fun invisible() {
         null_view.visibility = View.GONE
         rv_list.visibility = View.VISIBLE
-    }
+    } 
 
     private fun subscribeToLiveData() {
         vm.fetchHarvestsFromDb()

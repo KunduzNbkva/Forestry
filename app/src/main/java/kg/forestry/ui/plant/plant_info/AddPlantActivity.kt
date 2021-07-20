@@ -539,11 +539,6 @@ class AddPlantActivity :
                             e.printStackTrace()
                         }
                     }
-//                    if (data != null && data.data != null) {
-//                        filePath = data.data
-//                        fl_take_photo.loadImage(filePath.toString())
-//                        vm.photoPath = getRealPathFromURI(filePath!!)
-//                    }
                 }
                 REQUEST_CAMERA -> {
                     vm.photoPath.let {
@@ -553,13 +548,6 @@ class AddPlantActivity :
                         vm.photoPath = saveTemporarilyCapturedImage(bitmap)
                     }
 
-//                    vm.photoPath.let {
-//                        val bitmap = BitmapFactory.decodeFile(it)
-//                        saveImage(bitmap)
-//                        fl_take_photo.loadImage(it)
-//                        vm.photoPath = getRealPathFromURI(data?.data!!)
-//                       // vm.photoPath = saveTemporarilyCapturedImage(bitmap)
-//                    }
                 }
                 }
             }

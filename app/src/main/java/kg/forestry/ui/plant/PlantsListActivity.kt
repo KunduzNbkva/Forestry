@@ -135,6 +135,7 @@ class PlantsListActivity :
         fun start(context: Context, isReport: Boolean = false) {
             val intent = Intent(context, PlantsListActivity::class.java)
             intent.putExtra(Constants.TO_REPORT, isReport)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             context.startActivity(intent)
         }
     }

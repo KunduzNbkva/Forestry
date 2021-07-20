@@ -106,7 +106,7 @@ class MainActivity : BaseActivity<MainViewModel>(R.layout.activity_main, MainVie
             .setPositiveButton(getString(R.string.enable)) { _, _ -> context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
             .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.cancel(); }
         val alert = builder.create();
-        alert.show();
+        alert.show()
     }
 
     fun showMessageForLoadMaps(context: Context) {
@@ -182,7 +182,6 @@ class MainActivity : BaseActivity<MainViewModel>(R.layout.activity_main, MainVie
                     vm.regions.observe(this, Observer {
                         val regions = mutableListOf<Region>()
                         it?.children?.forEach { data ->
-                            Log.v("region:", data.toString())
                             val value = data.getValue(Region::class.java)
                             if (value != null) {
                                 regions.add(value)
@@ -225,7 +224,7 @@ class MainActivity : BaseActivity<MainViewModel>(R.layout.activity_main, MainVie
             }
             vm.saveTreesToDB(treesCatalog)
         })
-        vm.test()
+        //vm.test()
     }
 
     private fun setupViews() {
