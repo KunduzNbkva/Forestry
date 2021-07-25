@@ -1,5 +1,6 @@
 package kg.forestry.repos
 
+import android.util.Log
 import com.google.firebase.database.FirebaseDatabase
 import kg.core.utils.Constants
 import kg.core.utils.Harvest
@@ -45,6 +46,7 @@ class AccountRepository(val prefs: Preferences, private val databaseHelper: Data
         appDatabase.treeCatalog.insertTrees(trees)
     }
     fun savePlantCatalogToLocalDB(plants: List<PlantType>){
+        Log.e("klfjldskjflafl", "savePlantCatalogToLocalDB: $plants")
         appDatabase.plantCatalog.insertPlants(plants)
     }
 

@@ -20,6 +20,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kg.core.utils.*
 import kg.core.utils.Helper.getLocationFormattedString
@@ -27,6 +29,7 @@ import kg.forestry.R
 import kg.forestry.localstorage.model.*
 import kg.forestry.ui.choose_side.ChooseSideActivity
 import kg.forestry.ui.core.base.BaseActivity
+import kg.forestry.ui.extensions.loadImage
 import kg.forestry.ui.map.MapsActivity
 import kg.forestry.ui.pastures.PastureListActivity
 import kg.forestry.ui.plant_type.PlantTypeActivity
@@ -48,6 +51,7 @@ import kotlinx.android.synthetic.main.activity_add_plant.name_site
 import kotlinx.android.synthetic.main.activity_add_plant.name_village
 import kotlinx.android.synthetic.main.activity_add_plant.toolbar
 import kotlinx.android.synthetic.main.activity_add_plant.tv_take_photo
+import kotlinx.android.synthetic.main.activity_user_profile.*
 import kotlinx.android.synthetic.main.expansion_cattle.view.*
 import org.parceler.Parcels
 import java.io.File
@@ -56,7 +60,6 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-
 
 data class ExpansionModel(
     var img: Int,
@@ -69,17 +72,28 @@ data class AnimalModel(
     var isSelected: Boolean
 )
 
-class AddPlantActivity :
-    BaseActivity<AddPlantViewModel>(R.layout.activity_add_plant, AddPlantViewModel::class),
-    ExpansionClick, ExpansionGrazeClick {
-
-    private var filePath: Uri? = null
+class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_plant, AddPlantViewModel::class), ExpansionClick, ExpansionGrazeClick {
     private var region: Region? = null
     private var district: District? = null
     private lateinit var cattleList:ArrayList<AnimalModel>
 
+    private lateinit var storage: FirebaseStorage
+    private lateinit var storageReference: StorageReference
+    private lateinit var imagesRef: StorageReference
+    private var imageUri: Uri? = null
+    private var photoFromCameraURI: Uri? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        storage = FirebaseStorage.getInstance()
+        storageReference = storage.reference
+        imagesRef = storageReference.child(
+            "PlantPhotos/${
+                kg.forestry.localstorage.Preferences(
+                    this
+                ).userToken
+            }/plant_photo"
+        )
         parseDataFromIntent()
         toolbar.apply {
             title = when (vm.isEditMode()) {
@@ -89,7 +103,6 @@ class AddPlantActivity :
             setNavigationOnClickListener { onBackPressed() }
         }
         if (vm.isEditMode()) setupViewsForEditMode(vm.plantInfo)
-        Log.e("data", "is edit mode ${vm.isEditMode()}")
         initClickListeners()
         setExpansionCattle()
         setExpansionGraze()
@@ -109,6 +122,25 @@ class AddPlantActivity :
             } else false
         }
     }
+
+    private fun uploadPhoto(imageUri: Uri) {
+        vm.setProgress(true)
+        imagesRef.putFile(imageUri)
+            .continueWithTask { imagesRef.downloadUrl }
+            .addOnSuccessListener {
+                Log.e("photo", "uploadPhoto: ${it}")
+                vm.photoPath = it.toString()
+                fl_take_photo.loadImage(it.toString())
+                vm.setProgress(false)
+                Toast.makeText(this, getString(R.string.success), Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Log.e("TAG", "uploadPhotoERROR: ${e.message}")
+                Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT)
+                    .show()
+            }
+    }
+
 
     private fun showRemoveEntityQuery(plantInfo: Plant) {
         if (vm.isNetworkConnected) {
@@ -145,8 +177,12 @@ class AddPlantActivity :
             name_village.setValue(this.village)
             name_region.setValue(this.region)
             name_district.setValue(this.district)
-            if (plantInfo.plantPhoto.isNotEmpty()) {
-                 setupImage(fl_take_photo, plantInfo.plantPhoto)
+
+            vm.photoPath = plantInfo.plantPhoto
+            if (vm.photoPath != "") {
+                fl_take_photo.loadImage(vm.photoPath)
+            } else {
+                fl_take_photo.loadImage(plantInfo.plantPhoto)
             }
             if(plantInfo.isDraft){
                 plantInfo.isDraft = true
@@ -205,14 +241,6 @@ class AddPlantActivity :
 
     override fun expansionItemClick(string: String) {
         cattle_pasture.tv_text_expansion.text = string
-    }
-
-    private fun setupImage(imageView: ImageView, imageBase64: String) {
-        val file = File(imageBase64)
-        if(file.exists()){
-            val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-            imageView.setImageBitmap(bitmap)
-        }
     }
 
     private fun updateButtonState() {
@@ -308,19 +336,6 @@ class AddPlantActivity :
         ChooseSideActivity.start(this, plant, vm.isEditMode())
     }
 
-    @SuppressLint("SimpleDateFormat")
-    private fun saveImage(bitmap: Bitmap) {
-        // Save image to gallery
-        val fileName = "IMG_" + SimpleDateFormat("yyyyMMddHHmmss").format(Date()) + ".jpg"
-
-        MediaStore.Images.Media.insertImage(
-            contentResolver,
-            bitmap,
-            fileName,
-            "Image of $title"
-        )
-    }
-
     private fun showImagePickerDialog(onFileCreated: ((String) -> Unit)? = null) {
         val items =
             arrayListOf(getString(R.string.capture), getString(R.string.from_gallery))
@@ -329,9 +344,7 @@ class AddPlantActivity :
         builder.setTitle(getString(R.string.change_picture))
             .setAdapter(adapter) { _, which ->
                 if (which == 0) checkPermissions(Manifest.permission.CAMERA) {
-                    openCamera(
-                        onFileCreated
-                    )
+                    openCamera(onFileCreated)
                 }
                 else checkPermissions(Manifest.permission.READ_EXTERNAL_STORAGE) { pickPhotoFromGallery() }
             }
@@ -397,6 +410,7 @@ class AddPlantActivity :
             val imageTempFile = createImageTempFile()
             it.invoke(imageTempFile.absolutePath)
             val uriFromFile = getUriFromFile(imageTempFile)
+            photoFromCameraURI = uriFromFile
             takePicture.putExtra(MediaStore.EXTRA_OUTPUT, uriFromFile)
         }
         this.startActivityForResult(takePicture, REQUEST_CAMERA)
@@ -432,7 +446,7 @@ class AddPlantActivity :
             }
             .setNeutralButton(getString(R.string.draft)){ _, _ ->
                 vm.plantInfo = getDraftInfo()
-                vm.savePlant(vm.isEditMode())
+                vm.saveDraftPlant()
                 super.onBackPressed()
                 Toast.makeText(this, getString(R.string.draft_saved), Toast.LENGTH_SHORT).show()
             }
@@ -527,69 +541,22 @@ class AddPlantActivity :
                     name_district.setValue(intent.name)
                 }
                 PICK_IMAGE_REQUEST -> {
-
                     if (data != null && data.data != null) {
-                        filePath = data.data
-                        try {
-                            val bitmap = MediaStore.Images.Media
-                                .getBitmap(contentResolver, filePath)
-                            fl_take_photo.setImageBitmap(bitmap)
-                            vm.photoPath = getRealPathFromURI(filePath!!)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
+                        imageUri = data.data
+                        uploadPhoto(imageUri!!)
                     }
                 }
                 REQUEST_CAMERA -> {
                     vm.photoPath.let {
-                        val bitmap = BitmapFactory.decodeFile(it)
-                        saveImage(bitmap)
-                        fl_take_photo.setImageBitmap(bitmap)
-                        vm.photoPath = saveTemporarilyCapturedImage(bitmap)
+                        photoFromCameraURI?.let {
+                            Log.e("photo", "camera profile data is $data and ${vm.photoPath} ")
+                            uploadPhoto(it)
+                        }
                     }
-
-                }
                 }
             }
         }
-
-
-    private fun getRealPathFromURI(contentURI: Uri): String {
-        val filePath: String?
-        val cursor: Cursor? = contentResolver.query(contentURI, null, null, null, null)
-        if (cursor == null) {
-            filePath = contentURI.path
-        } else {
-            cursor.moveToFirst()
-            val idx: Int = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            filePath = cursor.getString(idx)
-            cursor.close()
-        }
-        return filePath!!
     }
-
-    private fun saveTemporarilyCapturedImage(bitmap: Bitmap?): String {
-        val fileName = "IMG_" + SimpleDateFormat("yyyyMMddHHmmss").format(Date()) + ".jpg"
-        if (bitmap != null) {
-            val mediaStorageDir = this.getExternalStorage("/forestry")
-            if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) return ""
-            val filePath = mediaStorageDir!!.path + File.separator + fileName
-            val file = File(filePath)
-            try {
-                val fileOutputStream = FileOutputStream(file)
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, fileOutputStream)
-                fileOutputStream.flush()
-                fileOutputStream.close()
-                return filePath
-
-            } catch (exception: Exception) {
-                Log.i("TAG", "saveCapturedImage: could not save picture")
-            }
-        }
-        return ""
-    }
-
-
 
     companion object {
         private const val PICK_IMAGE_REQUEST = 27
@@ -606,6 +573,4 @@ class AddPlantActivity :
             context.startActivity(intent)
         }
     }
-
-
 }

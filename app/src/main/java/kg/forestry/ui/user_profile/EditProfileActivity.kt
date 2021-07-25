@@ -5,17 +5,12 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.database.Cursor
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Base64
 import android.util.Log
 import android.util.Patterns
 import android.widget.ArrayAdapter
@@ -32,23 +27,33 @@ import kg.core.utils.LocaleManager
 import kg.forestry.R
 import kg.forestry.localstorage.model.User
 import kg.forestry.ui.core.base.BaseActivity
-import kg.forestry.ui.extensions.getExifOrientation
 import kg.forestry.ui.extensions.loadImage
 import kg.forestry.ui.main.MainActivity
-import kotlinx.android.synthetic.main.activity_harvest_info.*
 import kotlinx.android.synthetic.main.activity_user_profile.*
-import kotlinx.android.synthetic.main.activity_user_profile.toolbar
-import kotlinx.android.synthetic.main.activity_user_profile.tv_take_photo
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.IOException
 
 
-class EditProfileActivity : BaseActivity<UserProfileViewModel>(R.layout.activity_user_profile, UserProfileViewModel::class) {
-    private var filePath: Uri? = null
+class EditProfileActivity : BaseActivity<UserProfileViewModel>(
+    R.layout.activity_user_profile,
+    UserProfileViewModel::class
+) {
+    private var photoFromCameraURI: Uri? = null
+    private var imageUri: Uri? = null
+    private lateinit var storage: FirebaseStorage
+    private lateinit var storageReference: StorageReference
+    private lateinit var imagesRef: StorageReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        storage = FirebaseStorage.getInstance()
+        storageReference = storage.reference
+        imagesRef = storageReference.child(
+            "profilePhotos/${
+                kg.forestry.localstorage.Preferences(
+                    this
+                ).userToken
+            }/avatar"
+        )
         setupLanguage()
         setupViews()
         if (!Helper.isNetworkConnected(this)) {
@@ -66,13 +71,8 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(R.layout.activity
         }
     }
 
-    private fun setupImage(imageView: ImageView, imageBase64: String) {
-        val file = File(imageBase64)
-        if(file.exists()){
-            Log.e("file","file path is $file.absolutePath")
-            val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-            imageView.setImageBitmap(bitmap)
-        }
+    private fun setupImage(imageView: ImageView, imageUri: String) {
+        imageView.loadImage(imageUri)
     }
 
     private fun subscribeToLiveData() {
@@ -87,27 +87,14 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(R.layout.activity
                 inp_layout_email.editText?.setText(userInfo?.email)
                 kvv_date_reg.setValue(userInfo?.date)
                 phone.setValue(userInfo?.phone)
-
-                if (vm.photoPath != "") {
-                    setupImage(img_profile, vm.photoPath)
+                vm.photoUrl = userInfo?.userPhoto.toString()
+                if (vm.photoUrl != "") {
+                    setupImage(img_profile, vm.photoUrl)
                 } else {
                     userInfo?.userPhoto?.let { it1 -> setupImage(img_profile, it1) }
                 }
             }
         })
-    }
-    private fun getRealPathFromURI(contentURI: Uri): String {
-        val filePath: String?
-        val cursor: Cursor? = contentResolver.query(contentURI, null, null, null, null)
-        if (cursor == null) {
-            filePath = contentURI.path
-        } else {
-            cursor.moveToFirst()
-            val idx: Int = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            filePath = cursor.getString(idx)
-            cursor.close()
-        }
-        return filePath!!
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -116,28 +103,37 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(R.layout.activity
             when (requestCode) {
                 PICK_IMAGE_REQUEST -> {
                     if (data != null && data.data != null) {
-                        filePath = data.data
-                        try {
-                            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, filePath)
-                            vm.photoPath = getRealPathFromURI(filePath!!)
-                            Log.e("photo","profile path is $filePath and ${vm.photoPath} ")
-                            img_profile.setImageURI(filePath)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
+                        imageUri = data.data
+                        uploadPhoto(imageUri!!)
                     }
-
                 }
                 REQUEST_CAMERA -> {
-                    vm.photoPath.let {
-                        val bitmap = BitmapFactory.decodeFile(it)
-                        vm.photoPath = it
-                        Log.e("photo","camera profile path is $filePath and ${vm.photoPath} ")
-                        img_profile.setImageBitmap(bitmap)
+                    vm.photoUrl.let {
+                        photoFromCameraURI?.let {
+                            Log.e("photo", "camera profile data is $data and ${vm.photoUrl} ")
+                            uploadPhoto(it)
+                        }
                     }
                 }
             }
         }
+    }
+
+    private fun uploadPhoto(imageUri: Uri) {
+        imagesRef.putFile(imageUri)
+            .continueWithTask { imagesRef.downloadUrl }
+            .addOnSuccessListener {
+                Log.e("photo", "uploadPhoto: ${it.toString()}")
+                vm.photoUrl = it.toString()
+                vm.userInfo.userPhoto = it.toString()
+                setupImage(img_profile, it.toString())
+                Toast.makeText(this, getString(R.string.success), Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Log.e("TAG", "uploadPhotoERROR: ${e.message}")
+                Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT)
+                    .show()
+            }
     }
 
     private fun setupViews() {
@@ -157,7 +153,7 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(R.layout.activity
         img_profile.setOnClickListener {
             if (Helper.isNetworkConnected(this)) {
                 showImagePickerDialog {
-                    vm.photoPath = it
+                    vm.photoUrl = it
                 }
             } else {
                 Toast.makeText(this, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
@@ -166,7 +162,7 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(R.layout.activity
         tv_take_photo.setOnClickListener {
             if (Helper.isNetworkConnected(this)) {
                 showImagePickerDialog {
-                    vm.photoPath = it
+                    vm.photoUrl = it
                 }
             } else {
                 Toast.makeText(this, getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
@@ -181,8 +177,9 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(R.layout.activity
         vm.userInfo.organization = inp_layout_organization.editText?.text.toString().trim()
         vm.userInfo.date = kvv_date_reg.getValue()
         vm.userInfo.phone = phone.getValue()
-        if (vm.photoPath != "") {
-            vm.userInfo.userPhoto = vm.photoPath
+        if (vm.photoUrl.isNotEmpty()) {
+            vm.userInfo.userPhoto = vm.photoUrl
+            Log.e("sonedjfal", "updateUser: ${vm.userInfo.userPhoto}")
         }
         if (Helper.isNetworkConnected(this)) {
             vm.updateUserInfo(vm.userInfo)
@@ -191,7 +188,6 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(R.layout.activity
 
     private fun validateEmail() {
         val emailTxt = inp_email.text.toString().trim()
-
         if (emailTxt.isEmpty()) {
             inp_layout_email.error = getString(R.string.email_error)
         } else if (!Patterns.EMAIL_ADDRESS.matcher(emailTxt).matches()) {
@@ -205,9 +201,7 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(R.layout.activity
 
     private fun getTextWatcher(): TextWatcher {
         return object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                toggleButtonState()
-            }
+            override fun afterTextChanged(s: Editable?) { toggleButtonState() }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         }
@@ -218,16 +212,6 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(R.layout.activity
                 && inp_layout_name.editText?.text.toString().trim().isNotEmpty()
                 && inp_layout_organization.editText?.text.toString().trim().isNotEmpty()
                 && inp_layout_post.editText?.text.toString().trim().isNotEmpty()
-    }
-
-    private fun toBase64(fileBytes: ByteArray): String {
-        return Base64.encodeToString(fileBytes, 0)
-    }
-
-    private fun compressBitmap(bitmap: Bitmap, quality: Int): ByteArray {
-        val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream)
-        return stream.toByteArray()
     }
 
     private fun showLangDialog() {
@@ -260,16 +244,17 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(R.layout.activity
         builder.setTitle(getString(R.string.change_picture))
             .setAdapter(adapter) { _, which ->
                 if (which == 0) checkPermissions(Manifest.permission.CAMERA) {
-                    openCamera(
-                        onFileCreated
-                    )
+                    openCamera(onFileCreated)
                 }
-                else checkPermissions(Manifest.permission.READ_EXTERNAL_STORAGE) { pickPhotoFromGallery() }
+                else checkPermissions(Manifest.permission.READ_EXTERNAL_STORAGE) {
+                    pickPhotoFromGallery()
+                }
             }
             .setCancelable(true)
-            .setNegativeButton(getString(R.string.cancel_txt)) { dialog, _ -> dialog.dismiss() }
+            .setNegativeButton(getString(R.string.cancel_txt)) { dialog, _ ->
+                dialog.dismiss()
+            }
         builder.create().show()
-
     }
 
     private fun pickPhotoFromGallery() {
@@ -297,7 +282,6 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(R.layout.activity
                     }
                 }
             }, { it.printStackTrace() })
-
     }
 
     private fun createImageTempFile(): File {
@@ -309,7 +293,7 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(R.layout.activity
     private fun getExternalStorage(directory: String): File {
         return when (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.P) {
             true -> File(
-            this.getExternalFilesDir(Environment.DIRECTORY_PICTURES),directory
+                this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), directory
             )
             else -> File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), directory)
         }
@@ -322,10 +306,12 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(R.layout.activity
             val imageTempFile = createImageTempFile()
             it.invoke(imageTempFile.absolutePath)
             val uriFromFile = getUriFromFile(imageTempFile)
+            photoFromCameraURI = uriFromFile
             takePicture.putExtra(MediaStore.EXTRA_OUTPUT, uriFromFile)
         }
         this.startActivityForResult(takePicture, REQUEST_CAMERA)
     }
+
 
     private fun getUriFromFile(file: File): Uri {
         return FileProvider.getUriForFile(

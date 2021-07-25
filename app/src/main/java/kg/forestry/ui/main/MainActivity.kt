@@ -224,7 +224,7 @@ class MainActivity : BaseActivity<MainViewModel>(R.layout.activity_main, MainVie
             }
             vm.saveTreesToDB(treesCatalog)
         })
-        //vm.test()
+        vm.test()
     }
 
     private fun setupViews() {

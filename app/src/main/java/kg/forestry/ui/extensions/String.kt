@@ -9,6 +9,7 @@ import android.widget.ImageView
 import androidx.exifinterface.media.ExifInterface
 import com.bumptech.glide.Glide
 import java.io.IOException
+import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,9 +19,14 @@ fun String.toDate(): Date {
 }
 
 fun ImageView.loadImage(url: String) {
-    this.rotation = -360f
     Glide.with(this.context)
         .load(url)
+        .into(this)
+}
+
+fun ImageView.loadImage(uri: Uri) {
+    Glide.with(this.context)
+        .load(uri)
         .into(this)
 }
 

@@ -47,7 +47,6 @@
                     app:riv_corner_radius="30dp"
                     android:layout_marginTop="24dp"
                     android:scaleType="centerCrop"
-                    android:rotation="90"
                     android:src="@drawable/photo_placeholder"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

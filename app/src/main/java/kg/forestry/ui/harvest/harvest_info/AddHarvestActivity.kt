@@ -33,13 +33,25 @@ import kg.forestry.localstorage.model.ListType
 import kg.forestry.localstorage.model.Region
 import kg.forestry.ui.biomass.BiomassActivity
 import kg.forestry.ui.core.base.BaseActivity
+import kg.forestry.ui.extensions.loadImage
 import kg.forestry.ui.map.MapsActivity
 import kg.forestry.ui.pastures.PastureListActivity
 import kg.forestry.ui.plots.PlotListActivity
 import kg.forestry.ui.soil_districts.DistrictListActivity
 import kg.forestry.ui.soil_regions.RegionListActivity
 import kg.forestry.ui.soil_villages.VillageListActivity
+import kotlinx.android.synthetic.main.activity_add_plant.*
 import kotlinx.android.synthetic.main.activity_harvest_info.*
+import kotlinx.android.synthetic.main.activity_harvest_info.btn_next
+import kotlinx.android.synthetic.main.activity_harvest_info.fl_take_photo
+import kotlinx.android.synthetic.main.activity_harvest_info.location
+import kotlinx.android.synthetic.main.activity_harvest_info.name_district
+import kotlinx.android.synthetic.main.activity_harvest_info.name_pasture
+import kotlinx.android.synthetic.main.activity_harvest_info.name_region
+import kotlinx.android.synthetic.main.activity_harvest_info.name_site
+import kotlinx.android.synthetic.main.activity_harvest_info.name_village
+import kotlinx.android.synthetic.main.activity_harvest_info.toolbar
+import kotlinx.android.synthetic.main.activity_harvest_info.tv_take_photo
 import org.parceler.Parcels
 import java.io.File
 import java.io.FileOutputStream
@@ -49,19 +61,27 @@ import java.util.*
 
 class AddHarvestActivity : BaseActivity<AddHarvestViewModel>(R.layout.activity_harvest_info, AddHarvestViewModel::class) {
     private var filePath: Uri? = null
-    lateinit var storage: FirebaseStorage
-    lateinit var storageReference: StorageReference
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-
     private var region: Region? = null
     private var district: District? = null
+
+    private lateinit var storage: FirebaseStorage
+    private lateinit var storageReference: StorageReference
+    private lateinit var imagesRef: StorageReference
+    private var imageUri: Uri? = null
+    private var photoFromCameraURI: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         parseDataFromIntent()
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         storage = FirebaseStorage.getInstance()
         storageReference = storage.reference
+        imagesRef = storageReference.child(
+            "HarvestPhotos/${
+                kg.forestry.localstorage.Preferences(
+                    this
+                ).userToken
+            }/harvest_photo"
+        )
         toolbar.apply {
             title = when (vm.isEditMode()) {
                 true -> getString(R.string.edit_mode)
@@ -346,8 +366,14 @@ class AddHarvestActivity : BaseActivity<AddHarvestViewModel>(R.layout.activity_h
             name_region.setValue(this.region!!)
             name_district.setValue(this.district!!)
 
-            if (!harvestInfo.harvestPhoto.isNullOrEmpty()) {
-                setupImage(fl_take_photo, harvestInfo.harvestPhoto!!)
+//            if (!harvestInfo.harvestPhoto.isNullOrEmpty()) {
+//                setupImage(fl_take_photo, harvestInfo.harvestPhoto!!)
+//            }
+
+            if (vm.photoPath != "") {
+                fl_take_photo.loadImage(vm.photoPath)
+            } else {
+                fl_take_photo.loadImage(harvestInfo.harvestPhoto!!)
             }
 
             if(harvestInfo.isDraft){
@@ -355,13 +381,6 @@ class AddHarvestActivity : BaseActivity<AddHarvestViewModel>(R.layout.activity_h
             }
         }
     }
-    private fun setupImage(imageView: ImageView, imageBase64: String) {
-        val file = File(imageBase64)
-        if(file.exists()){
-            val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-            imageView.setImageBitmap(bitmap)
-        }
-        }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -405,23 +424,16 @@ class AddHarvestActivity : BaseActivity<AddHarvestViewModel>(R.layout.activity_h
                 }
                 PICK_IMAGE_REQUEST -> {
                     if (data != null && data.data != null) {
-                        filePath = data.data
-                        try {
-                            val bitmap = MediaStore.Images.Media
-                                .getBitmap(contentResolver, filePath)
-                            fl_take_photo.setImageBitmap(bitmap)
-                            vm.photoPath = getRealPathFromURI(filePath!!)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
+                        imageUri = data.data
+                        uploadPhoto(imageUri!!)
                     }
                 }
                 REQUEST_CAMERA -> {
                     vm.photoPath.let {
-                        val bitmap = BitmapFactory.decodeFile(it)
-                        saveImage(bitmap)
-                        fl_take_photo.setImageBitmap(bitmap)
-                        vm.photoPath = saveTemporarilyCapturedImage(bitmap)
+                        photoFromCameraURI?.let {
+                            Log.e("photo", "camera profile data is $data and ${vm.photoPath} ")
+                            uploadPhoto(it)
+                        }
                     }
                 }
 
@@ -445,51 +457,22 @@ class AddHarvestActivity : BaseActivity<AddHarvestViewModel>(R.layout.activity_h
         }
     }
 
-    private fun saveImage(bitmap: Bitmap) {
-        // Save image to gallery
-        val fileName = "IMG_" + SimpleDateFormat("yyyyMMddHHmmss").format(Date()) + ".jpg"
-
-        MediaStore.Images.Media.insertImage(
-            contentResolver,
-            bitmap,
-            fileName,
-            "Image of $title"
-        )
-    }
-
-    private fun saveTemporarilyCapturedImage(bitmap: Bitmap?): String {
-        val fileName = "IMG_" + SimpleDateFormat("yyyyMMddHHmmss").format(Date()) + ".jpg"
-        if (bitmap != null) {
-            val mediaStorageDir = this.getExternalStorage("/forestry")
-            if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) return ""
-            val filePath = mediaStorageDir!!.path + File.separator + fileName
-            val file = File(filePath)
-            try {
-                val fileOutputStream = FileOutputStream(file)
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 60, fileOutputStream)
-                fileOutputStream.flush()
-                fileOutputStream.close()
-                return filePath
-
-            } catch (exception: Exception) {
-                Log.i("TAG", "saveCapturedImage: could not save picture")
+    private fun uploadPhoto(imageUri: Uri) {
+        vm.setProgress(true)
+        imagesRef.putFile(imageUri)
+            .continueWithTask { imagesRef.downloadUrl }
+            .addOnSuccessListener {
+                Log.e("photo", "uploadPhoto: ${it}")
+                vm.photoPath = it.toString()
+                fl_take_photo.loadImage(it.toString())
+                vm.setProgress(false)
+                Toast.makeText(this, getString(R.string.success), Toast.LENGTH_SHORT).show()
             }
-        }
-        return ""
-    }
-
-    private fun getRealPathFromURI(contentURI: Uri): String {
-        val filePath: String?
-        val cursor: Cursor? = contentResolver.query(contentURI, null, null, null, null)
-        if (cursor == null) {
-            filePath = contentURI.path
-        } else {
-            cursor.moveToFirst()
-            val idx: Int = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            filePath = cursor.getString(idx)
-            cursor.close()
-        }
-        return filePath!!
+            .addOnFailureListener { e ->
+                Log.e("TAG", "uploadPhotoERROR: ${e.message}")
+                Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT)
+                    .show()
+            }
     }
 
     private fun parseDataFromIntent() {

@@ -1,6 +1,7 @@
 package kg.forestry.repos
 
 import com.google.firebase.database.FirebaseDatabase
+import io.reactivex.Flowable
 import kg.core.utils.Constants
 import kg.forestry.localstorage.Preferences
 import kg.forestry.localstorage.Scheduler
@@ -9,12 +10,13 @@ import kg.forestry.localstorage.model.District
 import kg.forestry.localstorage.model.Plant
 import kg.forestry.localstorage.model.Region
 import kg.forestry.localstorage.model.Village
-import io.reactivex.Flowable
 
-class PlantsRepository(private val prefs: Preferences, private val db: AppDatabase, val scheduler: Scheduler) {
-
-
-     val userPlants =
+class PlantsRepository(
+    private val prefs: Preferences,
+    private val db: AppDatabase,
+    val scheduler: Scheduler
+) {
+    val userPlants =
         FirebaseDatabase.getInstance().getReference(Constants.PLANTS_REFERENCE)
 
     private val regions =
@@ -27,7 +29,8 @@ class PlantsRepository(private val prefs: Preferences, private val db: AppDataba
         FirebaseDatabase.getInstance().getReference(Constants.DISTRICTS)
 
     private val userPlantCatalog =
-        FirebaseDatabase.getInstance().getReference(Constants.PLANT_CATALOG).child(Constants.IMAGESTEST)
+        FirebaseDatabase.getInstance().getReference(Constants.PLANT_CATALOG)
+            .child(Constants.IMAGESTEST)
 
     private val userTreesCatalog =
         FirebaseDatabase.getInstance().getReference(Constants.TREES_CATALOG).child(Constants.IMAGES)
@@ -88,4 +91,5 @@ class PlantsRepository(private val prefs: Preferences, private val db: AppDataba
     fun getVillages() = this.villages
 
     fun getDistricts() = this.districts
+
 }
