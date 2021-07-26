@@ -51,6 +51,7 @@ import kotlinx.android.synthetic.main.activity_add_plant.name_site
 import kotlinx.android.synthetic.main.activity_add_plant.name_village
 import kotlinx.android.synthetic.main.activity_add_plant.toolbar
 import kotlinx.android.synthetic.main.activity_add_plant.tv_take_photo
+import kotlinx.android.synthetic.main.activity_harvest_info.*
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import kotlinx.android.synthetic.main.expansion_cattle.view.*
 import org.parceler.Parcels
@@ -74,6 +75,7 @@ data class AnimalModel(
 
 class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_plant, AddPlantViewModel::class), ExpansionClick, ExpansionGrazeClick {
     private var region: Region? = null
+    private var village: Village? = null
     private var district: District? = null
     private lateinit var cattleList:ArrayList<AnimalModel>
 
@@ -529,16 +531,32 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
                 RegionListActivity.REQUEST_CODE -> {
                     val intent = data?.getSerializableExtra(Constants.Region) as Region
                     region = intent
-                    name_region.setValue(intent.name)
+                    var name = region!!.name_ru
+                    when (LocaleManager.getLanguagePref(this)){
+                        LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = region!!.name_ky
+                        LocaleManager.LANGUAGE_KEy_ENGLISH -> name = region!!.name_en
+                    }
+                    name_region.setValue(name)
                 }
                 VillageListActivity.REQUEST_CODE -> {
-                    val intent = data?.getSerializableExtra(Constants.Village) as String
-                    name_village.setValue(intent)
+                    val intent = data?.getSerializableExtra(Constants.Village) as Village
+                    village = intent
+                    var name = village!!.name_ru
+                    when (LocaleManager.getLanguagePref(this)){
+                        LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = village!!.name_ky
+                        LocaleManager.LANGUAGE_KEy_ENGLISH -> name = village!!.name_en
+                    }
+                    name_village.setValue(name)
                 }
                 DistrictListActivity.REQUEST_CODE -> {
                     val intent = data?.getSerializableExtra(Constants.DISTRICTS) as District
                     district = intent
-                    name_district.setValue(intent.name)
+                    var name = district!!.name_ru
+                    when (LocaleManager.getLanguagePref(this)){
+                        LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = district!!.name_ky
+                        LocaleManager.LANGUAGE_KEy_ENGLISH -> name = district!!.name_en
+                    }
+                    name_district.setValue(name)
                 }
                 PICK_IMAGE_REQUEST -> {
                     if (data != null && data.data != null) {

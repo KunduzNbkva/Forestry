@@ -90,14 +90,18 @@ data class SoilTexture(
 data class Region(
     @PrimaryKey
     var id: Int = 0,
-    var name: String = "") : Serializable
+    val name_en: String = "",
+    val name_ky: String = "",
+    var name_ru: String = "" ) : Serializable
 
 @Entity(tableName = "villages")
 @Parcel
 data class Village(
     @PrimaryKey
     var id: Long = 0,
-    var name: String = "",
+    val name_en: String = "",
+    val name_ky: String = "",
+    var name_ru: String = "",
     var districtId: Int = 0
 ) : Serializable
 
@@ -106,7 +110,9 @@ data class Village(
 data class District(
     @PrimaryKey
     var id: Int = 0,
-    var name: String = "",
+    val name_en: String = "",
+    val name_ky: String = "",
+    var name_ru: String = "",
     var regionId: Int = 0
 
 ) : Serializable

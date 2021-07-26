@@ -31,6 +31,7 @@ import kg.forestry.R
 import kg.forestry.localstorage.model.District
 import kg.forestry.localstorage.model.ListType
 import kg.forestry.localstorage.model.Region
+import kg.forestry.localstorage.model.Village
 import kg.forestry.ui.biomass.BiomassActivity
 import kg.forestry.ui.core.base.BaseActivity
 import kg.forestry.ui.extensions.loadImage
@@ -62,6 +63,7 @@ import java.util.*
 class AddHarvestActivity : BaseActivity<AddHarvestViewModel>(R.layout.activity_harvest_info, AddHarvestViewModel::class) {
     private var filePath: Uri? = null
     private var region: Region? = null
+    private var village: Village? = null
     private var district: District? = null
 
     private lateinit var storage: FirebaseStorage
@@ -438,20 +440,36 @@ class AddHarvestActivity : BaseActivity<AddHarvestViewModel>(R.layout.activity_h
                 }
 
                 VillageListActivity.REQUEST_CODE -> {
-                    val intent = data?.getSerializableExtra(Constants.Village) as String
-                    name_village.setValue(intent)
+                    val intent = data?.getSerializableExtra(Constants.Village) as Village
+                    village = intent
+                    var name = village!!.name_ru
+                    when (LocaleManager.getLanguagePref(this)){
+                        LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = village!!.name_ky
+                        LocaleManager.LANGUAGE_KEy_ENGLISH -> name = village!!.name_en
+                    }
+                    name_village.setValue(name)
                 }
 
                 RegionListActivity.REQUEST_CODE -> {
                     val intent = data?.getSerializableExtra(Constants.Region) as Region
                     region = intent
-                    name_region.setValue(intent.name)
+                    var name = region!!.name_ru
+                    when (LocaleManager.getLanguagePref(this)){
+                        LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = region!!.name_ky
+                        LocaleManager.LANGUAGE_KEy_ENGLISH -> name = region!!.name_en
+                    }
+                    name_region.setValue(name)
                 }
 
                 DistrictListActivity.REQUEST_CODE -> {
                     val intent = data?.getSerializableExtra(Constants.DISTRICTS) as District
                     district = intent
-                    name_district.setValue(intent.name)
+                    var name = district!!.name_ru
+                    when (LocaleManager.getLanguagePref(this)){
+                        LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = district!!.name_ky
+                        LocaleManager.LANGUAGE_KEy_ENGLISH -> name = district!!.name_en
+                    }
+                    name_district.setValue(name)
                 }
             }
         }

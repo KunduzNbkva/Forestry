@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kg.forestry.R
 import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.Constants
+import kg.core.utils.LocaleManager
 import kg.forestry.localstorage.model.Village
 import kotlinx.android.synthetic.main.activity_region_list.*
+import java.util.*
 
 
 class VillageListActivity :
@@ -51,14 +53,16 @@ class VillageListActivity :
                 val filteredItems: MutableList<Village?> = mutableListOf()
 
                 for (v in items) {
-                    val name = v?.name!!.toLowerCase()
+                    var name = v?.name_ru!!.toLowerCase()
+                    when (LocaleManager.getLanguagePref(this@VillageListActivity)) {
+                        LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = v.name_ky.toLowerCase()
+                        LocaleManager.LANGUAGE_KEy_ENGLISH -> name = v.name_ru.toLowerCase()
+                    }
                     if (name.contains(queryText)) {
                         filteredItems.add(v)
                     }
                 }
-
                 adapter.filterList(filteredItems)
-
                 return true
             }
         })
@@ -66,36 +70,23 @@ class VillageListActivity :
 
     private fun subscribeToLiveData() {
         vm.fetchVillagesFromDB()
-        vm.villagesListLiveData.observe(this, Observer {
-            adapter.items = it.filter{it.districtId == districtID}.toMutableList()
+        vm.villagesListLiveData.observe(this, Observer { it ->
+            adapter.items = it.filter{  it.districtId == districtID  }.toMutableList()
             items = it.toMutableList()
         })
         vm.setProgress(false)
     }
 
-    private fun finishActivityWithResultOK(region: String?) {
+    private fun finishActivityWithResultOK(village: Village?) {
         val intent = Intent()
-        intent.putExtra(Constants.Village, region)
+        intent.putExtra(Constants.Village, village)
         setResult(RESULT_OK, intent)
         finish()
     }
 
     override fun onBackPressed() {
         finish()
-//        MainActivity.start(this)
-////        if (vm.isNetworkConnected && Preferences(this).isUserAuthorized()) {
-////            Toast.makeText(this, "Синхронизация данных", Toast.LENGTH_SHORT).show()
-////        }
     }
-
-
-//    override fun onItemClick(regionInfo: Region?) {
-//        if (isReport) {
-//            ReportActivity.start(this, plantInfo)
-//        } else {
-//            AddPlantActivity.start(this, plantInfo)
-//        }
-//    }
 
     companion object {
         const val REQUEST_CODE = 103
@@ -108,7 +99,7 @@ class VillageListActivity :
         }
     }
 
-    override fun onItemClick(regionInfo: Village?) {
-        finishActivityWithResultOK(regionInfo!!.name)
+    override fun onItemClick(villageInfo: Village?) {
+        finishActivityWithResultOK(villageInfo!!)
     }
 }

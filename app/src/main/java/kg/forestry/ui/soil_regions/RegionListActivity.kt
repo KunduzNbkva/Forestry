@@ -3,12 +3,14 @@ package kg.forestry.ui.soil_regions
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kg.forestry.R
 import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.Constants
+import kg.core.utils.LocaleManager
 import kg.forestry.localstorage.Preferences
 import kg.forestry.localstorage.model.Region
 import kotlinx.android.synthetic.main.activity_region_list.*
@@ -39,7 +41,17 @@ class RegionListActivity :
     private fun subscribeToLiveData() {
         vm.fetchRegionsFromDb()
         vm.regionListLiveData.observe(this, Observer {
-            adapter.items = it.toMutableList()
+            val regionsList = mutableListOf<Region?>()
+            it?.forEach { data ->
+                var name = data.name_ru
+                when (LocaleManager.getLanguagePref(this)) {
+                    LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = data.name_ky
+                    LocaleManager.LANGUAGE_KEy_ENGLISH -> name = data.name_en
+                }
+                Log.e("TAG", "subscribeToLiveData: $name")
+                regionsList.add(data)
+            }
+            adapter.items = regionsList
         })
         vm.setProgress(false)
     }
@@ -53,20 +65,7 @@ class RegionListActivity :
 
     override fun onBackPressed() {
         finish()
-//        MainActivity.start(this)
-//        if (vm.isNetworkConnected && Preferences(this).isUserAuthorized()) {
-////            Toast.makeText(this, "Синхронизация данных", Toast.LENGTH_SHORT).show()
-////        }
     }
-
-
-//    override fun onItemClick(regionInfo: Region?) {
-//        if (isReport) {
-//            ReportActivity.start(this, plantInfo)
-//        } else {
-//            AddPlantActivity.start(this, plantInfo)
-//        }
-//    }
 
     companion object {
         const val REQUEST_CODE = 100

@@ -14,7 +14,7 @@ import kg.forestry.localstorage.model.*
 @Database(entities = [Harvest::class, Plant::class,
     Region::class, Village::class, District::class,
     PlotRecord::class, PastureRecord::class,
-    TreeType::class,PlantType::class], version = 43, exportSchema = false)
+    TreeType::class,PlantType::class], version = 44, exportSchema = false)
 
 @TypeConverters(Converter::class)
 

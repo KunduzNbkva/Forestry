@@ -1,9 +1,11 @@
 package kg.forestry.ui.soil_villages
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import kg.core.utils.LocaleManager
 import kg.forestry.R
 import kg.forestry.localstorage.model.Village
 import kotlinx.android.synthetic.main.item_multitle_list.view.*
@@ -29,15 +31,20 @@ class VillageListAdapter(val listener: RegionListClickListener) :
     override fun getItemCount() = items.size
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(items[position], position + 1)
+        holder.bind(items[position], position + 1,holder.itemView.context)
     }
 
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
         lateinit var region: Village
-        fun bind(region: Village?, index: Int) {
+        fun bind(region: Village?, index: Int,context : Context) {
             if (region != null)
                 this.region = region
-            itemView.tv_text.text = region!!.name
+            var name = region!!.name_ru
+            when(LocaleManager.getLanguagePref(context)){
+                LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = region.name_ky
+                LocaleManager.LANGUAGE_KEy_ENGLISH -> name = region.name_en
+            }
+            itemView.tv_text.text = name
         }
 
         companion object {
