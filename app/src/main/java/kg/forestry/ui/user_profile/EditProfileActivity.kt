@@ -76,10 +76,8 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(
     }
 
     private fun subscribeToLiveData() {
-        vm.setProgress(true)
         vm.getDataSnapshotLiveData().observe(this, Observer {
-            vm.setProgress(false)
-            if (it != null) { //
+            if (it != null) {
                 val userInfo = it.getValue(User::class.java)
                 inp_layout_name.editText?.setText(userInfo?.username)
                 inp_layout_organization.editText?.setText(userInfo?.organization)
@@ -110,7 +108,6 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(
                 REQUEST_CAMERA -> {
                     vm.photoUrl.let {
                         photoFromCameraURI?.let {
-                            Log.e("photo", "camera profile data is $data and ${vm.photoUrl} ")
                             uploadPhoto(it)
                         }
                     }
@@ -120,17 +117,17 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(
     }
 
     private fun uploadPhoto(imageUri: Uri) {
+        vm.setProgress(true)
         imagesRef.putFile(imageUri)
             .continueWithTask { imagesRef.downloadUrl }
             .addOnSuccessListener {
-                Log.e("photo", "uploadPhoto: ${it.toString()}")
                 vm.photoUrl = it.toString()
                 vm.userInfo.userPhoto = it.toString()
                 setupImage(img_profile, it.toString())
+                vm.setProgress(false)
                 Toast.makeText(this, getString(R.string.success), Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
-                Log.e("TAG", "uploadPhotoERROR: ${e.message}")
                 Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT)
                     .show()
             }
@@ -179,7 +176,6 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(
         vm.userInfo.phone = phone.getValue()
         if (vm.photoUrl.isNotEmpty()) {
             vm.userInfo.userPhoto = vm.photoUrl
-            Log.e("sonedjfal", "updateUser: ${vm.userInfo.userPhoto}")
         }
         if (Helper.isNetworkConnected(this)) {
             vm.updateUserInfo(vm.userInfo)
@@ -201,7 +197,10 @@ class EditProfileActivity : BaseActivity<UserProfileViewModel>(
 
     private fun getTextWatcher(): TextWatcher {
         return object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) { toggleButtonState() }
+            override fun afterTextChanged(s: Editable?) {
+                toggleButtonState()
+            }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         }
