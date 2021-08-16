@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 import org.parceler.Parcel
 import java.io.Serializable
 
+
 @Entity(tableName = "harvests")
 @Parcel
 data class Harvest(
@@ -20,9 +21,19 @@ data class Harvest(
     var harvestPhoto: String? = "",
     var isInServer: Boolean = false,
     var harvLocation: Location = Location(0.0, 0.0),
-    var region: String? = null,
-    var village: String? = null,
-    var district: String? = null,
+
+    var region_ru: String? = null,
+    var region_ky: String? = null,
+    var region_en: String? = null,
+
+    var village_ru: String? = null,
+    var village_kg: String?= null,
+    var village_en: String? = null,
+
+    var district_ru: String? = null,
+    var district_en: String? = null,
+    var district_ky: String? = null,
+
     var isDraft: Boolean = false
 )
 

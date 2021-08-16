@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.activity_plant_type.rv_list
 import kotlinx.android.synthetic.main.activity_plant_type.search_view
 import kotlinx.android.synthetic.main.activity_plant_type.toolbar
 import kotlinx.android.synthetic.main.activity_region_list.*
+import java.util.*
 
 class PlantTypeActivity :
     BaseActivity<PlatTypeViewModel>(R.layout.activity_plant_type, PlatTypeViewModel::class),
@@ -114,6 +115,7 @@ class PlantTypeActivity :
             vm.fetchPlantsFromDb().forEach { plantType ->
                 userPlantsList.add(plantType)
             }
+            sortListPairDesc(userPlantsList)
             types.addAll(userPlantsList
                 .map {
 
@@ -122,7 +124,6 @@ class PlantTypeActivity :
                         LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = it.name_ky
                         LocaleManager.LANGUAGE_KEy_ENGLISH -> name = it.name_en
                     }
-                    Log.e("language","ky name is ${it.name_ky},en name is ${it.name_en},ru name is ${it.name_ru}")
 
                     val isSelected = keyValue.contains(name)
                     if (isSelected && !selectedPlantNames.contains(name)) selectedPlantNames.add(name)
@@ -135,6 +136,15 @@ class PlantTypeActivity :
             items = types
             vm.setProgress(false)
         }
+    }
+
+    private fun sortListPairDesc(list: MutableList<PlantType>): MutableList<PlantType> {
+        when(LocaleManager.getLanguagePref(this)){
+            LocaleManager.LANGUAGE_KEY_KYRGYZ ->  list.sortBy { it.name_ky }
+            LocaleManager.LANGUAGE_KEy_ENGLISH -> list.sortBy { it.name_en }
+            LocaleManager.LANGUAGE_KEY_RUSSIAN -> list.sortBy { it.name_ru }
+        }
+        return list
     }
 
     private fun setupSearchView(){
@@ -153,15 +163,11 @@ class PlantTypeActivity :
                         LocaleManager.LANGUAGE_KEY_KYRGYZ -> name =  v.first.name_ky
                         LocaleManager.LANGUAGE_KEy_ENGLISH -> name =  v.first.name_en
                     }
-
-//                    val name = v?.first.name_ru!!.toLowerCase()
                     if (name.toLowerCase().contains(queryText)) {
                         filteredItems.add(v)
                     }
                 }
-
                 adapter.filterList(filteredItems)
-
                 return true
             }
         })

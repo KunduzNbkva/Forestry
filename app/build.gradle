@@ -28,6 +28,10 @@ android {
         generateStubs = true
     }
 
+    androidExtensions {
+        experimental = true
+    }
+
 }
 
 dependencies {

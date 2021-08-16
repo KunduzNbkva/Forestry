@@ -13,10 +13,10 @@ import kg.core.utils.LocaleManager
 import kg.forestry.localstorage.model.Village
 import kotlinx.android.synthetic.main.activity_region_list.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 
-class VillageListActivity :
-    BaseActivity<VillageListViewModel>(R.layout.activity_region_list, VillageListViewModel::class),
+class VillageListActivity : BaseActivity<VillageListViewModel>(R.layout.activity_region_list, VillageListViewModel::class),
     VillageListAdapter.RegionListClickListener {
 
     private val adapter = VillageListAdapter(listener = this)
@@ -77,7 +77,7 @@ class VillageListActivity :
         vm.setProgress(false)
     }
 
-    private fun finishActivityWithResultOK(village: Village?) {
+    private fun finishActivityWithResultOK(village: Village) {
         val intent = Intent()
         intent.putExtra(Constants.Village, village)
         setResult(RESULT_OK, intent)

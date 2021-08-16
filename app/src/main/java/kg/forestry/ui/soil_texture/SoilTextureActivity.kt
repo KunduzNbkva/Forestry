@@ -156,3 +156,4 @@ class SoilTextureActivity : BaseActivity<SoilTextureViewModel>(
         }
     }
 }
+

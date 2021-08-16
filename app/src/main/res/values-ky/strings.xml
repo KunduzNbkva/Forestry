@@ -150,7 +150,7 @@
     <string name="large">Таштактуу</string>
     <string name="ex_large">Абдан таштактуу</string>
     <string name="cancel_txt">Жок</string>
-    <string name="signin_existing_or_register">Войдите в существующий аккаунт \nили зарегистрируйтесь</string>
+    <string name="signin_existing_or_register">Учурдагы каттоо эсебиңизге кириңиз \nже каттоодон өтүңүз</string>
     <string name="enter_or_register">Кирүү / Катталуу</string>
     <string name="no_internet">Интернет жок!</string>
     <string name="app_name">Жайыттарга мониторинг жүргүзүү</string>

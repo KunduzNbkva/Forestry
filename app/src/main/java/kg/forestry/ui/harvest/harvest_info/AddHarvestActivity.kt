@@ -4,9 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.database.Cursor
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -14,13 +11,10 @@ import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.ArrayAdapter
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.FileProvider
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.tbruyelle.rxpermissions2.RxPermissions
@@ -28,10 +22,7 @@ import kg.core.utils.*
 import kg.core.utils.Helper.fromStringToLocation
 import kg.core.utils.Helper.getLocationFormattedString
 import kg.forestry.R
-import kg.forestry.localstorage.model.District
-import kg.forestry.localstorage.model.ListType
-import kg.forestry.localstorage.model.Region
-import kg.forestry.localstorage.model.Village
+import kg.forestry.localstorage.model.*
 import kg.forestry.ui.biomass.BiomassActivity
 import kg.forestry.ui.core.base.BaseActivity
 import kg.forestry.ui.extensions.loadImage
@@ -55,16 +46,26 @@ import kotlinx.android.synthetic.main.activity_harvest_info.toolbar
 import kotlinx.android.synthetic.main.activity_harvest_info.tv_take_photo
 import org.parceler.Parcels
 import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class AddHarvestActivity : BaseActivity<AddHarvestViewModel>(R.layout.activity_harvest_info, AddHarvestViewModel::class) {
-    private var filePath: Uri? = null
-    private var region: Region? = null
     private var village: Village? = null
+    private var village_ru: String? = null
+    private var village_en: String? = null
+    private var village_ky: String? = null
+
     private var district: District? = null
+    private var district_ru: String? = null
+    private var district_en: String? = null
+    private var district_ky: String? = null
+
+    private var region: Region? = null
+    private var region_ru: String? = null
+    private var region_ky: String? = null
+    private var region_en: String? = null
+
 
     private lateinit var storage: FirebaseStorage
     private lateinit var storageReference: StorageReference
@@ -115,9 +116,17 @@ class AddHarvestActivity : BaseActivity<AddHarvestViewModel>(R.layout.activity_h
                     getCurrentDate(),
                     vm.photoPath,
                     harvLocation = fromStringToLocation(location.getValue()),
-                    region = name_region.getValue(),
-                    village = name_village.getValue(),
-                    district = name_district.getValue(),
+                    region_ky = region_ky,
+                    region_en = region_en,
+                    region_ru = region_ru,
+
+                    village_kg = village_ky,
+                    village_en = village_en,
+                    village_ru = village_ru,
+
+                    district_ru = district_ru,
+                    district_en = district_en,
+                    district_ky = district_ky,
                     isDraft = true)
                 vm.saveHarvest(harvest)
                 Handler().postDelayed({
@@ -208,7 +217,6 @@ class AddHarvestActivity : BaseActivity<AddHarvestViewModel>(R.layout.activity_h
             true -> File(
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
                 directory)
-//            getExternalFilesDir("/")?.absolutePath,directory)
             else -> File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), directory)
         }
     }
@@ -311,9 +319,17 @@ class AddHarvestActivity : BaseActivity<AddHarvestViewModel>(R.layout.activity_h
                         getCurrentDate(),
                         harvestPhoto = vm.photoPath,
                         harvLocation = fromStringToLocation(location.getValue()),
-                        region = name_region.getValue(),
-                        village = name_village.getValue(),
-                        district = name_district.getValue(),
+                        region_ru = region_ru,
+                        region_en = region_en,
+                        region_ky = region_ky,
+
+                        village_ru = village_ru,
+                        village_en = village_en,
+                        village_kg = village_ky,
+
+                        district_ru = district_ru,
+                        district_en = district_en,
+                        district_ky = district_ky,
                         isDraft = false
                     )
                 )
@@ -350,6 +366,7 @@ class AddHarvestActivity : BaseActivity<AddHarvestViewModel>(R.layout.activity_h
         return azyr
     }
 
+
     private fun setupViewsForEditMode(harvestInfo: Harvest?) {
         harvestInfo?.run {
             toolbar.addOptionMenu(harvestInfo)
@@ -364,20 +381,31 @@ class AddHarvestActivity : BaseActivity<AddHarvestViewModel>(R.layout.activity_h
                 dryBiomass.setValue(it.getSum().toString())
                 vm.dryBiomassValue = it
             }
-            name_village.setValue(this.village!!)
-            name_region.setValue(this.region!!)
-            name_district.setValue(this.district!!)
+            when(LocaleManager.getLanguagePref(this@AddHarvestActivity)){
+                LocaleManager.LANGUAGE_KEY_RUSSIAN->{
+                    harvestInfo.village_ru?.let { name_village.setValue(it) }
+                    harvestInfo.region_ru?.let { name_region.setValue(it) }
+                    harvestInfo.district_ru?.let { name_district.setValue(it) }
+                }
+                LocaleManager.LANGUAGE_KEY_KYRGYZ->{
+                    harvestInfo.village_kg?.let { name_village.setValue(it) }
+                    harvestInfo.region_ky?.let { name_region.setValue(it) }
+                    harvestInfo.district_ky?.let { name_district.setValue(it) }
+                }
+                LocaleManager.LANGUAGE_KEy_ENGLISH->{
+                    harvestInfo.village_en?.let { name_village.setValue(it) }
+                    harvestInfo.region_en?.let { name_region.setValue(it) }
+                    harvestInfo.district_en?.let { name_district.setValue(it) }
+                }
+            }
 
-//            if (!harvestInfo.harvestPhoto.isNullOrEmpty()) {
-//                setupImage(fl_take_photo, harvestInfo.harvestPhoto!!)
-//            }
+            vm.photoPath = harvestInfo.harvestPhoto!!
 
             if (vm.photoPath != "") {
                 fl_take_photo.loadImage(vm.photoPath)
             } else {
                 fl_take_photo.loadImage(harvestInfo.harvestPhoto!!)
             }
-
             if(harvestInfo.isDraft){
                 harvestInfo.isDraft = true
             }
@@ -442,6 +470,10 @@ class AddHarvestActivity : BaseActivity<AddHarvestViewModel>(R.layout.activity_h
                 VillageListActivity.REQUEST_CODE -> {
                     val intent = data?.getSerializableExtra(Constants.Village) as Village
                     village = intent
+                    village_en = village!!.name_en
+                    village_ky = village!!.name_ky
+                    village_ru = village!!.name_ru
+
                     var name = village!!.name_ru
                     when (LocaleManager.getLanguagePref(this)){
                         LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = village!!.name_ky
@@ -453,6 +485,9 @@ class AddHarvestActivity : BaseActivity<AddHarvestViewModel>(R.layout.activity_h
                 RegionListActivity.REQUEST_CODE -> {
                     val intent = data?.getSerializableExtra(Constants.Region) as Region
                     region = intent
+                    region_ky = region!!.name_ky
+                    region_ru = region!!.name_ru
+                    region_en = region!!.name_en
                     var name = region!!.name_ru
                     when (LocaleManager.getLanguagePref(this)){
                         LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = region!!.name_ky
@@ -464,6 +499,10 @@ class AddHarvestActivity : BaseActivity<AddHarvestViewModel>(R.layout.activity_h
                 DistrictListActivity.REQUEST_CODE -> {
                     val intent = data?.getSerializableExtra(Constants.DISTRICTS) as District
                     district = intent
+                    district_ru = district!!.name_ru
+                    district_ky = district!!.name_ky
+                    district_en = district!!.name_en
+
                     var name = district!!.name_ru
                     when (LocaleManager.getLanguagePref(this)){
                         LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = district!!.name_ky

@@ -69,13 +69,8 @@ class PlantCatalogAdapter(val isMultiSelect: Boolean, val listener: SimpleListAd
         }
 
         companion object {
-            fun create(
-                parent: ViewGroup,
-                listener: SimpleListAdapterListener,
-                isMultiSelect: Boolean = false
-            ): Holder {
-                val view =
-                    LayoutInflater.from(parent.context).inflate(R.layout.item_list, parent, false)
+            fun create(parent: ViewGroup, listener: SimpleListAdapterListener, isMultiSelect: Boolean = false): Holder {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_list, parent, false)
                 val holder = Holder(view)
                 holder.itemView.setOnClickListener {
                     if (isMultiSelect) holder.toggleSelectState()

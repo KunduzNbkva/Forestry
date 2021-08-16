@@ -25,10 +25,11 @@ class GrazeAdapter(private var list: ArrayList<String>,private var clickListener
 
     class GrazeAddHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView = itemView.findViewById<TextView>(R.id.expansion_sub_title)
+        var boolean: Boolean = false
         fun onBind(string: String,expansionClick: ExpansionGrazeClick) {
             textView.text = string
             itemView.setOnClickListener{
-                expansionClick.expansionItemClick(string)
+                expansionClick.expansionItemClick(string, adapterPosition)
             }
         }
     }
@@ -36,5 +37,5 @@ class GrazeAdapter(private var list: ArrayList<String>,private var clickListener
 }
 
 interface ExpansionGrazeClick {
-    fun expansionItemClick(string: String)
+    fun expansionItemClick(string: String, position: Int)
 }

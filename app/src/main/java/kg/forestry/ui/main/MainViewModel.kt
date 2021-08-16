@@ -43,9 +43,9 @@ class MainViewModel(
     private val userPastures = FirebaseDatabase.getInstance().getReference(Constants.PASTURES)
 
     fun setUserPlant(azyr: String){
-        val plantInfo = Plant("fghjklgcvhjkl",Preferences.instance.userToken,"","","","","","","","","","","","",0,0,0,0,0,0,0,azyr,"")
-        plantsRepository.updateUserPlantInDB(plantInfo)
-        Log.e("plant","updated")
+    //    val plantInfo = Plant("fghjklgcvhjkl",Preferences.instance.userToken,"","","","","","","","","","","","",0,0,0,0,0,0,0,azyr,"")
+    //   plantsRepository.updateUserPlantInDB(plantInfo)
+    //    Log.e("plant","updated")
     }
 
     fun deleteUserPlant(){

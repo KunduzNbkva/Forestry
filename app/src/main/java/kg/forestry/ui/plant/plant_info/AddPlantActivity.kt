@@ -13,12 +13,15 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.FileProvider
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -58,6 +61,7 @@ import org.parceler.Parcels
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.text.FieldPosition
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -74,9 +78,47 @@ data class AnimalModel(
 )
 
 class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_plant, AddPlantViewModel::class), ExpansionClick, ExpansionGrazeClick {
-    private var region: Region? = null
     private var village: Village? = null
+    private var village_ru = String()
+    private var village_en = String()
+    private var village_ky = String()
+
     private var district: District? = null
+    private var district_ru = String()
+    private var district_en = String()
+    private var district_ky = String()
+
+    private var region: Region? = null
+    private var region_ru = String()
+    private var region_ky = String()
+    private var region_en = String()
+
+    private var typePasture_ru = String()
+    private var typePasture_en = String()
+    private var typePasture_ky = String()
+
+    private var erossion = String()
+
+    private var cattlePasture_ru = String()
+    private var cattlePasture_en = String()
+    private var cattlePasture_ky = String()
+
+    private var soilColor_ru = String()
+    private var soilColor_en = String()
+    private var soilColor_ky = String()
+
+    private var soilTexture_ru = String()
+    private var soilTexture_en = String()
+    private var soilTexture_ky = String()
+
+    private var trees_ru = String()
+    private var trees_en = String()
+    private var trees_ky = String()
+
+    private var plants_ru = String()
+    private var plants_en = String()
+    private var plants_ky = String()
+
     private lateinit var cattleList:ArrayList<AnimalModel>
 
     private lateinit var storage: FirebaseStorage
@@ -106,8 +148,8 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
         }
         if (vm.isEditMode()) setupViewsForEditMode(vm.plantInfo)
         initClickListeners()
-        setExpansionCattle()
         setExpansionGraze()
+        setExpansionCattle()
         setExpansionSoilColor()
     }
 
@@ -176,10 +218,23 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
             degree_erosion.setValue(this.erosionDegree)
             cattle_pasture.tv_text_expansion.text = this.cattlePasture
             pasture_cattle.tv_text_expansion.text = this.typePasture
-            name_village.setValue(this.village)
-            name_region.setValue(this.region)
-            name_district.setValue(this.district)
-
+            when(LocaleManager.getLanguagePref(this@AddPlantActivity)) {
+                LocaleManager.LANGUAGE_KEY_RUSSIAN -> {
+                    name_village.setValue(plantInfo.village_ru)
+                    name_region.setValue(plantInfo.region_ru)
+                    name_district.setValue(plantInfo.district_ru)
+                }
+                LocaleManager.LANGUAGE_KEY_KYRGYZ -> {
+                    name_village.setValue(plantInfo.village_kg)
+                    name_region.setValue(plantInfo.region_ky)
+                    name_district.setValue(plantInfo.district_ky)
+                }
+                LocaleManager.LANGUAGE_KEy_ENGLISH -> {
+                    name_village.setValue(plantInfo.village_en)
+                    name_region.setValue(plantInfo.region_en)
+                    name_district.setValue(plantInfo.district_en)
+                }
+            }
             vm.photoPath = plantInfo.plantPhoto
             if (vm.photoPath != "") {
                 fl_take_photo.loadImage(vm.photoPath)
@@ -241,8 +296,14 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
         pasture_cattle.tv_text_expansion.text = text
     }
 
-    override fun expansionItemClick(string: String) {
-        cattle_pasture.tv_text_expansion.text = string
+    override fun expansionItemClick(string: String,position: Int) {
+        if(position == 0) {
+            pasture_cattle.visibility = View.GONE
+            cattle_pasture.tv_text_expansion.text = string
+        } else {
+            cattle_pasture.tv_text_expansion.text = string
+            pasture_cattle.visibility = View.VISIBLE
+        }
     }
 
     private fun updateButtonState() {
@@ -324,9 +385,17 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
             date = getCurrentDate(),
             plantPhoto = vm.photoPath,
             plantLocation = Helper.fromStringToLocation(location.getValue()),
-            region = name_region.getValue(),
-            village = name_village.getValue(),
-            district = name_district.getValue(),
+            region_ru = region_ru,
+            region_en = region_en,
+            region_ky = region_ky,
+
+            village_ru = village_ru,
+            village_en = village_en,
+            village_kg = village_ky,
+
+            district_ru = district_ru,
+            district_en = district_en,
+            district_ky = district_ky,
             isDraft = false
         )
         if (vm.isEditMode()) {
@@ -482,9 +551,17 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
             date = getCurrentDate(),
             plantPhoto = vm.photoPath,
             plantLocation = Helper.fromStringToLocation(location.getValue()),
-            region = name_region.getValue(),
-            village = name_village.getValue(),
-            district = name_district.getValue(),
+            region_ru = region_ru,
+            region_en = region_en,
+            region_ky = region_ky,
+
+            village_ru = village_ru,
+            village_en = village_en,
+            village_kg = village_ky,
+
+            district_ru = district_ru,
+            district_en = district_en,
+            district_ky = district_ky,
             isDraft = true
         )
     }
@@ -531,6 +608,9 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
                 RegionListActivity.REQUEST_CODE -> {
                     val intent = data?.getSerializableExtra(Constants.Region) as Region
                     region = intent
+                    region_en = region!!.name_en
+                    region_ru = region!!.name_ru
+                    region_ky = region!!.name_ky
                     var name = region!!.name_ru
                     when (LocaleManager.getLanguagePref(this)){
                         LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = region!!.name_ky
@@ -541,6 +621,9 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
                 VillageListActivity.REQUEST_CODE -> {
                     val intent = data?.getSerializableExtra(Constants.Village) as Village
                     village = intent
+                    village_en = village!!.name_en
+                    village_ru = village!!.name_ru
+                    village_ky = village!!.name_ky
                     var name = village!!.name_ru
                     when (LocaleManager.getLanguagePref(this)){
                         LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = village!!.name_ky
@@ -551,6 +634,9 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
                 DistrictListActivity.REQUEST_CODE -> {
                     val intent = data?.getSerializableExtra(Constants.DISTRICTS) as District
                     district = intent
+                    district_en = district!!.name_en
+                    district_ky = district!!.name_ky
+                    district_ru = district!!.name_ru
                     var name = district!!.name_ru
                     when (LocaleManager.getLanguagePref(this)){
                         LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = district!!.name_ky

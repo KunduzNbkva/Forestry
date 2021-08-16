@@ -8,7 +8,9 @@ import kg.forestry.ui.core.base.BaseActivity
 import kg.core.custom.MarkTextButton
 import kg.core.utils.Constants
 import kg.core.utils.Erosion
+import kg.core.utils.LocaleManager
 import kotlinx.android.synthetic.main.activity_soil_erossion.*
+import org.intellij.lang.annotations.Language
 import org.parceler.Parcels
 
 class SoilErossionActivity : BaseActivity<SoilErossionViewModel>(R.layout.activity_soil_erossion, SoilErossionViewModel::class) {

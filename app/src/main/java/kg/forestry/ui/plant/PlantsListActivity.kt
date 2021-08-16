@@ -122,12 +122,9 @@ class PlantsListActivity :
         } else {
             try {
                 AddPlantActivity.start(this, plantInfo)
-                Log.e("data","sending plant info is $plantInfo")
             }catch (e:Exception){
                 e.printStackTrace()
             }
-
-            Log.e("data","sending plant info is $plantInfo")
         }
     }
 

@@ -46,7 +46,6 @@ class AccountRepository(val prefs: Preferences, private val databaseHelper: Data
         appDatabase.treeCatalog.insertTrees(trees)
     }
     fun savePlantCatalogToLocalDB(plants: List<PlantType>){
-        Log.e("klfjldskjflafl", "savePlantCatalogToLocalDB: $plants")
         appDatabase.plantCatalog.insertPlants(plants)
     }
 

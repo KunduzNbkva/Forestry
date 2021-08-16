@@ -1,11 +1,14 @@
 package kg.forestry.localstorage.model
 
+import android.content.Context
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kg.core.utils.LocaleManager
 import kg.core.utils.Location
 import kg.core.utils.Side
 import org.parceler.Parcel
 import java.io.Serializable
+import java.util.*
 
 @Entity(tableName = "plants")
 @Parcel
@@ -40,9 +43,18 @@ data class Plant(
     var southSide: Side = Side(),
     var isInServer:Boolean = false,
     var plantLocation: Location = Location(0.0,0.0),
-    var region: String = "",
-    var village: String = "",
-    var district: String = "",
+
+    var region_ru: String = "",
+    var region_ky: String = "",
+    var region_en: String = "",
+
+    var village_ru: String = "",
+    var village_kg: String = "",
+    var village_en: String = "",
+
+    var district_ru: String = "",
+    var district_en: String = "",
+    var district_ky: String = "",
     var isDraft: Boolean = false
 
 
