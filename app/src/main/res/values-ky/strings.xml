@@ -40,11 +40,13 @@
     <string name="owner">Аткаруучу</string>
     <string name="capture">Сүрөткө тартуу</string>
     <string name="from_gallery">Сүрөттү алмаштыруу</string>
+
     <string name="glina">Чопо</string>
     <string name="suglinok">Чопо,кум </string>
     <string name="suspes">Кумай</string>
     <string name="pesok">Кум</string>
     <string name="il">Баткактуу</string>
+
     <string name="wet_biomass">Нымдуу биомасса</string>
     <string name="dry_biomass">Кургак биомасса</string>
     <string name="eaten_biomass"> Желүүчү биомасса, грамм/м2</string>
@@ -52,11 +54,13 @@
     <string name="plants">Өсүмдүктөр</string>
     <string name="wet_biomass_in_gramm">Нымдуу биомасса, грамм/м2 </string>
     <string name="dry_biomass_in_gram">Кургак биомасса, грамм/м2</string>
+
     <string name="level_soil">Топурактын таштак даражасы</string>
     <string name="_10_n">10 %ке чейин\nАз таштактуу</string>
     <string name="_10_20_n">10-20 %\nОрто таштактуу</string>
     <string name="_20_40_n">20-40 %\nТаштактуу</string>
     <string name="_40_n">40 % ден көп\nАбдан таштактуу</string>
+
     <string name="title">Аталышы</string>
     <string name="black">Кара</string>
     <string name="gray">Боз</string>

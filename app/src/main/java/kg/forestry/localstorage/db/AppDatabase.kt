@@ -14,13 +14,14 @@ import kg.forestry.localstorage.model.*
 @Database(entities = [Harvest::class, Plant::class,
     Region::class, Village::class, District::class,
     PlotRecord::class, PastureRecord::class,
-    TreeType::class,PlantType::class], version = 47, exportSchema = false)
+    TreeType::class,PlantType::class], version = 50, exportSchema = false)
 
 @TypeConverters(Converter::class)
 
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val harvestsDao: HarvestDao
+    abstract val soilTextureDao: SoilTextureDao
     abstract val plantDao: PlantDao
     abstract val pasturesDao: PasturesDao
     abstract val treeCatalog: TreeTypeDao
@@ -32,10 +33,7 @@ abstract class AppDatabase : RoomDatabase() {
 
 
     companion object {
-
         val DB_NAME = "forestry.db"
         private var instance: AppDatabase? = null
-
-
     }
 }

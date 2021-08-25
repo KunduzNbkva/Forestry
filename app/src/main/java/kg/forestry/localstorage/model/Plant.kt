@@ -1,14 +1,15 @@
 package kg.forestry.localstorage.model
 
 import android.content.Context
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import android.os.Parcelable
+import androidx.room.*
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.google.gson.annotations.SerializedName
 import kg.core.utils.LocaleManager
 import kg.core.utils.Location
 import kg.core.utils.Side
 import org.parceler.Parcel
 import java.io.Serializable
-import java.util.*
 
 @Entity(tableName = "plants")
 @Parcel
@@ -23,7 +24,8 @@ data class Plant(
     val plotDescription: String = "",
     val plants: String = "",
     val trees: String = "",
-    val soilTexture: String = "",
+    @JsonIgnore
+    val soilTexture: SoilTexture? = null,
     val soilColor: String = "",
     val erosionDegree: String = "",
     val cattlePasture: String = "",
@@ -89,11 +91,57 @@ data class TreeType(
 
 @Parcel
 data class SoilTexture(
-    var size: String? = null,
-    var type: String? = null
-) : Serializable {
+    @PrimaryKey(autoGenerate = true)
+    @SerializedName("soilId")
+    val soilId: Int? = null,
+    @SerializedName("texture_ru")
+    var texture_ru: String? = null,
+    @SerializedName("texture_ky")
+    var texture_ky: String? = null,
+    @SerializedName("texture_en")
+    var texture_en: String? = null
+) : Serializable, Parcelable {
+    constructor(parcel: android.os.Parcel) : this(
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString()
+    )
 
-    fun toValidFormat() = "$type (${size})"
+    fun createValidForm(type: String, size: String): String{
+         return "$type (${size})"
+     }
+
+    fun setLocaleSoilTexture(context:Context): String{
+        var string = String()
+        when(LocaleManager.getLanguagePref(context)){
+            LocaleManager.LANGUAGE_KEY_KYRGYZ -> string =  texture_ky!!
+            LocaleManager.LANGUAGE_KEy_ENGLISH -> string =  texture_en!!
+            LocaleManager.LANGUAGE_KEY_RUSSIAN -> string =  texture_ru!!
+        }
+        return  string
+    }
+
+    override fun writeToParcel(parcel: android.os.Parcel, flags: Int) {
+        parcel.writeValue(soilId)
+        parcel.writeString(texture_ru)
+        parcel.writeString(texture_ky)
+        parcel.writeString(texture_en)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<SoilTexture> {
+        override fun createFromParcel(parcel: android.os.Parcel): SoilTexture {
+            return SoilTexture(parcel)
+        }
+
+        override fun newArray(size: Int): Array<SoilTexture?> {
+            return arrayOfNulls(size)
+        }
+    }
 }
 
 

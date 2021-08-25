@@ -5,9 +5,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.database.Cursor
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -15,13 +12,10 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.FileProvider
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -29,6 +23,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import kg.core.utils.*
 import kg.core.utils.Helper.getLocationFormattedString
 import kg.forestry.R
+import kg.forestry.localstorage.db.AppDatabase
 import kg.forestry.localstorage.model.*
 import kg.forestry.ui.choose_side.ChooseSideActivity
 import kg.forestry.ui.core.base.BaseActivity
@@ -59,9 +54,6 @@ import kotlinx.android.synthetic.main.activity_user_profile.*
 import kotlinx.android.synthetic.main.expansion_cattle.view.*
 import org.parceler.Parcels
 import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.text.FieldPosition
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -71,13 +63,16 @@ data class ExpansionModel(
     var title: String,
     var isColor: Boolean
 )
+
 data class AnimalModel(
     var img: Int,
     var title: String,
     var isSelected: Boolean
 )
 
-class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_plant, AddPlantViewModel::class), ExpansionClick, ExpansionGrazeClick {
+class AddPlantActivity :
+    BaseActivity<AddPlantViewModel>(R.layout.activity_add_plant, AddPlantViewModel::class),
+    ExpansionClick, ExpansionGrazeClick {
     private var village: Village? = null
     private var village_ru = String()
     private var village_en = String()
@@ -119,7 +114,7 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
     private var plants_en = String()
     private var plants_ky = String()
 
-    private lateinit var cattleList:ArrayList<AnimalModel>
+    private lateinit var cattleList: ArrayList<AnimalModel>
 
     private lateinit var storage: FirebaseStorage
     private lateinit var storageReference: StorageReference
@@ -213,26 +208,34 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
             desc_site.setValue(this.plotDescription)
             plant_type.setValue(this.plants)
             tree_type.setValue(this.trees)
-            soil_texture.setValue(this.soilTexture)
             soilcolor.tv_text_expansion.text = this.soilColor
             degree_erosion.setValue(this.erosionDegree)
             cattle_pasture.tv_text_expansion.text = this.cattlePasture
-            pasture_cattle.tv_text_expansion.text = this.typePasture
-            when(LocaleManager.getLanguagePref(this@AddPlantActivity)) {
+            if (this.cattlePasture.equals(R.string.no_pastures)) {
+                pasture_cattle.visibility = View.GONE
+            } else {
+                pasture_cattle.visibility = View.VISIBLE
+                pasture_cattle.tv_text_expansion.text = this.typePasture
+            }
+
+            when (LocaleManager.getLanguagePref(this@AddPlantActivity)) {
                 LocaleManager.LANGUAGE_KEY_RUSSIAN -> {
                     name_village.setValue(plantInfo.village_ru)
                     name_region.setValue(plantInfo.region_ru)
                     name_district.setValue(plantInfo.district_ru)
+                    this.soilTexture!!.texture_ru?.let { soil_texture.setValue(it) }
                 }
                 LocaleManager.LANGUAGE_KEY_KYRGYZ -> {
                     name_village.setValue(plantInfo.village_kg)
                     name_region.setValue(plantInfo.region_ky)
                     name_district.setValue(plantInfo.district_ky)
+                    this.soilTexture!!.texture_ky?.let { soil_texture.setValue(it) }
                 }
                 LocaleManager.LANGUAGE_KEy_ENGLISH -> {
                     name_village.setValue(plantInfo.village_en)
                     name_region.setValue(plantInfo.region_en)
                     name_district.setValue(plantInfo.district_en)
+                    this.soilTexture!!.texture_en?.let { soil_texture.setValue(it) }
                 }
             }
             vm.photoPath = plantInfo.plantPhoto
@@ -241,14 +244,14 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
             } else {
                 fl_take_photo.loadImage(plantInfo.plantPhoto)
             }
-            if(plantInfo.isDraft){
+            if (plantInfo.isDraft) {
                 plantInfo.isDraft = true
             }
         }
     }
 
 
-    private fun setExpansionCattle(){
+    private fun setExpansionCattle() {
         cattleList = ArrayList()
         cattleList.add(AnimalModel(R.drawable.cow, getString(R.string.cows_valid), false))
         cattleList.add(AnimalModel(R.drawable.sheep, getString(R.string.sheeps_valid), false))
@@ -258,7 +261,8 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
         val adapter = AnimalAdapter(cattleList, this)
         recyclerCattle.adapter = adapter
     }
-    private fun setExpansionGraze(){
+
+    private fun setExpansionGraze() {
         val grazeList = ArrayList<String>()
         grazeList.add(getString(R.string.no_pastures))
         grazeList.add(getString(R.string.little))
@@ -269,7 +273,7 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
         recyclerCattle.adapter = adapter
     }
 
-    private fun setExpansionSoilColor(){
+    private fun setExpansionSoilColor() {
         val soilColorList = ArrayList<ExpansionModel>()
         soilColorList.add(ExpansionModel(R.drawable.soil_black, getString(R.string.black), true))
         soilColorList.add(ExpansionModel(R.drawable.soil_gray, getString(R.string.gray), true))
@@ -288,16 +292,16 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
 
     override fun animalClick(model: AnimalModel) {
         var text = ""
-        for (model in cattleList ) {
+        for (model in cattleList) {
             if (model.isSelected) {
-                text += model.title +" "
+                text += model.title + " "
             }
         }
         pasture_cattle.tv_text_expansion.text = text
     }
 
-    override fun expansionItemClick(string: String,position: Int) {
-        if(position == 0) {
+    override fun expansionItemClick(string: String, position: Int) {
+        if (position == 0) {
             pasture_cattle.visibility = View.GONE
             cattle_pasture.tv_text_expansion.text = string
         } else {
@@ -332,7 +336,8 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
             if (region != null && district != null) {
                 VillageListActivity.start(this, district!!.id)
             } else {
-                Toast.makeText(this, getString(R.string.choose_region_or_state), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.choose_region_or_state), Toast.LENGTH_SHORT)
+                    .show()
             }
         }
         name_district.setOnClickListener {
@@ -359,11 +364,11 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
             }
         }
         btn_next.setOnClickListener {
-          getInfo()
+            getInfo()
         }
     }
 
-    private fun getInfo(){
+    private fun getInfo() {
         val cattleType = pasture_cattle.tv_text_expansion.text.toString()
         val grazeType = cattle_pasture.tv_text_expansion.text.toString()
         val soilColor = soilcolor.tv_text_expansion.text.toString()
@@ -377,7 +382,7 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
             desc_site.getValue(),
             plant_type.getValue(),
             tree_type.getValue(),
-            soil_texture.getValue(),
+            SoilTexture(),
             soilColor,
             degree_erosion.getValue(),
             grazeType,
@@ -405,6 +410,7 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
             plant.eastSide = vm.plantInfo!!.eastSide
         }
         ChooseSideActivity.start(this, plant, vm.isEditMode())
+        vm.isEditMode()
     }
 
     private fun showImagePickerDialog(onFileCreated: ((String) -> Unit)? = null) {
@@ -515,7 +521,7 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
             .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 super.onBackPressed()
             }
-            .setNeutralButton(getString(R.string.draft)){ _, _ ->
+            .setNeutralButton(getString(R.string.draft)) { _, _ ->
                 vm.plantInfo = getDraftInfo()
                 vm.saveDraftPlant()
                 super.onBackPressed()
@@ -529,11 +535,11 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
 
     }
 
-    private fun getDraftInfo(): Plant{
+    private fun getDraftInfo(): Plant {
         val cattleType = pasture_cattle.tv_text_expansion.text.toString()
         val grazeType = cattle_pasture.tv_text_expansion.text.toString()
         val soilColor = soilcolor.tv_text_expansion.text.toString()
-        return  Plant(
+        return Plant(
             vm.plantInfo?.id ?: "",
             vm.getUserId(),
             name_site.getValue(),
@@ -543,7 +549,7 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
             desc_site.getValue(),
             plant_type.getValue(),
             tree_type.getValue(),
-            soil_texture.getValue(),
+            SoilTexture(soil_texture.getValue().toInt()),
             soilColor,
             degree_erosion.getValue(),
             grazeType,
@@ -598,8 +604,12 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
                     tree_type.setValue(treeType)
                 }
                 SoilTextureActivity.REQUEST_CODE -> {
-                    vm.soilTexture = data?.getSerializableExtra(Constants.SOIL) as SoilTexture
-                    soil_texture.setValue(vm.soilTexture.toValidFormat())
+                    val soilTexture = data?.getSerializableExtra(Constants.SOIL) as SoilTexture
+                    if (soilTexture != null){
+                        vm.soilTexture = soilTexture
+                        soil_texture.setValue(vm.soilTexture!!.setLocaleSoilTexture(this))
+                        Log.e("TAG", "onActivityResult: ${vm.soilTexture!!.setLocaleSoilTexture(this)}")
+                    }
                 }
                 MapsActivity.REQUEST_CODE -> {
                     val intent = data?.getSerializableExtra(Constants.LOCATION) as Location
@@ -612,7 +622,7 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
                     region_ru = region!!.name_ru
                     region_ky = region!!.name_ky
                     var name = region!!.name_ru
-                    when (LocaleManager.getLanguagePref(this)){
+                    when (LocaleManager.getLanguagePref(this)) {
                         LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = region!!.name_ky
                         LocaleManager.LANGUAGE_KEy_ENGLISH -> name = region!!.name_en
                     }
@@ -625,7 +635,7 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
                     village_ru = village!!.name_ru
                     village_ky = village!!.name_ky
                     var name = village!!.name_ru
-                    when (LocaleManager.getLanguagePref(this)){
+                    when (LocaleManager.getLanguagePref(this)) {
                         LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = village!!.name_ky
                         LocaleManager.LANGUAGE_KEy_ENGLISH -> name = village!!.name_en
                     }
@@ -638,7 +648,7 @@ class AddPlantActivity : BaseActivity<AddPlantViewModel>(R.layout.activity_add_p
                     district_ky = district!!.name_ky
                     district_ru = district!!.name_ru
                     var name = district!!.name_ru
-                    when (LocaleManager.getLanguagePref(this)){
+                    when (LocaleManager.getLanguagePref(this)) {
                         LocaleManager.LANGUAGE_KEY_KYRGYZ -> name = district!!.name_ky
                         LocaleManager.LANGUAGE_KEy_ENGLISH -> name = district!!.name_en
                     }

@@ -154,7 +154,7 @@ class MainViewModel(
                 setProgress(true)
                 val plants = plantsRepository.fetchPlantsFromDbAsList()
                 plants.forEach { plant ->
-                    if (!plant.isInServer) {
+                    if (!plant.isInServer && plant != null) {
                         plant.userId = prefs.userToken
                         plant.isInServer = true
                         db.plantDao.insert(plant)

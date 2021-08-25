@@ -15,7 +15,7 @@ class AddPlantViewModel(
 ) : BaseViewModel<Event>() {
 
     var plantInfo: Plant? = null
-    var soilTexture = SoilTexture()
+    var soilTexture: SoilTexture? = null
     var soilErossion = Erosion()
     var photoPath = ""
 

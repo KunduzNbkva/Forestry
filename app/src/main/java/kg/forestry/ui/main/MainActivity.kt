@@ -19,17 +19,17 @@ import androidx.core.content.FileProvider
 import androidx.core.location.LocationManagerCompat
 import androidx.lifecycle.Observer
 import com.google.firebase.auth.FirebaseAuth
-import kg.forestry.R
 import kg.core.Event
-import kg.forestry.ui.core.base.BaseActivity
 import kg.core.utils.Harvest
 import kg.core.utils.PastureRecord
 import kg.core.utils.PlotRecord
 import kg.core.utils.visible
+import kg.forestry.R
 import kg.forestry.localstorage.Preferences
 import kg.forestry.localstorage.model.*
 import kg.forestry.ui.about.AboutAppActivity
 import kg.forestry.ui.auth.AuthActivity
+import kg.forestry.ui.core.base.BaseActivity
 import kg.forestry.ui.harvest.HarvestListActivity
 import kg.forestry.ui.map.MapsActivity
 import kg.forestry.ui.plant.PlantsListActivity
@@ -57,7 +57,7 @@ class MainActivity : BaseActivity<MainViewModel>(R.layout.activity_main, MainVie
         subscribeToLiveData()
         setupViews()
 
-        if (Preferences(this).isFirstLoad){
+        if (Preferences(this).isFirstLoad) {
             showMessageForLoadMaps(this)
         }
     }
@@ -66,7 +66,7 @@ class MainActivity : BaseActivity<MainViewModel>(R.layout.activity_main, MainVie
     override fun onResume() {
         super.onResume()
         vm.saveLocalPlantsHarvests()
-        if(!isLocationEnabled(this)){
+        if (!isLocationEnabled(this)) {
             buildAlertMessageNoGps(this)
             return
         }
@@ -78,7 +78,7 @@ class MainActivity : BaseActivity<MainViewModel>(R.layout.activity_main, MainVie
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun requestPermissions(){
+    fun requestPermissions() {
 
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -103,7 +103,13 @@ class MainActivity : BaseActivity<MainViewModel>(R.layout.activity_main, MainVie
         val builder = AlertDialog.Builder(context);
         builder.setMessage(getString(R.string.gps_disabled_message))
             .setCancelable(false)
-            .setPositiveButton(getString(R.string.enable)) { _, _ -> context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
+            .setPositiveButton(getString(R.string.enable)) { _, _ ->
+                context.startActivity(
+                    Intent(
+                        Settings.ACTION_LOCATION_SOURCE_SETTINGS
+                    )
+                )
+            }
             .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.cancel(); }
         val alert = builder.create();
         alert.show()
@@ -129,7 +135,7 @@ class MainActivity : BaseActivity<MainViewModel>(R.layout.activity_main, MainVie
             requestPermissions()
         }
     }
-    
+
     private fun subscribeToLiveData() {
         vm.event.observe(this, Observer {
             when (it) {
@@ -167,15 +173,26 @@ class MainActivity : BaseActivity<MainViewModel>(R.layout.activity_main, MainVie
                         vm.saveHarvestsToLocalDb(harvests.sortedByDescending { it.date })
                     })
 
-                    vm.plants.observe(this, Observer {list ->
+                    vm.plants.observe(this, Observer { list ->
                         val plants = mutableListOf<Plant>()
                         list?.children?.forEach { data ->
-                            val value = data.getValue(Plant::class.java)
-                            if (value?.userId == Preferences(this).userToken) {
-                                plants.add(value)
-                                          }
+                            if (data.exists() && data.hasChildren()){
+                                val value = data.children.map { it.getValue(Plant::class.java) }
+                                Log.d("ololo3", "value: $value")
+                            }
+                            data.getValue(Plant::class.java).apply {
+                                if (this?.userId == Preferences(this@MainActivity).userToken){
+                                    plants.add(this)
+                                }
+                            }
+//                            data.getValue(Map::class.java) as Map<*, *>
+//                            val value = data.getValue(Plant::class.java)
+//                            if (value?.userId == Preferences(this).userToken) {
+//                                plants.add(value)
+//                            }
+                            Log.e("ololo", data.toString())
                         }
-                       vm.savePlantsToLocalDb(plants.sortedByDescending { it.date })
+                        vm.savePlantsToLocalDb(plants.sortedByDescending { it.date })
                     })
 
 
